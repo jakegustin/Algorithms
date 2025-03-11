@@ -1,5 +1,7 @@
 ## Before You Read
 > This Textbook is in a rough draft form and will be contiuned to be worked on, if you find any issues while reading the PDF, please make a `git issue`, thanks!
+
+To start reading click `main.pdf`
 # Contributing
 Anyone is welcome to contribute! Just fork the repository, once edits are complete, submit a pull-request.
 
