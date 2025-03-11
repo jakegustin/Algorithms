@@ -32,9 +32,9 @@ Scheduling problems arise in many areas, such as scheduling classes, tasks, or j
     \item \textbf{[Earliest Start Time]:} Consider jobs in ascending order of $s_j$.
     \item \textbf{[Earliest Finish Time]:} Consider jobs in ascending order of $f_j$.
     \item \textbf{[Shortest Interval]:} Consider jobs in ascending order of $f_j - s_j$.
-    \item \textbf{[Fewest Conflicts]:} For each $j$, count the number of conflicting jobs $c_j$. \par
-    \hspace{9.3em} Schedule in ascending order of $c_j$.
+    \item \textbf{[Fewest Conflicts]:} For each $j$, count the number of conflicting jobs $c_j$. Schedule in ascending order of $c_j$.
 \end{itemize}
+
 \noindent
 We choose the \textbf{Earliest Finish Time} approach:
 \begin{Proof}[Greedy Algorithm Earliest Finish Time Correctness]
@@ -139,8 +139,7 @@ We observe in Example (\ref{ex:class_1}) that $\{c,b,a\}$ strictly overlap. More
     \item \textbf{[Earliest Start Time]:} Consider jobs in ascending order of $s_j$.
     \item \textbf{[Earliest Finish Time]:} Consider jobs in ascending order of $f_j$.
     \item \textbf{[Shortest Interval]:} Consider jobs in ascending order of $f_j - s_j$.
-    \item \textbf{[Fewest Conflicts]:} For each $j$, count the number of conflicting jobs $c_j$. \par
-    \hspace{9.3em} Schedule in ascending order of $c_j$.
+    \item \textbf{[Fewest Conflicts]:} For each $j$, count the number of conflicting jobs $c_j$. Schedule in ascending order of $c_j$.
 \end{itemize}
 \begin{theo}[Interval Partitioning \& Earliest Start Time]
 
@@ -149,6 +148,18 @@ We observe in Example (\ref{ex:class_1}) that $\{c,b,a\}$ strictly overlap. More
     Given a set of jobs $j$ with start and finish times $s_j$ and $f_j$, we can obtain an optimal like solution by scheduling in ascending order of $s_j$.
     If two jobs overlap, we allocate a new resource.
 \end{theo}
+
+\vspace{-.5em}
+\begin{figure}[h]
+    \begin{center}
+      \includegraphics[width=\textwidth]{./Sections/sched/interval/counter.png}
+    \end{center}
+     
+    \vspace{-.5em}
+    \caption{Counter examples of Earliest Start Time, Shortest Interval, and Fewest Conflicts.
+     Earliest time fails to see the later two smaller jobs, shortest interval fails to see two longer jobs, fewest 
+     conflicts fails to see the sequential solution of 4 jobs because it has too many conflicts.}\label{fig:counter}
+\end{figure}
 
 \begin{Proof}[Classroom Allocation by Early Start Time First]
     Let $d$ be the number of classrooms that the algorithm allocates:

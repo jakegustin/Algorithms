@@ -1,33 +1,30 @@
 \newpage
 \section{Minimizing Lateness}
-For situations where our tasks are forced onto a single resource, 
-we want to minimize the lateness of tasks as much as possible.\\
-
 \noindent
-\textbf{Scenario: \textit{Hell in the Kitchen}}\\
+\textbf{Scenario: \textit{Swamped in Assignments}}\\
 \noindent
-Say we have $n$ dishes to cook for \textit{very} important critics who place orders at $t_j$ times. 
-We know each dish takes $p_j$ time to prepare. With only one kitchen, we want to minimize the lateness of each dish.\\
+Say we have $j$ assignments, each $j$ assignment takes $p_j$ time to prepare, and a $d_j$ deadline. We want to finish all 
+assignments, but minimize the overall lateness.\\
 
 \begin{table}[h!]
     \centering
     \begin{tabular}{c|c|c|c|c|c|c|}
-        \cline{2-7}
+        \cline{2-6}
     \rowcolor{OliveGreen!10} 
-    \cellcolor{white}   $j=$\hspace{-1em} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
-    \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$t_j$} & 3 & 2 & 1 & 4 & 3 & 2 \\ \hline
-    \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$p_j$} & 6 & 8 & 9 & 9 & 14 & 15 \\ \hline
+    \cellcolor{white}   $j=$\hspace{-1em} & 1 & 2 & 3 & 4 & 5 \\ \hline
+    \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$p_j$} & 3 & 2 & 1 & 4 & 2 \\ \hline
+    \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$d_j$} & 4 & 7 & 8 & 8 & 10\\ \hline
     \end{tabular}
-    \caption{Table showing $t_j$ and $p_j$ start and finish times for dish $j$}
+    \caption{Table showing $d_j$ and $p_j$ deadlines and prepare times for $j$ assignments.}
     \label{tab:tj_pj_values}
 \end{table}
 
 \noindent
 \textbf{Possible Approaches:} Let $s_j$ and $f_j$ be the start and finish times of job $j$.
 \begin{itemize}
-    \item \textbf{[Shortest Processing Time]:} shortest processing time $t_j$ first.
-    \item \textbf{[Earliest Deadline]:} earliest due time $p_j$ first.
-    \item \textbf{[Least Slack Time]:} least slack time $p_j - t_j$ first.
+    \item \textbf{[Shortest Processing Time]:} shortest processing time $p_j$ first.
+    \item \textbf{[Earliest Deadline]:} earliest due time $d_j$ first.
+    \item \textbf{[Least Slack Time]:} least slack time $d_j - p_j$ first.
 \end{itemize}
 
 \noindent
@@ -37,39 +34,41 @@ We know each dish takes $p_j$ time to prepare. With only one kitchen, we want to
     \begin{minipage}{0.45\linewidth}
         \centering
         \begin{tabular}{c|c|c|}
-        \multicolumn{3}{c}{\textbf{Shortest processing time $t_j$ first:}} \\
+        \multicolumn{3}{c}{\textbf{Shortest processing time $p_j$ first:}} \\
         \cline{2-3}
         \rowcolor{OliveGreen!10} 
-        \cellcolor{white} & 1 & 2 \\ \hline
-        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$t_j$} & 1 & 10 \\ \hline
-        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$p_j$} & 100 & 10 \\ \hline
+        \cellcolor{white} & $p_j$ & $d_j$ \\ \hline
+        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$1$} & 1 & 100 \\ \hline
+        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$2$} & 10 & 10 \\ \hline
         \end{tabular}
-        \caption{Shortest processing time first}
+        \caption{If shortest $p$ is picked, $1$ will be placed first, despite
+        its deadline being $100$. Then $2$ will be placed, which will be late by $1$,
+        since $p_1$+ $p_2$ = $11$, missing its 10 deadline.}
     \end{minipage}%
     \hspace{1cm}
     \begin{minipage}{0.45\linewidth}
         \centering
         \begin{tabular}{c|c|c|}
-        \multicolumn{3}{c}{\textbf{Smallest slack $p_j - t_j$ first:}} \\
+        \multicolumn{3}{c}{\textbf{Smallest slack $d_j - p_j$ first:}} \\
         \cline{2-3}
         \rowcolor{OliveGreen!10} 
-        \cellcolor{white} & 1 & 2 \\ \hline
-        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$t_j$} & 1 & 10 \\ \hline
-        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$p_j$} & 2 & 10 \\ \hline
+        \cellcolor{white} & $p_j$ & $d_j$ \\ \hline
+        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$1$} & 1 & 2 \\ \hline
+        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$2$} & 4 & 4 \\ \hline
         \end{tabular}
-        \caption{Smallest slack first}
+        \caption{$4-4$ would have the smallest slack, so it's placed first, but this means $1$ will be late by $3$, since 
+        $4+1=5$ and $d_1=2$. Vice-versa, if $1$ is first, then $2$ is only late by $1$.}
     \end{minipage}
 \end{table}
 
 \begin{theo}[Minimizing Lateness]
     
     \label{theo:late}
-    Given a set of jobs $j$ with start and finish times $t_j$ and $p_j$ under one resource, we can obtain a like-optimal solution by scheduling in ascending order of $p_j$.
+    Given a set of jobs $j$ with prepare and deadline times $p_j$ and $d_j$ under one resource, a like-optimal solution is obtained by scheduling deadlines in ascending order.
 \end{theo}
 
 \begin{Tip}
-    Rather than looking for the best solution, craft counter examples to eliminate the worst ones.
-    The example for which you can't find a counter example, is likely the best solution.
+    Video version of this section: \href{https://youtu.be/wdqkJ7VICkc?t=973}{https://youtu.be/wdqkJ7VICkc?t=973}
 \end{Tip}
 
 \newpage
@@ -150,49 +149,43 @@ We know each dish takes $p_j$ time to prepare. With only one kitchen, we want to
         \centering
     
         \begin{tabular}{c|c|c|c|c|c|c|}
-            \cline{2-7}
+            \cline{2-6}
         \rowcolor{OliveGreen!10} 
-        \cellcolor{white}   $j=$\hspace{-1em} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
-        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$t_j$} & 3 & 2 & 1 & 4 & 3 & 2 \\ \hline
-        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$p_j$} & 6 & 8 & 9 & 9 & 14 & 15 \\ \hline
+        \cellcolor{white}   $j=$\hspace{-1em} & 1 & 2 & 3 & 4 & 5 \\ \hline
+        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$p_j$} & 3 & 2 & 1 & 4 & 2 \\ \hline
+        \multicolumn{1}{|>{\columncolor{OliveGreen!10}}c|}{$d_j$} & 4 & 7 & 8 & 8 & 10\\ \hline
         \end{tabular}
         
         \vspace{1em}
    
     \begin{tikzpicture}
         % Draw the timeline
-        \draw[thick,->] (0,0) -- (15.5,0) node[right] {};
+        \draw[thick,->] (0,0) -- (12.5,0) node[right] {};
         
         % Labels for time points
-        \foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15} {
+        \foreach \x in {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12} {
             \draw (\x,0.1) -- (\x,-0.1);
             \node at (\x,-0.3) {\x};
         }
         
         % Rectangles for jobs
         \filldraw[fill=purple!15] (0,0.2) rectangle (3,1);
-        \node at (1.5,0.6) {$d_1 = 6$};
+        \node at (1.5,0.6) {$p_1 = 3$};
     
         \filldraw[fill=purple!15] (3,0.2) rectangle (5,1);
-        \node at (4,0.6) {$d_2 = 8$};
+        \node at (4,0.6) {$p_2 = 2$};
     
         \filldraw[fill=purple!15] (5,0.2) rectangle (6,1);
-        \node[inner sep=3pt] at (5.5,0.6) {$d_3 = 9$};
+        \node[inner sep=3pt] at (5.5,0.6) {$p_3 = 1$};
     
-        \filldraw[fill=purple!15] (6,0.2) rectangle (9,1);
-        \node at (7.5,0.6) {$d_4 = 9$};
+        \filldraw[fill=purple!15] (6,0.2) rectangle (10,1);
+        \node at (8,0.6) {$p_4 = 4$};
     
-        \filldraw[fill=purple!15] (9,0.2) rectangle (13,1);
-        \node at (11,0.6) {$d_5 = 14$};
-    
-        \filldraw[fill=purple!15] (13,0.2) rectangle (15,1);
-        \node at (14,0.6) {$d_6 = 15$};
+        \filldraw[fill=purple!15] (10,0.2) rectangle (12,1);
+        \node at (11,0.6) {$p_5 = 2$};
         
     \end{tikzpicture}
-    \caption{Where our number line represents time, and the rectangles the interval of each job.}
+    \caption{Sorting by earliest deadline first, we get the optimal schedule. Here, $p_4$ and $p_5$ only have a 2, totalling to 4 lateness.}
     \label{tab:late_sol}
 \end{figure}
-
-\noindent
-Here we observe that we at most have $1$ late job.
 
