@@ -229,5 +229,132 @@ Our limit approaches 0, as we have a constant factor in the numerator, and a gro
     \noindent
     \textbf{Additional Example:} Let $f(n,m) = n^2m + m^3 + nm^3$. Then, $f(n,m)=O(n^2m+m^3)$. This is because both $n$ and $m$ must be accounted for. Our largest $n$ term is $n^2m$, and our largest $m$ term is $m^3$ both dominate the expression. Thus, $f(n,m)=O(n^2m+m^3)$.
 
+\newpage 
 
+\section{Simple Sorting Algorithms}
+
+\noindent
+This section covers simple sorting algorithms to get a sense of asymptotic analysis.
+Here we account all structures into our space complexities. If we only accounted for additional space,
+all the following algorithms would have $O(1)$ space complexity.
+
+\begin{Func}[Bubble Sort -- \texttt{bubble\_sort($A$)}]
+    Given an array $A$, of $\{0,\ldots,n\}$ elements. Iterate through the entire list, swapping elements such that
+    if $A[0]>A[1]$, swap (Sorting in ascending order). The sort is done when there's nothing left to swap.
+
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} An array $A$ of $n$ elements.\\
+    \textbf{Output:} The array $A$ sorted in non-decreasing order.\\
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        $n \gets |A|$\;
+        $\mathit{swapped} \gets \text{True}$\;
+        \While{$\mathit{swapped}$}{
+            $\mathit{swapped} \gets \text{False}$\;
+            \For{$i \gets 0$ \KwTo $n-2$}{
+                \If{$A[i]>A[i+1]$}{
+                    swap $A[i]$ and $A[i+1]$\;
+                    $\mathit{swapped} \gets \text{True}$\;
+                }
+            }
+        }
+    \end{algorithm}
+
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    \noindent
+    \textbf{Time Complexity:} Best: $O(n)$ (already sorted, one pass detects no swaps);  
+    Average: $O(n^2)$;  
+    Worst: $O(n^2)$ (reverse-sorted). \textbf{Space Complexity:} $O(n)$ the array itself.
+\end{Func}
+
+\begin{Func}[Insertion Sort -- \texttt{insertion\_sort($A$)}]
+    Given an array $A$, of $\{0,1,\ldots,n\}$ elements. Have $A[0]$ be the sorted portion,
+    and $A[1,\ldots,n]$ be the unsorted portion. Take an element from the unsorted,
+    and slide it down the sorted portion till it finds its place.
+
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} An array $A$ of $n$ elements.\\
+    \textbf{Output:} The array $A$ sorted in non-decreasing order.\\
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        $n \gets |A|$\;
+        \For{$i \gets 1$ \KwTo $n-1$}{
+            $j \gets i$\;
+            \While{$j\ge1$ \textbf{and} $A[j]<A[j-1]$}{
+                swap $A[j]$ and $A[j-1]$\;
+                $j \gets j-1$\;
+            }
+        }
+    \end{algorithm}
+
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    \noindent
+    \textbf{Time Complexity:} Best: $O(n)$ (already sorted, no shifts);  
+    Average: $O(n^2)$;  
+    Worst: $O(n^2)$ (reverse-sorted).
+    \textbf{Space Complexity:} $O(n)$ the array itself.
+\end{Func}
+
+\begin{Func}[Selection Sort -- \texttt{selection\_sort($A$)}]
+    Given an array $A$, of $\{0,\ldots,n\}$ elements, take $A[0]$ and iterate to $A[n]$, while doing so
+    maintain the largest element found, and swap with $A[n]$. Now $A[n]$ is sorted, take $A[0]$
+    and iterate to $A[n-1]$.
+
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} An array $A$ of $n$ elements.\\
+    \textbf{Output:} The array $A$ sorted in non-decreasing order.\\
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        $n \gets |A|$\;
+        \For{$i \gets 0$ \KwTo $n-2$}{
+            $\,\mathit{minIdx}\gets i$\;
+            \For{$j \gets i+1$ \KwTo $n-1$}{
+                \If{$A[j]<A[\mathit{minIdx}]$}{
+                    $\mathit{minIdx}\gets j$\;
+                }
+            }
+            swap $A[i]$ and $A[\mathit{minIdx}]$\;
+        }
+    \end{algorithm}
+
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    \noindent
+    \textbf{Time Complexity:} Best: $O(n^2)$;  
+    Average: $O(n^2)$;  
+    Worst: $O(n^2)$.\\
+    \textbf{Space Complexity:} $O(n)$ the array itself.
+\end{Func}
+
+\noindent
+To summarize,
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Algorithm} & \textbf{Best Case} & \textbf{Average Case} & \textbf{Worst Case} \\
+        \hline
+        Bubble Sort     & $O(n)$     & $O(n^2)$   & $O(n^2)$   \\
+        Insertion Sort  & $O(n)$     & $O(n^2)$   & $O(n^2)$   \\
+        Selection Sort  & $O(n^2)$   & $O(n^2)$   & $O(n^2)$   \\
+        \hline
+    \end{tabular}
+    \caption{Time Complexities of Simple Sorting Algorithms}
+\end{table}
+
+\begin{Tip} Consider the following animations:
+    \begin{itemize}
+        \item \textbf{Bubble Sort:} \url{https://www.youtube.com/watch?v=hahrx5WUeNI}
+        \item \textbf{Insertion Sort:} \url{https://youtu.be/Q1JdRUh1_98?si=j34DBzZAQkGdMkxU}
+        \item \textbf{Selection Sort:} \url{https://www.youtube.com/watch?v=Iccmrk2ZWoc}
+    \end{itemize}
+
+    \noindent
+    Code examples can be found here: \url{https://github.com/Concise-Works/Algorithms/blob/main/Implementations/alg.py}
+\end{Tip}
 

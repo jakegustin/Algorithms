@@ -94,6 +94,17 @@ geometric problems.
     \textbf{Space Complexity:} $O(n \log n)$ for the temporary array and $O(\log n)$ for the recursion stack.
 \end{Func}
 
+\newpage 
+
+\noindent
+Below is a graphical representation of merge sort:
+\begin{figure}[h]
+    \hspace{-9em}
+        \includegraphics[width=1.5\textwidth]{sections/recurs/mergesort.png}
+        \caption{Here is an array of 7 elements. The first partition happens on index 3 as $\left\lfloor (0 + 6)/2 \right\rfloor = 3$. This continues all the way down until we hit our base case;
+        During the merge step, we take a temporary array and fill in the missing elements from the two joining halves. Here the next smallest element is picked from 
+        each half, if one finishes first, we copy the rest of the other half into the temporary array. Finally, we copy back the temporary array to the original array.}
+\end{figure}
 
 
 \newpage 
