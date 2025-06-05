@@ -6,6 +6,8 @@ To further understand how our algorithms run, we must understand ligtly how memo
 
 \begin{Def}[Machine Code \& Compilation]
 
+    \label{def:machine_code}
+
     Code is separated into two main areas of memory management, the program itself, and the data in transit during execution.
     The program itself is broken up such as follows:
     \begin{itemize}
@@ -15,13 +17,14 @@ To further understand how our algorithms run, we must understand ligtly how memo
     \end{itemize}
 
     \noindent
-    Once the code compiles, we have two types of data to manage:
+    Once the code compiles, we our data segment is further divided into two parts in memory:
     \begin{itemize}
         \item \textbf{Initialized Data:} This is data that has been given a value before the program starts running, such as global variables.
         \item \textbf{Uninitialized Data:} This is data that has not been given a value before the program starts running, such as local variables.
     \end{itemize}
     \noindent
-    Both types of data reside in memory at some address from which the CPU can access.
+    By memory we mean the \textbf{RAM (Random Access Memory)} hardware component, which stores temporary data, constantly 
+    communicating with the CPU or external storage (e.g., hard drive, SSD).
 \end{Def}
 
 \noindent
@@ -38,6 +41,8 @@ Let's talk about our first data structure, the stack:
 \noindent
 This text does not concern assembly code or low-level programmming, so \underline{\textbf{do not}} get caught up on the specifics of this next example:
 \begin{Example}[Assembly Code]
+
+    \label{ex:assembly_code}
     Here is an assembly code example that demonstrates both initialized and uninitialized data. 
     Initialized data is placed in the `.data` section, while uninitialized data is placed in the `.bss` section:
 
@@ -97,40 +102,65 @@ Let's illstrate this with the following diagram:
     \label{fig:call_stack}
 \end{figure}
 
-\newpage 
 \noindent
-To become more concrete each stack frame is actually broken up into multiple parts:
+\rule{\textwidth}{0.4pt}\\
+
+\noindent
+\underline{\textbf{Please Note:} The above figure is a simplified version}; This presentation derivatives from what actually happens
+for teaching sake. In the following pages we define the stack frame in more detail.
+
+\begin{Tip}
+A lot of demonstrations (including this text) will show the stack growing \textbf{upwards}; This is strictly because it's easier to visualize and does not
+accurately potray what a stack really does or looks like. In the following pages we will clear this up, and show how the stack actually grows from top-to-bottom.
+Of course, there is always room for deviation if a developer wishes to implement a stack in some other arbitrary way. Nonetheless, the following is what one 
+might typically expect in a stack implementation.
+\end{Tip}
+
+\newpage 
+\begin{Def}[Instructions]
+
+    The CPU register (IP/EIP) is the \textbf{instruction pointer}, pointing to the next opreation to execute. All commands are baked 
+    into the CPU; This includes the \textbf{ALU (Arithmetic Logic Unit)}, \textbf{Memory Unit (load/store)}, and \textbf{Control Unit (branching/looping)}.
+    All instructions are given a numeric ID called an \textbf{opcode} (operation code). 
+    
+    The CPU fetches the instruction from memory, decodes it, and executes it. This process is repeated until the program terminates.
+    Languages like assembly interface this with human-readable mnemonics, such as `MOV', `ADD', `SUB', etc (as seen in Example \ref{ex:assembly_code}).
+    
+\end{Def}
 \begin{Def}[Stack Frame Anatomy]
 
-Under the x86-32 calling convention, each function call creates a new \emph{stack frame} on the process's call stack. Two registers govern the layout of these frames:
+Under the x86-32 calling convention Two registers keep track our place in the stack:
 \begin{itemize}
   \item \textbf{Base Pointer (BP/EBP):} Points to the base (i.e.\ ``bottom'') of the current function's stack frame.
   \item \textbf{Stack Pointer (SP/ESP):} Points to the ``top'' of the current function's stack frame, i.e., the next free byte where a push would land.
 \end{itemize}
 
 \noindent
-When the program starts (or when a thread is created), the operating system \emph{reserves} a contiguous region of memory for the stack. By convention, the \emph{bottom} of that region lies at a higher address, 
+When the program starts, the operating system \emph{reserves} a contiguous region of memory for the stack. By convention, the \emph{bottom} of that region lies at a higher address, 
 and the stack ``grows downward'' toward lower addresses as data is pushed. If the stack pointer ever moves past the reserved limit---a \textbf{stack overflow} occurs.
 \\
 
 \noindent
 A single \textbf{stack frame} itself is a contiguous block of memory in which the function stores:
 \begin{itemize}
-  \item \textbf{Parameters:} The arguments passed in by the caller (beyond what fits in registers, or always placed here by convention),  
-  \item \textbf{Return Address:} The address to jump back to once this function returns,  
-  \item \textbf{Old Base Pointer (Old EBP):} The caller's `EBP', saved so that on return we can restore the previous frame,  
+  \item \textbf{Parameters:} The arguments passed in by the caller,  
+  \item \textbf{Return Address:} The address of the next instruction to execute after the function returns,
+  \item \textbf{Old Base Pointer:} The caller's `EBP', saved so that on return we can restore the previous frame,
   \item \textbf{Local Variables:} Space for any locals or temporaries that the function needs.  
 \end{itemize}
-Note that \emph{``New Base Pointer''} is simply the value of `ESP' after the old `EBP' has been pushed—this becomes the current `EBP' (i.e.\ the new base‐pointer register value), not a separate memory slot. Once a function returns, its entire frame is popped off the stack, so those local variables go ``out of scope'' and are no longer accessible.
-\end{Def}
 
 \noindent
-On the next page we detail what exactly these offets are.
+This is why variables in previous or new functions calls become ``\textbf{out of scope}'' (no longer accessible), as they belong to some other stack frame; 
+When it comes to \textbf{Global Variables}, they live in a separate region of memory, defined by the \textbf{data segment} (\ref{def:machine_code}).
+
+Moreover, a call to a new function invokes the \underline{\textbf{call} instruction}, this automically pushes the return address to the current frame onto the stack.
+Additonally, the CPU reserves the \textbf{EAX} register for the return value (number or address) of a function. 
+When the function returns, it can place its result in `EAX', and the caller can retrieve it from there. During constant use 
+the `EAX' \underline{register may contain \textbf{garbage}} data from previous use, unless explicitly set to zero or some other value.
+\end{Def}
 
 \newpage 
 
-\noindent
-Please observe the following table which illustrates the typical layout of a stack frame in x86-32 assembly language.
 \begin{table}[h]
 \centering
 \resizebox{\textwidth}{!}{
@@ -147,12 +177,37 @@ Old EBP (Saved BP)     & \(\mathit{EBP} + 0\)  & The caller's base pointer \\
 \hline
 \multicolumn{3}{|c|}{\textbf{Current Frame (locals/temporaries)}} \\ \hline
 Local Variable 1        & \(\mathit{EBP} - 4\)  & First 4-byte local (or smallest slot). \\
-Local Variable 2        & \(\mathit{EBP} - 8\)  & Next 4-byte local or part of a larger struct. \\
+Local Variable 2        & \(\mathit{EBP} - 8\)  & Next 4-byte local or part of a larger object. \\
 \(\dots\)                      & \( \vdots \)         &(additional locals at \(\mathit{EBP} - 12,\ -16,\ \dots\)) \\
 \hline
 \multicolumn{3}{|c|}{\textbf{Low Addresses}} \\ \hline
 \end{tabular}
 }
-\caption{Typical x86-32 Stack-Frame Layout, where offsets are typically a multiple of 4 bytes. The \textit{EBP} register points to the base of the current stack frame, and offsets are calculated relative to it. The stack grows downwards, so higher offsets correspond to lower memory addresses.}
+\caption{Typical x86-32 Stack-Frame Layout, where offsets are typically a multiple of 4 bytes.}
 \end{table}
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/stacks_heaps/call_stack_precise.png}
+    \caption{Revisiting Figure (\ref{fig:call_stack}) with slight alterations to the code: This is a snapshot of the code executing right before \texttt{CalculateAge(birth\_time)} is called. For simplicity sake,
+    let's say the stack begins at address \texttt{0xF40} (Hexadecimal), growing downwards. Here the base of the stack and the EBP are one and the same.
+    We include the CPU's EAX (return register), which contains garbage. Address \texttt{0xF38} is currently just reserved space for `age'.}
+
+\label{fig:call_stack_precise}
+\end{figure}
+
+\newpage 
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/stacks_heaps/call_stack_after.png}
+    \caption{Revisiting Figure (\ref{fig:call_stack_precise}) at the moment the function \texttt{CalculateAge(birth\_time)} has supplied its return value to the EAX register, and is about to return.
+    We see that before calling \texttt{CalculateAge(birth\_time)}: The old frame pushed it's arguments (\texttt{birth\_time}) onto the stack, then the return address (IP/Next Instruction) onto the stack,
+    and finally the old EBP (Base Pointer) onto the stack. The `new frame' then sets the saved EBP address to the current EBP, concluding the old frame into the `new frame'. Moreover, since the offset
+    looks for local variables below \texttt{0xF40}, the above `birth\_time' and `age' are \textbf{out of scope} for the `new frame', vice-versa. \textbf{Note:} This is 
+    still a high-level absrtraction of what actually happens squentially with opcodes; Nonetheless, this is the fundemental idea of how a stack works. }
+    \label{fig:call_stack_after}
+\end{figure}
+
+\noindent 
+This concludes our discussion on stack structures; We continue with the heap structure next.
