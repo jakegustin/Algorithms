@@ -1,8 +1,8 @@
-\section{Stacks and Heaps}
+\section{Stack Data Structures}
 \label{sec:stacks_heaps}
 
 \noindent
-To further understand how our algorithms run, we must understand ligtly how memory is passed around in our programs.
+To further understand how our algorithms run, we must understand lightly how memory is passed around in our programs.
 
 \begin{Def}[Machine Code \& Compilation]
 
@@ -17,14 +17,15 @@ To further understand how our algorithms run, we must understand ligtly how memo
     \end{itemize}
 
     \noindent
-    Once the code compiles, we our data segment is further divided into two parts in memory:
+    Once the code compiles, our data segment is further divided into two parts in memory:
     \begin{itemize}
-        \item \textbf{Initialized Data:} This is data that has been given a value before the program starts running, such as global variables.
-        \item \textbf{Uninitialized Data:} This is data that has not been given a value before the program starts running, such as local variables.
+        \item \textbf{Initialized Data:}  Data given a value before the program starts (global variables).
+        \item \textbf{Uninitialized Data:} Data yet to be assigned (local variables), which are zeroed at program start.
     \end{itemize}
     \noindent
     By memory we mean the \textbf{RAM (Random Access Memory)} hardware component, which stores temporary data, constantly 
-    communicating with the CPU or external storage (e.g., hard drive, SSD).
+    communicating with the CPU or external storage (e.g., hard drive, SSD). Each memory cell is IDed by a unique monotonic \textbf{address},
+    often in hexadecimal format(e.g., 0xF00, 0xF01, etc).
 \end{Def}
 
 \noindent
@@ -39,7 +40,7 @@ Let's talk about our first data structure, the stack:
 \newpage
 
 \noindent
-This text does not concern assembly code or low-level programmming, so \underline{\textbf{do not}} get caught up on the specifics of this next example:
+This text does not concern assembly code or low-level programming, so \underline{\textbf{do not}} get caught up on the specifics of this next example:
 \begin{Example}[Assembly Code]
 
     \label{ex:assembly_code}
@@ -78,23 +79,23 @@ Now let's look at how our programs utilize the stack:
     A \textbf{call stack} is a stack which keeps track of function calls in a program as well as any local variables within such functions.
     
     \underline{This is why we say a variable is in \textbf{scope}}, as when a function is taken off the stack, or a new stack frame 
-    is placed ontop, the variables in the previous or discarded stack frame are \textbf{no longer accessible}.
+    is placed on top, the variables in the previous or discarded stack frame are \textbf{no longer accessible}.
 \end{Def}
 
 \newpage 
 
 \noindent
-Let's illstrate this with the following diagram:
+Let's illustrate this with the following diagram:
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{./Sections/stacks_heaps/call_stack.png}
     \caption{Here is a simplified look at how memory manages the stack. On the left is our program written 
     in some abstract language, and on the right is the call stack in memory (simplified). 
-    The program has a global `birth\_time' variable, which is intialized in the \texttt{Main} function. The \texttt{Main} function
+    The program has a global `birth\_time' variable, which is initialized in the \texttt{Main} function. The \texttt{Main} function
     then calls the \texttt{Calculate\_Age} function which uses the `birth\_time' variable to calculate the `age' via the difference of 
     the current time and the `birth\_time.'
-    Lookin at the memory, we see at the bottom of our memory contains global variables accessible to any frame. Next, is the bottom of the stack, containing a return address to exit 
+    Looking at the memory, we see at the bottom of our memory contains global variables accessible to any frame. Next, is the bottom of the stack, containing a return address to exit 
     the program, while awaiting the result of the function call for `age'. The top of our stack contains another frame that we will return the value
     a new `age' (not the same as the one before) not accessible from the main function. This new frame also contains a new local variable `today.'
     Once this function returns, \texttt{Main} will have the result of its local variable `age.'. Concretely, the 
@@ -111,7 +112,7 @@ for teaching sake. In the following pages we define the stack frame in more deta
 
 \begin{Tip}
 A lot of demonstrations (including this text) will show the stack growing \textbf{upwards}; This is strictly because it's easier to visualize and does not
-accurately potray what a stack really does or looks like. In the following pages we will clear this up, and show how the stack actually grows from top-to-bottom.
+accurately portray what a stack really does or looks like. In the following pages we will clear this up, and show how the stack actually grows from top-to-bottom.
 Of course, there is always room for deviation if a developer wishes to implement a stack in some other arbitrary way. Nonetheless, the following is what one 
 might typically expect in a stack implementation.
 \end{Tip}
@@ -119,7 +120,7 @@ might typically expect in a stack implementation.
 \newpage 
 \begin{Def}[Instructions]
 
-    The CPU register (IP/EIP) is the \textbf{instruction pointer}, pointing to the next opreation to execute. All commands are baked 
+    The CPU register (IP/EIP) is the \textbf{instruction pointer}, pointing to the next operation to execute. All commands are baked 
     into the CPU; This includes the \textbf{ALU (Arithmetic Logic Unit)}, \textbf{Memory Unit (load/store)}, and \textbf{Control Unit (branching/looping)}.
     All instructions are given a numeric ID called an \textbf{opcode} (operation code). 
     
@@ -153,8 +154,8 @@ A single \textbf{stack frame} itself is a contiguous block of memory in which th
 This is why variables in previous or new functions calls become ``\textbf{out of scope}'' (no longer accessible), as they belong to some other stack frame; 
 When it comes to \textbf{Global Variables}, they live in a separate region of memory, defined by the \textbf{data segment} (\ref{def:machine_code}).
 
-Moreover, a call to a new function invokes the \underline{\textbf{call} instruction}, this automically pushes the return address to the current frame onto the stack.
-Additonally, the CPU reserves the \textbf{EAX} register for the return value (number or address) of a function. 
+Moreover, a call to a new function invokes the \underline{\textbf{call} instruction}, this automatically pushes the return address to the current frame onto the stack.
+Additionally, the CPU reserves the \textbf{EAX} register for the return value (number or address) of a function. 
 When the function returns, it can place its result in `EAX', and the caller can retrieve it from there. During constant use 
 the `EAX' \underline{register may contain \textbf{garbage}} data from previous use, unless explicitly set to zero or some other value.
 \end{Def}
@@ -205,9 +206,190 @@ Local Variable 2        & \(\mathit{EBP} - 8\)  & Next 4-byte local or part of a
     We see that before calling \texttt{CalculateAge(birth\_time)}: The old frame pushed it's arguments (\texttt{birth\_time}) onto the stack, then the return address (IP/Next Instruction) onto the stack,
     and finally the old EBP (Base Pointer) onto the stack. The `new frame' then sets the saved EBP address to the current EBP, concluding the old frame into the `new frame'. Moreover, since the offset
     looks for local variables below \texttt{0xF40}, the above `birth\_time' and `age' are \textbf{out of scope} for the `new frame', vice-versa. \textbf{Note:} This is 
-    still a high-level absrtraction of what actually happens squentially with opcodes; Nonetheless, this is the fundemental idea of how a stack works. }
+    still a high-level abstraction of what actually happens sequentially with opcodes; Nonetheless, this is the fundamental idea of how a stack works. }
     \label{fig:call_stack_after}
 \end{figure}
 
 \noindent 
 This concludes our discussion on stack structures; We continue with the heap structure next.
+
+\newpage 
+
+\noindent
+\section{Heap Data Structures}
+\label{sec:heap}
+
+\noindent
+So far we have simply said global data is declared in the \textbf{data segment} of memory. There is a second segment 
+of memory that builds ontop of this called the \textbf{heap}:
+\begin{Def}[Heap -- Dynamic vs. Static Memory]
+
+    When a program runs there is a \textbf{static} (fixed) region reserved for the program's data segment (local/global variables). 
+    During execution, more objects may be created, needing additional memory; A new region of memory is reserved \textbf{dynamically},
+    building upwards from the top of the data segment, \underline{called the \textbf{heap}}.\\
+    
+    \noindent
+    Language protocols either \textbf{manually} (e.g., Assembly, C) or \textbf{automatically} (e.g., Python, Java) manage this memory:
+    \begin{itemize}
+        \item \textbf{Manual Memory Management:} The programmer must explicitly allocate and deallocate memory using functions like `malloc' and `free' in C.
+        \item \textbf{Automatic Memory Management:} The language runtime automatically allocates and deallocates memory, often using a \textbf{garbage collector} to reclaim unused memory (no variables pointing to it).
+\end{itemize}
+
+\noindent
+Unlike the stack, this allows values to be accessed from anywhere in the program, regardless of the function call or scope.
+\end{Def}
+
+\noindent
+To continue we must understand what a hash table is, and how arrays and objects work in memory:
+\begin{Def}[Hash Table]
+
+    A \textbf{hash table} is a data structure that maps keys to values, allowing for efficient retrieval of values based on their keys.
+    It uses a \textbf{hash function}, which takes a key (e.g. a number or string) as input and produces a fixed-size (i.e., output modulo the table size) hash value for the index.
+
+    \textbf{Note:} The input in many context (typically cryptographic), may be called `data' or `message'; The output: hash, checksum, fingerprint, or digest.
+\end{Def}
+\begin{Def}[Arrays in Memory]
+
+    In memory array elements are stored sequentially. A reference to 
+    an array is a pointer to the first element. To terminate reading an array, we must either know the size of said 
+    array or have some sentinel value (e.g., `null' or `0') to indicate the end of the array.\\
+    
+    \noindent
+    E.g., An array of 3 integers (4 bytes each) occupying [0xF00-0xF0C]: $[1,2,3,\texttt{null}]$.
+\end{Def}
+\newpage 
+
+\noindent
+Objects behave very similarly to arrays, but with a few key differences:
+\begin{Def}[Objects in Memory]
+
+    An \textbf{Object} (or \textbf{struct}), is a collection of key-value pairs, 
+    where each key is called a \textbf{field} or \textbf{attribute} and each value can be any data type (e.g., number, string, or address).
+
+    Attributes are stored in array like fashion, where each element is a fixed-offset from the head (start) of the object.
+    The object itself is a pointer to the first element. Accessing attributes works differently in compiled (e.g., C) vs. interpreted (e.g., Python) languages:
+    \begin{itemize}
+        \item \textbf{Compiled Languages:} There is no lookup, as the compiler has \emph{hardcoded} the offsets of each attribute interaction (e.g., `object.attribute' is translated to a direct memory access).
+        \item \textbf{Interpreted Languages:} The interpreter looks up a hash table lookup for the attribute name.
+    \end{itemize}
+
+    \noindent
+    Depending on the use case, objects may be stored in the heap or stack:
+    \begin{itemize}
+        \item \textbf{Static Objects:} An objects whose size is known at compile time can be allocated on the stack. I.e., no changes 
+        to the object are made after creation (e.g., Math and Time objects, which purely exist to compute).
+        \item \textbf{Dynamic Objects:} Often just called \textbf{objects}, are allocated on the heap, allowing for dynamic resizing and modification (e.g.,
+        a student object with attributes like `name', `age', and `grades' that can change over time).
+    \end{itemize}
+
+\end{Def}
+
+\noindent 
+We define the following for completeness sake:
+\begin{Def}[Classes \& Interfaces]
+
+    Object-oriented programming is a paradigm where objects are the main building blocks of the program.
+    A \textbf{class} is a blueprint for defining how an object will behave once \textbf{instantiated} (created). In this paradigm,
+    functions are called \textbf{methods}, as they are defined and used within the class (i.e., globally does not exist in independence).\\
+
+    \noindent
+    Some languages (e.g., Java, C++) support \textbf{interfaces} (or protocols), which specify a set of methods that implementing classes must provide. Although the terminology varies 
+    (abstract classes, traits, protocols, etc.), they all ultimately describe capabilities an object must fulfill.
+\end{Def}
+
+
+\begin{Tip}
+    Often when trying to print an object in Java we see \texttt{ClassName@HEX}, 
+    where \texttt{HEX} is the object's identity hash code instead of the memory address; Memory access poses security risks to memory
+    manipulation.
+\end{Tip}
+
+\newpage 
+
+\noindent
+One last definition:
+\begin{Def}[Strings \& Characters in Memory]
+
+    \noindent
+    A \textbf{character} is represented by a numeric code unit:
+    \begin{itemize}
+      \item In C, a single \texttt{char} (1 byte) typically holds an ASCII code (0--127).
+      \item In Java, \texttt{char} is a 16-bit UTF-16 code unit (U+0000..U+FFFF). ASCII values (0--127) map directly to the same Unicode code points, so:
+      \begin{verbatim}
+        char c = `A';
+        System.out.println((int)c);  // prints 65, since `A' is U+0041
+      \end{verbatim}
+      
+      \vspace{-1.5em}
+      \noindent
+      Characters beyond U+FFFF use two \texttt{char} values (a surrogate pair). This allows us to do things like checking for 
+      valid characters:
+      \begin{verbatim}
+        if ((c >= `a' && c <= `z') || (c >= `A' && c <= `Z')) {
+            // c is in `a'..`z' or `A'..`Z'
+        }
+    \end{verbatim}
+
+    \vspace{-1.5em}
+    \noindent
+    We can also perform arithmetic on \texttt{char}:
+    \begin{verbatim}
+    char c = 'A';        // U+0041 (65)
+    char next = (char)(c + 1);  // 'B' (66)
+    \end{verbatim}
+    \end{itemize}
+    
+    \vspace{-1.5em}
+    \noindent
+    \rule{\textwidth}{0.4pt}\\ 
+
+    \noindent
+    \underline{Typically, a \textbf{string} is stored as a contiguous array of \textbf{characters}.} In low-level languages (e.g.\ C),
+    that array ends with a null terminator (\verb|\0|) and literal strings reside in the data segment. 
+    In higher-level languages (e.g.\ Java, Python), strings are full objects with methods. For e.g.,\\
+
+    \noindent
+    \textbf{C:}  
+    \begin{itemize}
+      \item String literals (e.g.\ \texttt{"Hello"}) are placed in the (often read-only) data segment.
+      \item Runtime-constructed strings (via \texttt{malloc}, \texttt{strcpy}, etc.) live on the heap.
+    \end{itemize}
+
+    \noindent
+    \textbf{Java:}  
+    \begin{itemize}
+      \item Compile-time literals are \textbf{interned} (stored as a single shared copy) into the \textbf{String Constant Pool} section (specially reserved on the heap).  
+      \item Any other \texttt{String} (e.g.\ via \texttt{new String(...)}, concatenation, or user input) also resides on the heap but outside the pool.  
+      \item Because Java strings are immutable, interning lets multiple references share the same character data.
+    \end{itemize}
+
+    
+\end{Def}
+
+\newpage
+
+\noindent
+With slight alterations to our code in Figure (\ref{fig:call_stack_after}), we illustrate heaps and arrays:
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/stacks_heaps/heap_array.png}
+    \caption{Here \texttt{birth\_time} and \texttt{name} are global variables. Following the C convention, \texttt{birth\_time} is placed in the 
+    uninitialized data segment, while \texttt{name} is placed in the initialized data segment. Since \texttt{name} is a string, it holds a 
+    reference to the first character in the string, which is stored contiguously in the initialized data segment ending with a null terminator (`\texttt{\textbackslash 0}').
+    During execution, \texttt{Date.Now()} a method call from a \texttt{Date} object is called; This method returns a new object, which is placed on the heap with 
+    its attributes (\texttt{month}, \texttt{day}, \texttt{year}) stored contiguously in memory. \textbf{Note:} Methods such as \texttt{Date.Diff()} are code (not data), 
+    which do not live in the heap or stack.}
+    \label{fig:heap_array}
+\end{figure}
+
+\noindent
+A small note regarding the example above:
+\begin{Def}[Factory Method]
+
+    A \textbf{factory method} is a function that creates and returns an object, often initializing it with default values or parameters.
+    In Figure (\ref{fig:heap_array}), the method \texttt{Date.Now()} is a factory method that creates a new \texttt{Date} object with the current date and time.
+\end{Def}
+
+\noindent
+    
