@@ -10,26 +10,18 @@ Let's talk about our first data structure, the stack:
 
     A \textbf{stack data structure} is a collection of elements that follows a \textbf{Last In, First Out} (LIFO) principle. I.e., in a 
     stack of plates, the last added plate is the first one to be removed, not the middle or bottom/first plate.
-    Each \textit{plate} in the stack is called a \textbf{stack frame}.
-\end{Def}
+    Each \textit{plate} in the stack is called a \textbf{stack frame}.\\
 
-
-\noindent
-Now let's look at how our programs utilize the stack:
-\begin{Def}[Call Stack]
-
+    \noindent
     A \textbf{call stack} is a stack which keeps track of function calls in a program as well as any local variables within such functions.
     
     \underline{This is why we say a variable is in \textbf{scope}}, as when a function is taken off the stack, or a new stack frame 
     is placed on top, the variables in the previous or discarded stack frame are \textbf{no longer accessible}.
 \end{Def}
 
-\newpage 
+\vspace{-1.5em}
 
-\noindent
-Let's illustrate this with the following diagram:
-
-\begin{figure}[h]
+\begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8\textwidth]{./Sections/stacks_heaps/call_stack.png}
     \caption{Here is a simplified look at how memory manages the stack. On the left is our program written 
@@ -45,8 +37,7 @@ Let's illustrate this with the following diagram:
     \label{fig:call_stack}
 \end{figure}
 
-\noindent
-\rule{\textwidth}{0.4pt}\\
+\newpage 
 
 \noindent
 \underline{\textbf{Please Note:} The above figure is a simplified version}; This presentation derivatives from what actually happens
@@ -59,17 +50,6 @@ Of course, there is always room for deviation if a developer wishes to implement
 might typically expect in a stack implementation.
 \end{Tip}
 
-\newpage 
-\begin{Def}[Instructions]
-
-    The CPU register (IP/EIP) is the \textbf{instruction pointer}, pointing to the next operation to execute. All commands are baked 
-    into the CPU; This includes the \textbf{ALU (Arithmetic Logic Unit)}, \textbf{Memory Unit (load/store)}, and \textbf{Control Unit (branching/looping)}.
-    All instructions are given a numeric ID called an \textbf{opcode} (operation code). 
-    
-    The CPU fetches the instruction from memory, decodes it, and executes it. This process is repeated until the program terminates.
-    Languages like assembly interface this with human-readable mnemonics, such as `MOV', `ADD', `SUB', etc (as seen in Example \ref{ex:assembly_code}).
-    
-\end{Def}
 \begin{Def}[Stack Frame Anatomy]
 
 Under the x86-32 calling convention Two registers keep track our place in the stack:

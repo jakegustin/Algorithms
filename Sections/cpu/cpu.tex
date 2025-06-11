@@ -170,11 +170,6 @@ EFLAGS & 32-bit & Flags / status register (ZF, CF, OF…)   \\
     \end{itemize}
 \end{Def}
 
-\begin{Tip} USB stands for \textbf{Universal Serial Bus}, which is a serial bus standard for connecting devices to a computer.
-    PCI stands for \textbf{Peripheral Component Interconnect}, which is a parallel bus standard for connecting peripherals to a computer.
-\end{Tip}
-
-
 \begin{Def}[Device Drivers]
 
   The kernel exposes generic interfaces to various sub-systems (e.g., file system) that user processes can use to perform tasks; \textbf{Device drivers} implement such interfaces,
@@ -182,15 +177,13 @@ EFLAGS & 32-bit & Flags / status register (ZF, CF, OF…)   \\
 \end{Def}
 
 \noindent
-This text does not concern assembly code or low-level programming, so \underline{\textbf{do not}} get caught up on the specifics of this next example:
+This text does not concern assembly code, so \underline{\textbf{do not}} get caught in the specifics of this Example: 
 \begin{Example}[Assembly Code]
 
     \label{ex:assembly_code}
-    Here is an assembly code example that demonstrates both initialized and uninitialized data. 
-    Initialized data is placed in the `.data` section, while uninitialized data is placed in the `.bss` section:
+    An assembly example demonstrating initialized (.data) and uninitialized (.bss) data sections:
 
     \begin{lstlisting}[language={[x86masm]Assembler}, numbers=none]
-    .intel_syntax noprefix      ; Specification 
     section .data               ; Initialized data section
         num1    dd  7           ; num1 is initialized to 7
         num2    dd  3           ; num2 is initialized to 3
@@ -208,14 +201,9 @@ This text does not concern assembly code or low-level programming, so \underline
         mov ebx, [num2]         ; Load num2 into ebx
         add eax, ebx            ; Add num2 to eax (eax = num1 + num2)
         mov [result], eax       ; Store the sum in result
-    
-    # Exit
-    	mov rax, 60             ; syscall number for exit
-    	mov rdi, 0              ; exit code 0     
-    	syscall                 ; execute system call
+    ; Exit syscall removed for simplicity
     \end{lstlisting}
 
     \noindent
-    In this example, `num1` and `num2` are initialized before execution, while `temp` and `result` are uninitialized and only receive values during program execution.
-    syscalls act on the value of register rax; Hence, The syscall opcode and its destination index are loaded before calling.
+    In this example, `num1` and `num2` are initialized before execution, while `temp' and `result' are uninitialized and only receive values during program execution.
 \end{Example}
