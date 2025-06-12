@@ -211,7 +211,7 @@ This text does not concern assembly code, so \underline{\textbf{do not}} get cau
 \newpage 
 \section{Code Security}
 
-At a high-level, vulnerabilities exploited by hackers stem from flaws that the original programmer forgot to consider (i.e., bugs).
+At a \emph{very} high-level, vulnerabilities exploited by hackers stem from flaws that the programmer forgot to consider (i.e., bugs).
 To learn more on cybersecurity, consider our other text \underline{\href{https://github.com/Concise-Works/Cyber-Security/blob/main/main.pdf}{here}}.
 
 \begin{Def}[Proper Encapsulation]
@@ -250,9 +250,11 @@ To learn more on cybersecurity, consider our other text \underline{\href{https:/
 
     \label{def:accessing_main_memory}
 
-    Programs accesses main memory (RAM) to read and write data; It's critical that 
-    such references to RAM are abstracted to avoid malicious or accidental access of data.
+    Programs accesses main memory (RAM) to read and write data; \textbf{It's critical} that 
+    such \underline{references to RAM are abstracted} to avoid malicious or accidental access of data.
 
     For example, in Java when users print objects, instead of 
-    printing the object's memory address, it prints the \texttt{toString()} method, which by default prints the class name and hash code of the object.
+    printing the object's memory address, it prints the \texttt{toString()} method, which \textbf{by default} prints the class name and hash code of the object.
 \end{Def}
+\noindent
+In conclusion, there are significant risks when dealing with memory management.
