@@ -205,5 +205,54 @@ This text does not concern assembly code, so \underline{\textbf{do not}} get cau
     \end{lstlisting}
 
     \noindent
-    In this example, `num1` and `num2` are initialized before execution, while `temp' and `result' are uninitialized and only receive values during program execution.
+    In this example, `num1' and `num2' are initialized before execution, while `temp' and `result' are uninitialized and only receive values during program execution.
 \end{Example}
+
+\newpage 
+\section{Code Security}
+
+At a high-level, vulnerabilities exploited by hackers stem from flaws that the original programmer forgot to consider (i.e., bugs).
+To learn more on cybersecurity, consider our other text \underline{\href{https://github.com/Concise-Works/Cyber-Security/blob/main/main.pdf}{here}}.
+
+\begin{Def}[Proper Encapsulation]
+
+    \label{def:proper_encapsulation}
+
+    \textbf{Proper encapsulation} is the practice of hiding implementation details and exposing only necessary interfaces to prevent unauthorized access or modification.
+\end{Def}
+\begin{Example}[Student Class]
+
+    \label{ex:student_class}
+
+    Consider a simple `Student' class in an object-oriented programming language:
+
+    \begin{lstlisting}[language=Java, numbers=none]
+    public class Student {
+        private String name; // Private field, not accessible outside the class
+        private int age;     // Private field, not accessible outside the class
+
+        public Student(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() { // Public method to access name
+            return name;
+        }
+        // Other methods...
+    }
+    \end{lstlisting}
+    Upon creating a new student instance \texttt{new Student("Alice", 20)}, the name and age are private, preventing direct access via \textbf{dot notation} (e.g., \texttt{student.name}).
+    The only way to access the name is through the public method \texttt{getName()}. Here we do not have a method for accessing age.
+\end{Example}
+
+\begin{Def}[Risks of Accessing Main Memory]
+
+    \label{def:accessing_main_memory}
+
+    Programs accesses main memory (RAM) to read and write data; It's critical that 
+    such references to RAM are abstracted to avoid malicious or accidental access of data.
+
+    For example, in Java when users print objects, instead of 
+    printing the object's memory address, it prints the \texttt{toString()} method, which by default prints the class name and hash code of the object.
+\end{Def}
