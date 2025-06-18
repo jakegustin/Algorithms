@@ -106,9 +106,6 @@ So why even use quadratic probing?
 
 \newpage 
 
-\noindent
-Another method is to have a second hash function as a backup:
-
 \begin{Def}[Double Hashing]
 
   \label{def:double_hashing}
@@ -120,7 +117,7 @@ Another method is to have a second hash function as a backup:
   Where $k$ is the collision count, and $n$ is the hash table size.
   $H_2(x)$ is chosen such that:
   \begin{itemize}
-    \item The output hash satisfies $0 < H_2(x) < n$.
+    \item The hash satisfies $0 < H_2(x) < n$ (i.e., The result is likely taken by modulo $n$).
     \item It is pair-wise independent from $H_1(x)$ (i.e., not a transformation of/related to $H_1(x)$).
     \item Computationally inexpensive to evaluate.
     \item All outputs of $H_2(x)$ are relatively prime to $n$ (does not share any common factors other than $1$), ensuring all entries are probed.
@@ -134,20 +131,71 @@ We elaborate on the need for relatively prime numbers and why Figure (\ref{fig:q
     \label{thm:probes_period}
     A \textbf{period} defines the number of unique elements before the sequence begins to repeat. This cycle length is defined as the ratio:
     \[ \dfrac{n}{\gcd(n, H_2(x))} \]
-    Where $n$ is the hash table size, and $H_2(x)$ is each output of the second hash function. We ideally want $\gcd(n, H_2(x))=1$ 
-    for all $x$ to achieve a full period of $n$. Hence, if $n$ is a power of 2,
-    $H_2(x)$ may uniformly provide odd numbers; Otherwise, all of $H_2(x)$ must be relatively prime to $n$ for a full period.
+    Where $n$ is the hash table size, and $H_2(x)$ is each hash output on an arbitrary $x$ input. We ideally want $\gcd(n, H_2(x))=1$ 
+    for each $x$ to achieve a full period of $n$. Hence, if $n$ is a power of 2,
+    $H_2(x)$ may uniformly provide odd numbers; Otherwise, for that particular key, it will only partially probe the table.
 \end{theo}
 
 \noindent
-Without jumping too far into number theory we proceed with a proof:
+Without too much number theory, we attempt to intuitively understand the theorem:
 \begin{Proof}[Length of Probing Period]
 
     \label{proof:probes_period}
-    In terms of modulo, $n$ defines a cycle of $n$ elements, $0, 1, 2, \ldots, n-1$; Each element is called a \textbf{residue class}.
-    E.g., 8 has residue classes $0, 1,\dots, 7$ (i.e., all possible remainders). Given a set of integers $\mathcal{H}$ (i.e., some function),
+    In terms of modulo, $n$ defines a cycle of $n$ elements, $0, 1, \ldots, n-1$; Each element is called a \textbf{residue class} (i.e., all possible remainders).
+    E.g., 8 has residue classes 0--7 . Given a finite set of integers $\mathcal{H}$ (i.e., our hash function),
     all $\mathcal{H}_i$ need be co-prime to $n$ to exhaust all residue classes. We exclude all $\mathcal{H}_i \geq n$, as $n$'s cycle is definitively
-    over (also by Definition \ref{def:double_hashing}). E.g., $1\ \%\ 8 = 1$, $9\ \%\ 8 = 1$. By contradiction, if there exists $\mathcal{H}_i$ such that $\gcd(n, \mathcal{H}_i) = d > 1$
-    and $\mathcal{H}_i < n$, then $\mathcal{H}_i$ is congruent to 0 modulo $d$. Hence, $\mathcal{H}_i$ prematurely ends the cycle mapping to 0, meaning not all residue classes are visited.
+    over (also by Definition \ref{def:double_hashing}). E.g., $1\ \%\ 8 = 1$, $9\ \%\ 8 = 1$. We pick a fixed-hash $h:=\mathcal{H}_i$ such that $\gcd(n, h) = d > 1$.
+    Recall that we calculate $(k \cdot h)\ \%\ n$ for each $k$ collision. Hence if $h$ and $n$ factors intersect at $d$,
+    the $n/d_{th}$ collision will produce a multiple of $n$, terminating prematurely at $0$.
+
 \end{Proof}
+
+\newpage 
+\noindent
+Let's try an example to see how this works:
+
+\begin{Example}[Double Hashing without co-primes]
+
+    Consider a $H_1(x)$ function which forces the use of the proceeding $H_2(x)$ function:
+    \[
+        H_1(x) := x^0 \quad H_2(x) := x^2\ \%\ (n-1)
+    \]
+    \noindent
+    Giving us the full function:
+    \[
+    h(x,k) := \bigl(x^0 + k \cdot \left(x^2\ \%\ (n-1)\right)\bigr)\ \%\ n
+    \]
+    Observe when $n=12$, key $x=3$, while increasing $k$ collisions:
+
+    \begin{center}
+    
+ 
+    \setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{r|*{9}{c}}
+    \multicolumn{1}{c|}{$
+      k \cdot (3^2\ \%\ 11)\ \%\ 12
+    $}
+      & $h(x,k)$ \\
+    \hline
+    $0 \cdot 9\ \%\ 12$  & 0 \\
+    $1 \cdot 9\ \%\ 12$  & 9   \\
+    $2 \cdot 9\ \%\ 12$  & 6   \\
+    $3 \cdot 9\ \%\ 12$  & 3   \\
+    $4 \cdot 9\ \%\ 12$  & 0   \\
+    $5 \cdot 9\ \%\ 12$  & 9   \\
+    $6 \cdot 9\ \%\ 12$  & 6   \\
+    $7 \cdot 9\ \%\ 12$  & 3   \\
+    $8 \cdot 9\ \%\ 12$  & 0   \\
+    $9 \cdot 9\ \%\ 12$  & 9   \\
+    $10 \cdot 9\ \%\ 12$ & 6   \\
+\end{tabular}
+     \end{center}
+\noindent
+Since $\gcd(12, 9) = 3$, the probing period is $12/3 = 4$, only touching indices 
+$\{0,3,9,6\}$.
+
+\end{Example}
+
+
 
