@@ -78,12 +78,10 @@ Our first method:
 
 \begin{Def}[Quadratic Probing]
 
-    Upon finding a collision at index $i$, the next index to check is $(i + k^2)\ \%\ n$, 
-    where $k$ is the number of collisions encountered thus far, and $n$ the size of the hash table.
-    This is method is called \textbf{quadratic probing}.\\
-
-    \noindent
-    \textbf{Note:} It is fully possible to have a free index at $i + 1$, but the algorithm will skip it due to its even probing style.
+    Given a universal hashing function  $H(x)$, a \textbf{quadratic probing} resolves collisions by defining,
+    \[h(x,k):= (H(x) + k^2)\ \%\ n\] 
+    Where $k$ defines the number of collisions, and $n$ hash table size. The algorithm may\\
+    \underline{\textbf{never discover}} particular cells due to its even probing style.
     We \textbf{terminate execution} once $n$ indices have been checked, avoiding an infinite loop.
 \end{Def}
 
@@ -105,4 +103,51 @@ So why even use quadratic probing?
     that if the table were larger or $0,4,5$ were free, the algorithm would have had better success.}
     \label{fig:quadratic_probing}
 \end{figure}
+
+\newpage 
+
+\noindent
+Another method is to have a second hash function as a backup:
+
+\begin{Def}[Double Hashing]
+
+  \label{def:double_hashing}
+  \textbf{Double hashing} resolves collisions by using two hash functions; Given, $H_1(x)$ and $H_2(x)$ uniform hashing functions,
+  we define the probe sequence $h(x,k)$ as:
+  \[
+    h(x,k) := \bigl(H_1(x) + k \cdot H_2(x)\bigr)\ \%\ n,
+  \]
+  Where $k$ is the collision count, and $n$ is the hash table size.
+  $H_2(x)$ is chosen such that:
+  \begin{itemize}
+    \item The output hash satisfies $0 < H_2(x) < n$.
+    \item It is pair-wise independent from $H_1(x)$ (i.e., not a transformation of/related to $H_1(x)$).
+    \item Computationally inexpensive to evaluate.
+    \item All outputs of $H_2(x)$ are relatively prime to $n$ (does not share any common factors other than $1$), ensuring all entries are probed.
+  \end{itemize}
+\end{Def}
+
+\noindent 
+We elaborate on the need for relatively prime numbers and why Figure (\ref{fig:quadratic_probing}) fails:
+\begin{theo}[Probing Period]
+ 
+    \label{thm:probes_period}
+    A \textbf{period} defines the number of unique elements before the sequence begins to repeat. This cycle length is defined as the ratio:
+    \[ \dfrac{n}{\gcd(n, H_2(x))} \]
+    Where $n$ is the hash table size, and $H_2(x)$ is each output of the second hash function. We ideally want $\gcd(n, H_2(x))=1$ 
+    for all $x$ to achieve a full period of $n$. Hence, if $n$ is a power of 2,
+    $H_2(x)$ may uniformly provide odd numbers; Otherwise, all of $H_2(x)$ must be relatively prime to $n$ for a full period.
+\end{theo}
+
+\noindent
+Without jumping too far into number theory we proceed with a proof:
+\begin{Proof}[Length of Probing Period]
+
+    \label{proof:probes_period}
+    In terms of modulo, $n$ defines a cycle of $n$ elements, $0, 1, 2, \ldots, n-1$; Each element is called a \textbf{residue class}.
+    E.g., 8 has residue classes $0, 1,\dots, 7$ (i.e., all possible remainders). Given a set of integers $\mathcal{H}$ (i.e., some function),
+    all $\mathcal{H}_i$ need be co-prime to $n$ to exhaust all residue classes. We exclude all $\mathcal{H}_i \geq n$, as $n$'s cycle is definitively
+    over (also by Definition \ref{def:double_hashing}). E.g., $1\ \%\ 8 = 1$, $9\ \%\ 8 = 1$. By contradiction, if there exists $\mathcal{H}_i$ such that $\gcd(n, \mathcal{H}_i) = d > 1$
+    and $\mathcal{H}_i < n$, then $\mathcal{H}_i$ is congruent to 0 modulo $d$. Hence, $\mathcal{H}_i$ prematurely ends the cycle mapping to 0, meaning not all residue classes are visited.
+\end{Proof}
 

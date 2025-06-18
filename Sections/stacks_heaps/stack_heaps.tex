@@ -162,26 +162,52 @@ Unlike the stack, this allows values to be accessed from anywhere in the program
 \end{Def}
 
 \noindent
-To continue we must understand what a hash table is, and how arrays and objects work in memory:
+We discuss hash tables more in-depth in the following section, for now we provide a high-level idea:
 \begin{Def}[Hash Table]
 
     \label{def:hash_table}
 
-    A \textbf{hash table} is a data structure that maps keys to values, allowing for efficient retrieval of values based on their keys.
-    It uses a \textbf{hash function}, which takes a key (e.g. a number or string) as input and produces a fixed-size (i.e., output modulo the table size) hash value for the index.
+    A \textbf{hash table} uses a \textbf{hash function}, taking a \textbf{key} (e.g., number or string) and producing a fixed-sized \textbf{hash} value (index),
+    creating a table of mappings (key$\to$hash). At such indices lies data associated with the key, enabling fast data retrievals.
 
+    A \textbf{universal hash function} is a hash function that uniformly distributes hashes across the hash table.
+
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    
+    \noindent
     \textbf{Note:} The input in many context (typically cryptographic), may be called `data' or `message'; The output: hash, checksum, fingerprint, or digest.
 \end{Def}
 \begin{Def}[Arrays in Memory]
 
-    In memory array elements are stored sequentially. A reference to 
+    Arrays list elements sequentially in memory. A reference to 
     an array is a pointer to the first element. To terminate reading an array, we must either know the size of said 
-    array or have some sentinel value (e.g., `null' or `0') to indicate the end of the array.\\
-    
-    \noindent
-    E.g., An array of 3 integers (4 bytes each) occupying [0xF00-0xF0C]: $[1,2,3,\texttt{null}]$.
+    array or have some \textbf{sentinel value} (e.g., `null' or `0') to indicate the end of the array.
 \end{Def}
-\newpage 
+\newpage
+\noindent
+Consider the following examples:
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/stacks_heaps/hash_table.png}
+    \caption{On the left (1) demonstrates a typical diagram one might find when learning about hash tables. Here $a$ through $x$ are the keys, which house some type of 
+    data. On the right (2) shows a slightly more detailed version, which emphasizes that keys $a$--$x$ are hashed to indices $0$--$n$ in the hash table. The data could be any other 
+    value (e.g., number, string, or object). Moreover, hash tables under the hood are arrays, with each index pointing to whatever data is associated with the key.}
+    \label{fig:call_stack_after}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/stacks_heaps/arrays.png}
+    \caption{Here there are three sections breaking down how arrays look: In code, typical diagram depictions (Visually), and in memory. The 
+    code depiction illustrates a toy language creating an array of numbers ($[1,2,3]$). The visual depiction shows how indices relate to values. The 
+    memory depiction shows how the array is laid out in contiguous memory locations, where \texttt{0x0} is the sentinel value (a bit-pattern of all zeros). 
+    In code, \texttt{my\_array} holds the address \texttt{0xA00}.}
+    \label{fig:array_memory}
+\end{figure}
+
+\newpage
 
 \noindent
 Objects behave very similarly to arrays, but with a few key differences:
@@ -206,6 +232,8 @@ Objects behave very similarly to arrays, but with a few key differences:
         a student object with attributes like `name', `age', and `grades' that can change over time).
     \end{itemize}
 
+    \noindent
+    Languages like Java push this even further by allowing both static (shared) and dynamic (personal) fields within a class.
 \end{Def}
 
 \noindent 
@@ -221,13 +249,6 @@ We define the following for completeness sake:
     (abstract classes, traits, protocols, etc.), they all ultimately describe capabilities an object must fulfill.
 \end{Def}
 
-
-\begin{Tip}
-    Often when trying to print an object in Java we see \texttt{ClassName@HEX}, 
-    where \texttt{HEX} is the object's identity hash code instead of the memory address; Memory access poses security risks to memory
-    manipulation.
-\end{Tip}
-
 \newpage 
 
 \noindent
@@ -237,33 +258,31 @@ Strings are not what they seem:
     \noindent
     A \textbf{character} is represented by a numeric code unit:
     \begin{itemize}
-      \item In C, a single \texttt{char} (1 byte) typically holds an ASCII code (0--127).
-      \item In Java, \texttt{char} is a 16-bit UTF-16 code unit (U+0000..U+FFFF). ASCII values (0--127) map directly to the same Unicode code points, so:
-      \begin{verbatim}
-        char c = `A';
-        System.out.println((int)c);  // prints 65, since `A' is U+0041
-      \end{verbatim}
+      \item In C, a single \texttt{char} (1 byte) typically holds an ASCII code (0--127). Characters beyond U+FFFF use two \texttt{char} values, a \textbf{surrogate pair}.
+      \item In Java, \texttt{char} is a 16-bit UTF-16 code unit (U+0000..U+FFFF). ASCII values (0--127) map directly to the same Unicode code points. We can take advantage of the encoding:
       
-      \vspace{-1.5em}
+    \begin{lstlisting}[language=Java]
+    char c = 'A';
+    System.out.println((int)c);  // prints 65, since 'A' is U+0041
+    \end{lstlisting}
+      
       \noindent
-      Characters beyond U+FFFF use two \texttt{char} values (a surrogate pair). This allows us to do things like checking for 
+      This allows us to do things like checking for 
       valid characters:
-      \begin{verbatim}
-        if ((c >= `a' && c <= `z') || (c >= `A' && c <= `Z')) {
-            // c is in `a'..`z' or `A'..`Z'
-        }
-    \end{verbatim}
+    \begin{lstlisting}[language=Java]
+    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+        // c is in 'a'..'z' or 'A'..'Z'
+    }
+    \end{lstlisting}
 
-    \vspace{-1.5em}
     \noindent
     We can also perform arithmetic on \texttt{char}:
-    \begin{verbatim}
-    char c = 'A';        // U+0041 (65)
+    \begin{lstlisting}[language=Java]
+    char c = 'A';               // U+0041 (65)
     char next = (char)(c + 1);  // 'B' (66)
-    \end{verbatim}
+    \end{lstlisting}
     \end{itemize}
     
-    \vspace{-1.5em}
     \noindent
     \rule{\textwidth}{0.4pt}\\ 
 
