@@ -125,7 +125,7 @@ So why even use quadratic probing?
 \end{Def}
 
 \noindent 
-We elaborate on the need for relatively prime numbers and why Figure (\ref{fig:quadratic_probing}) fails:
+We elaborate on the need for relatively prime numbers:
 \begin{theo}[Probing Period]
  
     \label{thm:probes_period}
@@ -146,7 +146,7 @@ Without too much number theory, we attempt to intuitively understand the theorem
     all $\mathcal{H}_i$ need be co-prime to $n$ to exhaust all residue classes. We exclude all $\mathcal{H}_i \geq n$, as $n$'s cycle is definitively
     over (also by Definition \ref{def:double_hashing}). E.g., $1\ \%\ 8 = 1$, $9\ \%\ 8 = 1$. We pick a fixed-hash $h:=\mathcal{H}_i$ such that $\gcd(n, h) = d > 1$.
     Recall that we calculate $(k \cdot h)\ \%\ n$ for each $k$ collision. Hence if $h$ and $n$ factors intersect at $d$,
-    the $n/d_{th}$ collision will produce a multiple of $n$, terminating prematurely at $0$.
+    then the $k = n/d_{th}$ collision will produce a multiple of $n$, terminating prematurely at $0$.
 
 \end{Proof}
 
@@ -156,7 +156,7 @@ Let's try an example to see how this works:
 
 \begin{Example}[Double Hashing without co-primes]
 
-    Consider a $H_1(x)$ function which forces the use of the proceeding $H_2(x)$ function:
+    Consider a $H_1(x)$ function which always causes collisions, forcing the use the $H_2(x)$ function:
     \[
         H_1(x) := x^0 \quad H_2(x) := x^2\ \%\ (n-1)
     \]
@@ -165,7 +165,7 @@ Let's try an example to see how this works:
     \[
     h(x,k) := \bigl(x^0 + k \cdot \left(x^2\ \%\ (n-1)\right)\bigr)\ \%\ n
     \]
-    Observe when $n=12$, key $x=3$, while increasing $k$ collisions:
+    Observe when $n=12$, with key $x=3$, while increasing $k$ collisions:
 
     \begin{center}
     
