@@ -236,9 +236,7 @@ Objects behave very similarly to arrays, but with a few key differences:
     Languages like Java push this even further by allowing both static (shared) and dynamic (personal) fields within a class.
 \end{Def}
 
-\noindent 
-We define the following for completeness sake:
-\begin{Def}[Classes \& Interfaces]
+\begin{Def}[Object-oriented -- Classes, Interfaces, \& Polymorphism]
 
     Object-oriented programming is a paradigm where objects are the main building blocks of the program.
     A \textbf{class} is a blueprint for defining how an object will behave once \textbf{instantiated} (created). In this paradigm,
@@ -246,8 +244,69 @@ We define the following for completeness sake:
 
     \noindent
     Some languages (e.g., Java, C++) support \textbf{interfaces} (or protocols), which specify a set of methods that implementing classes must provide. Although the terminology varies 
-    (abstract classes, traits, protocols, etc.), they all ultimately describe capabilities an object must fulfill.
+    (abstract classes, traits, protocols, etc.), they all ultimately describe capabilities an object must fulfill.\\
+
+    \noindent
+    \textbf{Inheritance} is the main motivation behind classes and interfaces, enabling a \textbf{child} (sub) class to reuse or extend the 
+    functionality of a \textbf{parent} (super) class. To further reduce redundancy, \textbf{Polymorphism} allows objects 
+    to \textbf{override} (redefine) methods of the same signature (variable name) to accept different types of data or behave differently based on their context.
 \end{Def}
+
+\newpage 
+
+\begin{Example}[Java -- Classes, Interfaces, Abstracts, Inheritance, \& Polymorphism]
+
+    \label{ex:polymorphism_java}
+
+\vspace{-.5em}
+Consider the following Java code:
+\begin{lstlisting}[language=Java, numbers=none]
+public interface Animal { // Rough blueprint
+    void eat(); void sleep(); void sound();
+}
+
+public abstract class Cat implements Animal { // Partial blueprint
+    @Override
+    public void eat() {
+        System.out.println("Cat eats fish");
+    }
+
+    @Override
+    public void sound() {
+        System.out.println("Meow");
+    }
+
+    // Abstract method to demonstrate subclass-specific behavior
+    public abstract void run();
+}
+
+public class Cheetah extends Cat { // Inheritance from parent Cat class
+    @Override
+    public void run() { 
+        System.out.println("Cheetah runs at 120 km/h");
+    }
+
+    @Override
+    public void sound() {
+        System.out.println("Chirp");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Polymorphism: reference is Animal, instance is Cheetah
+        Animal anim = new Cheetah();
+        anim.eat();       // calls Cat.eat()
+        anim.sound();     // calls Cheetah.sound()
+    }
+}
+\end{lstlisting}
+Java polymorphism allows parent types to host children instances as seen with\\ \snippet{Animal anim = new Cheetah();}, 
+but \snippet{Cheetah chet = new Cheetah();} also works. This allows us to create arrays of different animal types:\\
+E.g.,
+ \snippet{Animal[] zoo = \{new Cheetah(), new Lion(), new Elephant()\};},\\
+assuming they all implement the \texttt{Animal} interface.
+\end{Example}
 
 \newpage 
 

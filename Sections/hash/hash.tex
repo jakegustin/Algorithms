@@ -197,5 +197,49 @@ $\{0,3,9,6\}$.
 
 \end{Example}
 
+\subsection{Searching: Insertion \& Deletion}
+Things become trickier with a populated hash table with previous 
+deletions:
 
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/hash/delete.png}
+    \caption{Demonstrates complications when inserting into a table blindly. 3.) niaively inserts ``bear'' at index
+    1 despite it already existing in the table. This is caused by a previous collision (1) and removal of the collider (2).}
+    \label{fig:delete}
+\end{figure}
 
+\newpage 
+
+\begin{theo}[Safe Insertion]
+
+    \label{thm:safe_insertion}
+    
+    To safely insert a key into a hash table, we create three distinctions for each cell:
+    \begin{itemize}
+        \item \textbf{Empty:} The index is empty, and a key can be inserted.
+        \item \textbf{Occupied:} The index is occupied (blocked) by another key.
+        \item \textbf{Deleted:} This index was previously occupied but free.
+    \end{itemize}
+
+    \noindent
+    We may proceed as normal for events Empty and Occupied, but Deleted requires special handling;
+    First, take note of the first \textbf{deleted index} then probe the table:
+    \begin{itemize}
+        \item \textbf{Empty:} If an empty index is found, insert at the first deleted index.
+        \item \textbf{Occupied/Deleted:} Continue probing.
+        \item \textbf{Duplicate} If the same key is found, insert any data, otherwise terminate.
+    \end{itemize}
+
+    \noindent
+    Insertion at the first deleted index is safe, as if the key already existed in the table,
+    it would have been inserted at any found empty index.
+\end{theo}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/hash/delete_2.png}
+    \caption{Revisiting Figure \ref{fig:delete} at (3) we continue to probe after finding a deleted index.
+    This leads us to find the already inserted key, ``bear'', at index 2.}
+    \label{fig:delete_2}
+\end{figure}
