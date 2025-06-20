@@ -243,3 +243,241 @@ deletions:
     This leads us to find the already inserted key, ``bear'', at index 2.}
     \label{fig:delete_2}
 \end{figure}
+
+\subsection{Separate Chaining \& Linked Lists}
+
+\noindent
+A problem we have with open addressing is that it requires a lot of array space; If we run out of space, we have to 
+resize the table, \underline{\textbf{which is costly}}:
+
+\begin{theo}[Resizing a Hash Table]
+
+    \label{thm:resize_hash_table}
+    Resizing a hash table requires rehashing all keys, which is $O(n)$, where $n$ is the number of elements in the table, 
+    excluding the computation cost of hashing each key again.
+\end{theo}
+
+\newpage
+
+\noindent
+This brings us to the motivation for our second method of collision resolution:
+
+\begin{Def}[Separate Chaining]
+
+    \label{def:separate_chaining}
+
+    \textbf{Separate chaining} is a collision resolution method where each index contains a \textbf{bucket}, which contains 
+    all keys that hash to such index. This saves contiguous memory space, as the array can stay a fixed size while holding object
+    references living in the heap.
+\end{Def}
+
+\vspace{-1em}
+\begin{figure}[ht!]
+
+    \centering
+    \includegraphics[width=\textwidth]{Sections/hash/separate_chaining.png}
+    \caption{The left an array which points to another array (the bucket). The right shows the insertion of 
+    ``cheetah'' into the table, indexing at 2, adding to the end of the bucket. Here it's unclear how the data for each element is stored (perhaps a nested array).
+    Additionally, the \underline{\textbf{same problem} of resizing} occurs, as if a bucket is another array, we still have to resize it
+    (there is no need to rehash the keys in buckets).}
+    \label{fig:separate_chaining}
+\end{figure}
+
+
+
+\begin{Def}[Resizing an Array]
+
+    \label{def:resizing_array}
+
+    Many languages provide a method for resizing an array; However, this is costly as perhaps the next contiguous memory cell 
+    for the array is not available in memory. Hence, a new memory region is found and all elements are copied to a new array 
+    of larger size, typically $O(n)$, where $n$ is the number of elements in the array.
+\end{Def}
+
+\begin{Tip}
+    In languages like Java or GO, resizing an array (ArrayList or Slice) is done by creating a new array of double the size and copying all elements over.
+\end{Tip}
+
+\newpage 
+
+\noindent
+We introduce a new data structure to solve this problem:
+\begin{Def}[Linked List]
+
+    A \textbf{linked list} is a data structure consisting of single objects called \textbf{nodes}. Nodes are \emph{linked} together
+    via a reference to the next node in the list. This means there are no indices, and the next node can live anywhere
+    in memory. The first element is called the \textbf{head}, and the last element is called the \textbf{tail}.
+    
+    Each node at the very least contains a \textbf{value} and a \textbf{next} pointer to the next node in the list.
+    Since a node is an object, an indefinite number of fields can be added to its class definition.
+\end{Def}
+
+\begin{Def}[Common Types of Linked Lists]
+
+  
+        $\bullet$ \textbf{Singly Linked List:} Each node contains a reference to the next node.\\
+        $\bullet$ \textbf{Doubly Linked List:} Each node contains a reference to both the next and previous nodes.\\
+        $\bullet$ \textbf{Circular Linked List:} The last node points back to the first node, creating a cycle.
+
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    \noindent
+    \textbf{Time Complexity:} Search is $O(n)$, as we may need to traverse the entire list.
+\end{Def}
+
+\begin{figure}[ht!]
+
+    \centering
+    \includegraphics[width=\textwidth]{Sections/hash/linked_list.png}
+    \caption{A visual representation of a singly, doubly, and circular linked lists.}
+    \label{fig:linked_list}
+\end{figure}
+
+\begin{theo}[Open Addressing vs. Separate Chaining]
+
+    \label{thm:open_addressing_vs_separate_chaining}
+    
+    If updates to the table are \underline{\textbf{rare}} (rehashing on resize), choose open addressing.
+    If updates are \underline{\textbf{frequent}}, consider separate chaining.
+
+    It's worth noting that, separate chaining with linked lists requires \textbf{\underline{more memory}} overhead for each node object.
+\end{theo}
+
+\newpage
+\noindent
+We revisit Figure \ref{fig:separate_chaining} with a linked list implementation:
+
+\vspace{-.5em}
+\begin{figure}[ht!]
+
+    \centering
+    \includegraphics[width=\textwidth]{Sections/hash/separate_chaining_linked_list.png}
+    \caption{Here we see an array with two buckets, each bucket is a linked list. Each node points to the next node in 
+    the list. In particular, each node lives in at an ambiguous memory location.}
+    \label{fig:separate_chaining_linked_list}
+\end{figure}
+
+\begin{Def}[Insertion \& Deletion in Linked Lists]
+
+    \label{def:insertion_deletion_linked_list}
+
+    Inserting or deleting relies on shifting pointers around. To make sure references aren't lost to
+    the linked list, we always point to a \textbf{dummy head} node, which holds no data and
+    always points to the first actual node.
+
+    Say we have two nodes, $A$ and $B$ sequentially in a singly linked list referenced by \texttt{my\_llist} (points to dummy head).
+    it has one dot operator, \texttt{my\_llist.next} (the next node in the list).
+    \begin{itemize}
+        \item \textbf{Inserting:} We attempt to add a new node $C$,
+         \begin{itemize}
+            \item \textbf{At the head:} Set \texttt{my\_llist.next = C} and \texttt{C.next = A}, $O(1)$.
+            \item \textbf{At the tail:} Traverse the list until via \texttt{my\_llist.next} until a null \texttt{.next}
+            is found, set the previous node's \texttt{.next} to $C$ and \texttt{C.next = null}, $O(n)$.
+            \item \textbf{In the middle:} Traverse the list until node $A$ is found,
+            set \texttt{C.next = A.next}, then \texttt{A.next = C.next}, $O(n)$.
+        \end{itemize}
+        \item \textbf{Deleting:} Now we have three sequential nodes, $A$, $B$, and $C$.
+        \begin{itemize}
+            \item \textbf{The head:} Set \texttt{my\_llist.next = A.next}, discards references to $A$, $O(1)$.
+            \item \textbf{The tail:} Traverse and set \texttt{B.next = null}, $O(n)$ (discards $C$).
+            \item \textbf{In the middle:} Traverse and set \texttt{A.next = B.next}, $O(n)$ (discards $B$).
+        \end{itemize}
+    \end{itemize}
+\end{Def}
+\noindent
+Visualizations on the next page.
+
+\newpage 
+
+\begin{Example}[Insertion \& Deletion in Linked Lists -- Corollary]
+
+    If we know the position of the node to be inserted or deleted, we can directly access it via a pointer. Revisiting 
+    Definition \ref{def:insertion_deletion_linked_list}, we can insert or delete in constant time $O(1)$, instead of traversing the list.
+    To demonstrate deletion, we have three sequential nodes, $A$, $B$, and $C$:
+
+    \begin{itemize}
+        \item \textbf{The head:} Set \texttt{my\_llist.next = my\_llist.next.next}, discards references to $A$.
+        \item \textbf{The tail:} Set \texttt{my\_llist.next.next.next = null}, discards $C$.
+        \item \textbf{In the middle:} Set \texttt{my\_llist.next.next = my\_llist.next.next.next}, discards $B$.
+    \end{itemize}
+
+    \noindent
+    This is a bit hard to read, we visualize it as follows:
+
+    \begin{center}
+    
+    \includegraphics[width=\textwidth]{Sections/hash/llist_dots.png}
+    \end{center}
+
+    \noindent
+    In other words, \texttt{my\_llist} is the dummy head node, \texttt{my\_llist.next} returns the dummy node's \texttt{next} pointer (an address). 
+    If we \emph{act} on such address, we access the address's fields. Hence, \texttt{my\_llist.next.next} $\equiv$ \texttt{A.next}. Again,
+    \texttt{A.next} $\equiv$ \texttt{B} (the address). So,
+    \begin{align*}
+        \texttt{my\_llist.next.next.next} &\equiv \texttt{A.next.next} \\
+        &\equiv \texttt{B.next} \\
+        &\equiv \texttt{C} \quad \text{(the address)}
+    \end{align*}
+
+    \noindent
+    Still, it's not advisable to code like this, primarily because of readability.
+\end{Example}
+
+\newpage 
+
+\subsection{Load Factor \& Performance Metrics}
+
+\noindent
+We want to be pre-emptive at avoiding collisions and resizing the table. The following measurement tracks this:
+
+\begin{Def}[Load Factor]
+
+    \label{def:load_factor}
+
+    The \textbf{load factor} \(\alpha\) of a hash table is defined as the ratio of the number of elements \(n\) to the size of the table \(m\):
+    \[
+        \alpha :=  \frac{n}{m}
+    \]
+
+    \begin{itemize}
+        \item \textbf{Open Addressing:} $\alpha < 0.5$.
+        \item \textbf{Separate Chaining:} $\alpha < 1$.
+    \end{itemize}
+
+    \noindent
+    Once $\alpha$ exceeds the optimal threshold, we should \textbf{consider resizing} the table. Upon good load conditions, we
+    generally expect $\Theta(1)$ and $\Theta(1 + \alpha)$ time complexity for insertion and deletion, respectively with open addressing and separate chaining.
+\end{Def}
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{l|c|c}
+        \hline
+        Method & Insertion & Deletion \\
+        \hline
+        Open Addressing       & \(\Theta (1)\) average, \(O(n)\) worst & \(\Theta (1)\) average, \(O(n)\) worst \\
+        Separate Chaining     & \(\Theta(1 + \alpha)\) average, \(O(n)\) worst & \(\Theta(1 + \alpha)\) average, \(O(n)\) worst \\
+        \hline
+    \end{tabular}
+    \caption{Time-complexity comparison of insertion and deletion in open addressing vs.\ separate chaining (where \(\alpha\) is the load factor).}
+    \label{tab:hash_complexities}
+\end{table}
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{l|c|c}
+        \hline
+        \textbf{Operation}      & \textbf{Dynamic Array}       & \textbf{Singly Linked List} \\ \hline
+        Insert at head          & $O(n)$ (shift all elements) & $O(1)$                       \\
+        Insert at tail          & $O(1)$                       & $O(n)$                       \\
+        Insert in middle        & $O(n)$                        & $O(n)$                       \\ \hline
+        Delete at head          & $O(n)$                        & $O(1)$                       \\
+        Delete at tail          & $O(1)$                        & $O(n)$                       \\
+        Delete in middle        & $O(n)$                        & $O(n)$                       \\ \hline 
+        Search for element      & $O(n)$                        & $O(n)$                       \\
+        Random access           & $O(1)$                        & $O(n)$ (traversal)           \\
+    \end{tabular}
+    \caption{Inserting or deleting elements in dynamic arrays (growing) versus singly linked lists. In particular,
+    maintaining order within a dynamic array forces shifting of elements upon insertion or deletion.}
+
+\end{table}
