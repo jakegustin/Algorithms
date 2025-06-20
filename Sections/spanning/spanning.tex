@@ -524,23 +524,37 @@ we ask $g,f,$ or $d$ who their leader is, they report to $a$ directly without th
 
 We compare all of our techniques in the following table:
 \begin{table}[h!]
-    \centering
-    \renewcommand{\arraystretch}{1.5}
-    \setlength{\tabcolsep}{12pt}
-\begin{tabular}{|>{\columncolor{OliveGreen!10}}p{5.5cm}|p{1.5cm}|c|p{3cm}|}
-    \hline
-    \rowcolor{OliveGreen!20}
-    \textbf{Operation\textbackslash Implementation} & \textbf{Simple Hash-table} & \textbf{Forest} & \textbf{Forest with Path \enspace Compression} \\
-    \hline
-    \textbf{Find (worst-case)} & $\Theta(1)$ & $\Theta(\log n)$ & $\Theta(\log n)$ \\
-    \hline
-    \textbf{Union of sets A, B (worst-case)} & $\Theta(n)$ & $\Theta(1)$ & $\Theta(1)$ \\
-    \hline
-    \textbf{Total for $n$ unions and $n$ finds, starting from singletons} & $\Theta(n^2)$ & $\Theta(n \log n)$ & $\Theta(m\cdot \alpha(m,n))$ \\
-    \hline
-    \end{tabular}
-    \caption{Time complexity comparison of different implementations.}
-    \end{table}
+  \centering
+  \resizebox{\textwidth}{!}{%
+    \renewcommand{\arraystretch}{1.5}%
+    \setlength{\tabcolsep}{5pt}%
+    \rowcolors{2}{OliveGreen!5}{}%
+    \begin{tabular}{>{\columncolor{OliveGreen!15}}l | c c c}
+      \rowcolor{OliveGreen!20}
+      Operation\textbackslash{}Implementation 
+        & Simple Hash-table 
+        & Forest 
+        & \makecell[l]{\rule{0pt}{2.5ex}Forest with\\ Path Compression} \\
+      \hline
+      Find (worst-case)
+        & $\Theta(1)$
+        & $\Theta(\log n)$
+        & $\Theta(\log n)$ \\ \hline
+    \cellcolor{OliveGreen!15}Union of sets $A,B$ (worst-case)
+        & $\Theta(n)$
+        & $\Theta(1)$
+        & $\Theta(1)$ \\ \hline
+    \makecell[l]{\rule{0pt}{2.6ex} Total for $n$ unions and $n$ finds,\\ starting from singletons}
+        & $\Theta(n^2)$
+        & $\Theta(n\log n)$
+        & $\Theta\bigl(m\cdot\alpha(m,n)\bigr)$ \\
+    \end{tabular}%
+  }
+  \caption{Time-complexity comparison of different implementations. Where $\alpha(m,n)$ is the inverse Ackermann function, which grows very slowly.}
+  \label{tab:uf-complexity}
+\end{table}
+
+
 \newpage
 \noindent 
 
