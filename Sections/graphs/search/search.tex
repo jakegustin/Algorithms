@@ -136,14 +136,16 @@ Observe the following examples of binary trees:
     \begin{center}
     \includegraphics[width=\textwidth]{./Sections/graphs/search/binary_tree_types.png}
     \end{center}
-     \caption{These are examples of different types of binary trees.}\label{fig:binary_tree_types}
+     \caption{These are examples of different types of binary trees (BT).}\label{fig:binary_tree_types}
   \end{figure}
 
 
 \subsection{Binary Search Tree}
 \noindent
 A binary search tree is a stricter form of a binary tree, which gives us an efficient search algorithm.
-\begin{Def}[Binary Search Tree (BST)]
+\begin{Def}[Binary Search Tree (BST) -- Overview]
+
+    \label{def:binary_search_tree}
 
     A \textbf{binary search tree} is a binary tree where:
     
@@ -152,6 +154,201 @@ A binary search tree is a stricter form of a binary tree, which gives us an effi
     \end{center}
     \noindent
     \textbf{Note:} A Binary Tree \underline{\textbf{is not}} a Binary Search Tree, unless it satisfies the above conditions.
-
 \end{Def}
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/bst.png}
+    \end{center}
+     \caption{Visual Representation of Definition (\ref{def:binary_search_tree})}\label{fig:binary_search_tree}
+  \end{figure}
+
+\noindent
+The next few pages we discuss \textbf{Searching, Insertion, and Deletion} in a binary search tree.
+  
+\newpage
+\begin{Func}[Binary Search Tree (BST) -- Searching]
+
+    Given a BST root node $T$ and a desired value $v$, we can search for $v$ in $T$ as follows:
   \newpage 
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} BST root node $T$, value $v$.\\
+    \textbf{Output:} Node containing $v$ or null if not found.
+    
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        \SetKwProg{Fn}{Function}{:}{}
+        \Fn{\texttt{Search($T, v$)}}{
+            \While{$T$ is not null}{
+                \If{$T.value = v$}{
+                    \KwRet{$T$}\;
+                }
+                \If{$v < T.value$}{
+                    $T \gets T.left$\;
+                }
+                \Else{
+                    $T \gets T.right$\;
+                }
+            }
+            \KwRet{null}\;
+        }
+    \end{algorithm}
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    \textbf{Time Complexity:} $O(h)$ where $h$ is the height of the tree. In a balanced BST, this is $O(\log n)$, but in the worst case (unbalanced), it can be $O(n)$.
+\end{Func}
+
+\begin{figure}[ht!]
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/bst_search.png}
+    \end{center}
+     \caption{Searching for a value in a binary search tree. The worst case is a noodle (all right nodes), forcing $n$ traversals, i.e., the height (within a constant). One could imagine these nodes as complex objects, where the value $v$ is a key, and the node itself contains more data.}\label{fig:bst_search}
+  \end{figure}
+
+\begin{theo}[Property of Binary Search Trees]
+
+    \label{theo:bst_property}
+
+    In a binary search tree, for any node $N$:
+    \begin{itemize}
+        \item All values in the left subtree of $N$ are less than the value of $N$.
+        \item All values in the right subtree of $N$ are greater than or equal to the value of $N$.
+    \end{itemize}
+\end{theo}
+
+\newpage 
+\noindent
+Insertion is the same an searching, except we insert upon reaching a null node.
+\begin{Func}[Binary Search Tree (BST) -- Insertion]
+
+    Given a BST root node $T$ and a value $v$, we can insert $v$ into $T$ as follows:
+    
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} BST root node $T$, value $v$.\\
+    \textbf{Output:} Updated binary search tree with $v$ inserted.
+    
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        \SetKwProg{Fn}{Function}{:}{}
+        \Fn{\texttt{Insert($T, v$)}}{
+            $parent \gets$ null; $current \gets T$\;
+            \While{$current$ is not null}{
+                $parent \gets current$\;
+                \If{$v < current.value$}{
+                    $current \gets current.left$\;
+                }
+                \Else{
+                    $current \gets current.right$\;
+                }
+            }
+            \vspace{1em}
+            \tcp{After the while loop terminates}
+            \If{$parent$ is null}{
+                \KwRet{$v$} \tcp*[l]{Tree was empty, $v$ becomes root}
+            }
+            \If{$v < parent.value$}{
+                $parent.left \gets v$\;
+            }
+            \Else{
+                $parent.right \gets v$\;
+            }
+            \KwRet{$T$}\;
+        }
+    \end{algorithm}
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    \textbf{Time Complexity:} $O(h)$ where $h$ is the height of the tree. In a balanced BST, this is $O(\log n)$, but in the worst case (unbalanced), it can be $O(n)$.\\
+\end{Func}
+
+\noindent
+Deletion is a bit more complex, as we have to consider removing intermediate nodes:
+
+\begin{theo}[Binary Search Tree (BST) -- Deletion]
+
+    When deleting a node from a binary search tree, we must consider three cases:
+    \begin{itemize}
+        \item \textbf{$v$ has no children:} Remove the parent's reference to $v$.
+        \item \textbf{$v$ has one child:} Replace the parent's reference to $v$'s child.
+        \item \textbf{$v$ has two children:} Replace the parent's reference to $v$ with either:
+            \begin{itemize}
+                \item The \textbf{L}argest value in $v$'s \textbf{L}eft subtree (in-order predecessor).
+                \item The \textbf{R}unt (smallest) value in $v$'s \textbf{R}ight subtree (in-order successor).
+            \end{itemize}
+    \end{itemize}
+
+    \noindent
+    This ensures that the binary search tree properties are maintained after deletion.
+\end{theo}
+
+\newpage
+\begin{Func}[Binary Search Tree (BST) -- Deletion]
+
+    Given a BST root node $T$ and a value $v$, we can delete $v$ from $T$ as follows:
+    
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} BST root node $T$, value $v$.\\
+    \textbf{Output:} Updated binary search tree with $v$ deleted.
+    
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        \SetKwProg{Fn}{Function}{:}{}
+        \Fn{\texttt{Delete($T, v$)}}{
+            $parent \gets$ null; $current \gets T$\;
+            \While{$current$ is not null \textbf{and} $current.value \neq v$}{
+                $parent \gets current$\;
+                \If{$v < current.value$}{
+                    $current \gets current.left$\;
+                }
+                \Else{
+                    $current \gets current.right$\;
+                }
+            }
+            \If{$current$ is null}{
+                \KwRet{$T$} \tcp*[l]{Value not found}
+            }
+            \tcp{Case 1: Node has at most one child}
+            \If{$current.left$ is null \textbf{or} $current.right$ is null}{
+                \If{$current.left$ is not null}{
+                    $child \gets current.left$\;
+                }
+                \Else{
+                    $child \gets current.right$\;
+                }
+                \If{$parent$ is null}{
+                    \KwRet{$child$} \tcp*[l]{Deleted root}
+                }
+                \If{$parent.left = current$}{
+                    $parent.left \gets child$\;
+                }
+                \Else{
+                    $parent.right \gets child$\;
+                }
+                \KwRet{$T$}\;
+            }
+            \tcp{Case 2: Node has two children}
+            $succParent \gets current$\;
+            $succ \gets current.right$ \tcp*[l]{Runt of Right subtree}
+            \While{$succ.left$ is not null}{
+                $succParent \gets succ$\;
+                $succ \gets succ.left$\;
+            }
+            $current.value \gets succ.value$\;
+            \If{$succParent.left = succ$}{
+                $succParent.left \gets succ.right$\;
+            }
+            \Else{
+                $succParent.right \gets succ.right$\;
+            }
+            \KwRet{$T$}\;
+        }
+    \end{algorithm}
+    \noindent
+    \rule{\textwidth}{0.4pt}
+    \textbf{Time Complexity:} $O(h)$ where $h$ is the height of the tree. In a balanced BST, this is $O(\log n)$, but in the worst case (unbalanced), it can be $O(n)$.
+\end{Func}
+
+
+\newpage
