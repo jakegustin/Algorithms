@@ -113,24 +113,23 @@ Node $a$ has a degree of 2, and node $c$ has a degree of 5.\\
     \textbf{Space Complexity:} $\Theta (n^2)$; \textbf{Time Complexities:}\\
     \textbf{Index edge $A[i][j]$:} $\Theta (1)$; \textbf{List neighbors $A[i]$}: $\Theta(n)$; \textbf{List all edges:} $\Theta(n^2)$.
 \end{theo}
+
 \begin{figure}[h]
   \begin{center}
     \includegraphics[height=1.5in]{./Sections/graphs/adj_matrix_dir.png}
   \end{center}
-   \caption{An adjacency matrix for a directed graph with path $4\leftrightarrow2$ highlighted ($A[2][4]$ and $A[4][2]$).}\label{fig:adj_matri_dir}
+   \caption{An adjacency matrix of a directed graph with path $4\rightarrow2$ highlighted.}\label{fig:adj_matri_dir}
 \end{figure}
 
 \newpage
 \begin{Def}[Adjacency List]
 
   \label{def:adj_list}
-    An \textbf{adjacency list} is a list of keys where each key has a list of neighbors.\\
-
-    \noindent
-    Often taking form as a dictionary or hash-table:\\
-    \textbf{Space Complexity:} $\Theta (n+m)$ for $n$ nodes and $m$ total edges; \textbf{Time Complexities:}\\
+    An \textbf{adjacency list} is a list of keys where each key has a list of neighbors; This often takes the form of a hash-table:
+    \textbf{Space Complexity:} $\Theta (n+m)$ for $n$ nodes and $m$ total edges; \textbf{Time Complexities:}
     \textbf{Index key:} $\Theta (1)$; \textbf{List key neighbors:} $\Theta(\text{\# of outdegrees})$; \textbf{List all edges:} $\Theta(n+m)$;
-    \textbf{Insert edge:} $\Theta(1)$. \textbf{Note:} $m\leq n^2$ (all nodes connected to all nodes), though typically $m < n$.
+    \textbf{Insert edge:} $\Theta(1)$. \textbf{Note:} $m\leq n^2$ (all nodes connected to all nodes), though typically 
+    in practice, $m < n$.
 \end{Def}
 
 \begin{figure}[h]

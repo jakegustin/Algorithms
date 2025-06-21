@@ -1,3 +1,4 @@
+\vspace{-1em}
 \section{Breath-First and Depth-First Search}
 \subsection{High-Level Overview}
 Two general methods for traversing a graph are, \textbf{breadth-first search} and \textbf{depth-first search}.
@@ -8,38 +9,57 @@ Two general methods for traversing a graph are, \textbf{breadth-first search} an
     A \textbf{cycle} is a path that starts and ends at the same node.
 \end{Def}
 \textbf{Example:} In the above Figure (\ref{fig:adj_matri_dir}), $1\rightarrow 2 \rightarrow 3 \rightarrow 1$ form a cycle.
-\begin{Def}[Tree]
+\begin{Def}[Trees]
 
-    A \textbf{tree} is a connected graph with no cycles. A \textbf{leaf-nodes} is the outer-most nodes of a tree. A \textbf{branch} is a path from the root to a leaf.  
+    A \textbf{tree} is a connected graph with no cycles. A \textbf{leaf-nodes} is the outer-most nodes of a tree. A \textbf{branch} is a path from the root to a leaf.
+    \textbf{Interior nodes} have at least one child.  
 \end{Def}
+
+\begin{Tip}
+Watch this entire section: \href{https://youtu.be/xHYS6IdpaDc?feature=shared}{BFS \& DFS (Edge Types, Traversal Orders, \& Code)}.
+\end{Tip}
 \newpage
 \begin{theo}[Tree Identity]
 
     Let $G$ be an undirected graph of $n$ nodes. Then any two statements imply the third:
-    \begin{enumerate}
-        \item [(i.)] $G$ is connected.
-        \item [(ii.)] $G$ has $n-1$ edges.
-        \item [(iii.)] $G$ has no cycles.
-    \end{enumerate}
+    \begin{center}
+
+        \noindent
+        (i.) $G$ is connected. \quad
+        (ii.) $G$ has $n-1$ edges. \quad
+        (iii.) $G$ has no cycles.
+    \end{center}
 \end{theo}
 
 \begin{Def}[Rooted Trees]
-    
-        Let $T$ be a tree with a designated root node $r$. Then each degree is 
-        considered an outdegree, called a \textbf{child}, and its indegree its \textbf{parent}.
+
+        A tree \textbf{root} is a designated starting node, which all other nodes follow. The root has
+        no parent/ancestors (proceeding node), and all other nodes are descendants (children).\\
+
+        \noindent
+        A \textbf{subtree} is a tree formed by picking another node as the root, representing a subset of 
+        the original tree.
 \end{Def}
+
+
+\begin{Def}[Levels and Heights]
+
+  The \textbf{level} (or \textbf{depth}) of a node $v$ in a tree is the number of edges on the path from the root to $v$, so $\mathrm{level}(\text{root})=0$.  
+  The \textbf{height} of a node $v$ is the number of edges on the longest downward path from $v$ to any leaf.  
+  The \textbf{height} of a tree is defined as the height of its root node.
+\end{Def}
+
 \begin{figure}[h]
     \begin{center}
       \includegraphics[height=2in]{./Sections/graphs/rooted_tree.png}
     \end{center}
-     \caption{A rooted tree with root 1 and children $\{2,5,7\}$}\label{fig:rooted_tree}
+     \caption{The right shows a rooted tree with root $s$, with $a$ and $b$ as direct children. A possible
+     subtree starts with node $b$, only consisting of $\{b, e,f,g\}$. \textbf{Note:} A tree is 
+     not necessarily directed, while a rooted tree is (floods outwards from the root)}\label{fig:rooted_tree}
   \end{figure}
 
-\begin{Def}[Levels and Heights]
 
-    The \textbf{level} of a node is the number of edges from the root. The \textbf{height} of a tree is the maximum level of any node.
-\end{Def}
-\textbf{Example:} In Figure (\ref{fig:rooted_tree})'s rooted tree , node 5 has a level of 1, and the height of the tree is 2.
+
 \newpage
 \begin{Def}[Breadth-First Search (BFS)]
 
@@ -382,120 +402,3 @@ This allows us to summarize the edge classifications for both directed and undir
 \end{table}
 
 \newpage 
-
-\section{Binary Tree Traversals}
-
-\noindent
-First lets define a binary tree:
-\begin{Def}[Binary Tree]
-
-    A \textbf{binary tree} is a tree where each parent node has at most two children.
-\end{Def}
-
-\begin{figure}[h]
-    \begin{center}
-    \includegraphics[width=\textwidth]{./Sections/graphs/binary_tree.png}
-    \end{center}
-     \caption{These are three examples of binary trees, including a single node (3).}\label{fig:binary_tree}
-  \end{figure}
-
-\noindent
-To simply do a binary tree traversal, we may employ the following methods:
-\begin{Func}[DFS Binary Tree Traversal - \texttt{DFS($T$)}]
-    Depth-First Search on binary tree $T$ (recursive).
-    
-    \vspace{.5em}
-    \noindent
-    \textbf{Input:} Binary tree $T$.\\
-    \textbf{Output:} Nodes in pre-order, in-order, and post-order.
-    
-    \begin{algorithm}[H]
-        \SetAlgoLined
-        \SetKwProg{Fn}{Function}{:}{}
-        \Fn{\texttt{DFS($T$)}}{
-            \If{$T$ is not empty}{
-                Visit node $T$\;
-                \texttt{DFS($T.left$)}\;
-                \texttt{DFS($T.right$)}\;
-            }
-        }
-    \end{algorithm}
-    \noindent
-    \rule{\textwidth}{0.4pt}
-    \textbf{Time Complexity:} Given n nodes, and a force of a tree format, we have $n-1$ edges. Therefore with $m$ edges, $n+m = n+(n-1)$, hence $O(n)$ time.\\
-    \textbf{Space Complexity:} again, we have $O(n)$ space for the stack.
-\end{Func}
-
-\noindent
-$\mathbf{\rightarrow}$ \textbf{\underline{BFS has the same complexities} as per the same reasoning as the above function.}\\
-
-\newpage
-\noindent
-The order in the above function is called \textbf{pre-order traversal};
-
-\begin{Def}[Order Traversals]
-
-    The order of traversal refers to the order in which nodes are visited/processed:
-    \begin{itemize}
-        \item \textbf{Pre-order:} Visit the node, then left, then right.
-        \item \textbf{In-order:} Visit left, then the node, then right.
-        \item \textbf{Post-order:} Visit left, then right, then the node.
-    \end{itemize}
-    In particular, \underline{\textbf{in-order traversal} is simply a run of \textbf{BFS}} as it processes the tree level by level starting 
-    from the root.
-\end{Def}
-
-\noindent
-Below is an example of all three:
-
-\begin{Example}[Binary Tree Traversals (Part 1)]
-
-    \begin{lstlisting}[language=Python, numbers=none]
-    # Pre-order Traversal
-    def PreOrder(T):
-        if T is not None:
-            visit(T)
-            PreOrder(T.left)
-            PreOrder(T.right)
-
-    # In-order Traversal
-    def InOrder(T):
-        if T is not None:
-            InOrder(T.left)
-            visit(T)
-            InOrder(T.right)
-
-    # Post-order Traversal
-    def PostOrder(T):
-        if T is not None:
-            PostOrder(T.left)
-            PostOrder(T.right)
-            visit(T)
-
-    # Level-order Traversal
-    def LevelOrder(T):
-        BFS(T)
-    \end{lstlisting}
-\end{Example}
-
-\newpage
-
-\noindent
-Now to show how this actually looks:
-\begin{figure}[h]
-
-
-    \hspace {-10em} \includegraphics[width=1.5\textwidth]{./Sections/graphs/binary_tree_traversals.png}
-  
-     \caption{%
-        The above binary tree has the following traversals:\\[1em]
-           $\bullet$\quad  \textbf{Pre-order:}  \hspace{.5em} G, E, C, D, A, H, K, F, M\\
-           $\bullet$\quad  \textbf{In-order:}   \hspace{1.2em} C, E, A, D, G, H, F, K, M\\
-           $\bullet$\quad  \textbf{Post-order:} \hspace{.05em} C, A, D, E, F, M, K, H, G\\
-           $\bullet$\quad \textbf{Level-order:} G, E, H, C, D, K, A, F, M\\[1em]
-         Notably, if there is no left or right child to explore for that particular traversal order, that node then and there is processed.
-     For example, in in-order traversal, since $C$ has no left child, it is processed first. The same goes for Post-order, where $D$ has no right child, so it is processed.
-     }\label{fig:binary_tree_traversals}
-  \end{figure}
-\newpage
-
