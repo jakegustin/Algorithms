@@ -376,9 +376,6 @@ We can keep extending the binary tree to allow for more children, which allows u
     A \textbf{ternary tree} is a tree where each parent node has at most three children. An \textbf{n-ary tree} is a tree where each parent node can have up to $n$ children.
 \end{Def}
 
-\noindent
-The following is a specific arrangement of a ternary tree, akin to binary trees and binary search trees. So 
-far we've discussed structures where each node has 1 key, but this changes with 2-3 trees:
 \begin{Def}[2-3 Tree -- Overview]
 
     A \textbf{2-3 tree} is a balanced search tree where a parent may contain 1 or 2 keys:
@@ -403,4 +400,11 @@ far we've discussed structures where each node has 1 key, but this changes with 
     $O(\log_3 n)$, which is faster than $O(\log_2 n)$; However, the tree has have a mix of 1K and 2K nodes.
     So that's why in the worst case, we have $O(\log_2 n)$. I.e., $\lfloor{\log_3 n}\rfloor \leq h \leq \lfloor{\log_2 n}\rfloor$, where $h$ is the height of the tree.
 \end{Def}
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3.png}
+    \end{center}
+     \caption{Visual Representation of Definition (\ref{def:binary_search_tree}), where $k_1$ and $k_2$ are the keys of the parent node with its respective left, middle, and right nodes.}\label{fig:2-3_tree}
+  \end{figure}
 \newpage
