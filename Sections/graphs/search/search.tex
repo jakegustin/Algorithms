@@ -160,7 +160,8 @@ A binary search tree is a stricter form of a binary tree, which gives us an effi
     \begin{center}
     \includegraphics[width=\textwidth]{./Sections/graphs/search/bst.png}
     \end{center}
-     \caption{Visual Representation of Definition (\ref{def:binary_search_tree})}\label{fig:binary_search_tree}
+     \caption{Visual Representation of Definition (\ref{def:binary_search_tree}), where $k$ is 
+     the parent node with its respective left (less than) and right (greater than or equal to) nodes.}\label{fig:binary_search_tree}
   \end{figure}
 
 \noindent
@@ -350,5 +351,19 @@ Deletion is a bit more complex, as we have to consider removing intermediate nod
     \textbf{Time Complexity:} $O(h)$ where $h$ is the height of the tree. In a balanced BST, this is $O(\log n)$, but in the worst case (unbalanced), it can be $O(n)$.
 \end{Func}
 
+\newpage 
+
+\noindent
+Consider an example as we build a binary search tree and performing the above operations:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/bst_ex.png}
+    \caption{%
+        \textbf{Note:} We use the Largest Left child (in-order predecessor) to replace the 2-children case. From 
+        1--9 we insert values. From 10--11 we delete. In (10) we delete 8 (1-child case), we replace its 
+        parent's reference to 8 with its only child 6. In (11) we delete 3 (2-children case), we replace its parent's reference to 3 with the largest left child, which is 2.
+        One could imagine the in-order successor (smallest right child) would have 4 instead of 2, with 2 and 1 on its left subtree.}
+    \label{fig:bst_operations}
+\end{figure}
 
 \newpage
