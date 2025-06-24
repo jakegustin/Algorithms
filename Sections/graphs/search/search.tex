@@ -382,7 +382,7 @@ We can keep extending the binary tree to allow for more children, which allows u
 
     \label{def:2-3_tree}
 
-    A \textbf{2-3 tree} is a balanced search tree where a parent may contain 1 or 2 keys:
+    A \textbf{2-3 tree} is a \textbf{complete} search tree where a parent may contain 1 or 2 keys:
     \begin{itemize}
         \item \textbf{1 Key (1K):} This parent has 0 or 2 children.
         \item \textbf{2 Keys (2K):} This parent has 0 or 3 children.
@@ -398,6 +398,9 @@ We can keep extending the binary tree to allow for more children, which allows u
         left child $<$ $k_1$ $\leq$ middle child $<$ $k_2$ $\leq$ right child
     \end{center}
     \noindent
+    Since it is a complete tree, height of $n$ nodes is $O(\log n)$.
+
+    \noindent
     \rule{\textwidth}{0.4pt}
     \textbf{Time Complexity:} Searching, inserting, and deleting in a 2-3 tree is $O(\log n)$, where $n$ is the number of keys in the tree.
     The performance gain comes from 3 children possibility: if the tree has only 3 children, it would be 
@@ -409,7 +412,7 @@ We can keep extending the binary tree to allow for more children, which allows u
     \begin{center}
     \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3.png}
     \end{center}
-     \caption{Visual Representation of Definition (\ref{def:binary_search_tree}), where $k_1$ and $k_2$ are the keys of the parent node with its respective left, middle, and right nodes.}\label{fig:2-3_tree}
+     \caption{Definition (\ref{def:binary_search_tree}), $k_1$ and $k_2$ are parent keys with its left, middle, and right nodes.}\label{fig:2-3_tree}
   \end{figure}
 \newpage
 
@@ -430,7 +433,7 @@ We can keep extending the binary tree to allow for more children, which allows u
     \textbf{Inserting} a value $v$ into a 2-3 tree involves the following steps after a search:
     \begin{itemize}
         \item \textbf{Null:} If no nodes exists, create a new $1k$ node of $v$.
-        \item \textbf{1K Node:} Insert $v$ in sorted order, becoming a 2K node.
+        \item \textbf{1K Node:} Insert $v$ in sorted order, becoming a 2K node (no children).
         \item \textbf{2K Node:} Insert $v$ in sorted order (3 keys), then split:
             \begin{itemize}
                 \item \textbf{No Parent:} Push the middle key up taking the remaining left (LK) and right (RK) keys and create two new children satisfying 1K node rules (\ref{def:2-3_tree}).
