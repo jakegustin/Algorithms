@@ -380,6 +380,8 @@ We can keep extending the binary tree to allow for more children, which allows u
 
 \begin{Def}[2-3 Tree -- Overview]
 
+    \label{def:2-3_tree}
+
     A \textbf{2-3 tree} is a balanced search tree where a parent may contain 1 or 2 keys:
     \begin{itemize}
         \item \textbf{1 Key (1K):} This parent has 0 or 2 children.
@@ -431,15 +433,13 @@ We can keep extending the binary tree to allow for more children, which allows u
         \item \textbf{1K Node:} Insert $v$ in sorted order, becoming a 2K node.
         \item \textbf{2K Node:} Insert $v$ in sorted order (3 keys), then split:
             \begin{itemize}
-                \item If there is no parent, push the middle key up taking the remaining left (LK) and right (RK) keys and create two new children nodes respective on the pre-split position of $v$.
-                \item If parent is a 1K node, it becomes a 2K node. The remaining LK and RK keys are placed as follows:
-                  \textbf{Left Subtree:} The LK becomes the left key, and the RK becomes the middle key.
-                        \textbf{Right Subtree:} The LK becomes the middle key, and the RK becomes the right key.
-                
+                \item \textbf{No Parent:} Push the middle key up taking the remaining left (LK) and right (RK) keys and create two new children satisfying 1K node rules (\ref{def:2-3_tree}).
+                \item \textbf{Parent is 1K:} The parent becomes a 2K node. The remaining LK and RK keys are again placed
+                respectively satisfying the 2K node rules (\ref{def:2-3_tree}).
+                \item \textbf{Parent is 2K:} The parent momentarily becomes a 3K node with 4 children. These children are split 
+                are split between $k_1$ and $k_2$ respectively after the middle key is pushed up.
             \end{itemize}
     \end{itemize}
-    \noindent
-    If the parent is already a 2K node (would become a 3K node), we repeat the split process.
 \end{Def}
 
 \vspace{-1em}
@@ -451,4 +451,18 @@ We can keep extending the binary tree to allow for more children, which allows u
      there are three keys, initiating a split, pushing up 7. In particular, 1 \& 4 are 1K nodes, and 2 \& 7 are 2k nodes.}\label{fig:2-3_tree_insert}
   \end{figure}
 
+\noindent
+The next page provides a more complex example demonstrating the ``Parent is 2K'' case.
+\newpage 
+
+\begin{figure}[ht!]
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3_insert_complex.png}
+    \end{center}
+     \caption{Visual Representation of Definition (\ref{def:2-3_tree_search_insert}) of the ``Parent is 2K'' case: In (2) we start out inserting 92, overflowing the current node,
+     (3) 93 is pushed up, splitting the previous node $\{92,97\}$ into total 4 children, 
+     (4) 90 is pushed up, splitting node $\{77, 93\}$, each taking their respective two children from the previous children-overflow, (5) and 
+     finally, 61 is pushed up in the same manner.
+     }\label{fig:2-3_tree_insert_complex}
+  \end{figure}
 \newpage
