@@ -493,10 +493,11 @@ To delete a value $v$ after search in a 2-3 tree, we follow these steps:
             \item \textbf{2K Sibling:} If $v$ is removed from a 1K child and its sibling is a 2K node, rotate the parent key and closest-order sibling key to
             balance the tree back into a stable 1K configuration.
             \item \textbf{1K Children:} If both children are 1K nodes, $v$ is removed. The parent key is copy/merged with the remaining
-            child (2K w/ no children), and the original parent (OP) is emptied. We now need to maintain the complete tree property:
+            child (2K w/ no children), and the original parent (OP) is emptied. We now need to maintain the complete tree property
+            
             \begin{enumerate}
-                \item \textbf{Parent Case:} To balance the tree requires taking from a parent key. If OP's parent is the root, 
-                we promote OP as the new root.
+                \item [$\bullet$] \textbf{Parent Cases:} Balancing the tree requires taking from a parent key. If OP's parent is the root, 
+                we promote OP as the new root, deleting the old. 
                 \item \textbf{Adgecent 2K Node:} If the OP has a 2K direct sibling, adopt OP's parent key, then
                 rotate the closest-order key from the sibling to the parent. OP now adopts the closest-order 
                 child from the sibling, balancing the tree from (1C:3C)$\to$(2C:2C) \#Children.
@@ -508,7 +509,7 @@ To delete a value $v$ after search in a 2-3 tree, we follow these steps:
         \end{itemize}
         \item \textbf{Intermediate/Root Node:} If $v$ is not a leaf node,
         swap $v$ with either its in-order predecessor (largest left child) or successor (smallest right child)
-        repeatedly until it's a leaf node. Then follow the above steps to delete $v$.
+        repeatedly until it's a leaf node (If $k2$, take largest middle child). Then follow the above steps to delete $v$.
     \end{enumerate}
         
 \end{Def}
@@ -517,9 +518,51 @@ To delete a value $v$ after search in a 2-3 tree, we follow these steps:
     \begin{center}
     \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3_delete.png}
     \end{center}
-     \caption{Definition (\ref{def:2-3_tree_delete})'s bullets -- 2K Parent (a \& b).}
+     \caption{Without Loss of Generality, Definition (\ref{def:2-3_tree_delete})'s bullets -- 2K Parent (a \& b).}
     
      \label{fig:2-3_tree_delete}
 \end{figure}
+
+\newpage
+
+\begin{figure}[ht!] 
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3_delete_2.png}
+    \end{center}
+
+    \vspace{-1em}
+     \caption{Definition (\ref{def:2-3_tree_delete})'s bullets -- 1K Parent (a \& b).}\label{fig:2-3_tree_delete_2}
+\end{figure}
+
+\vspace{-1.5em}
+\begin{figure}[ht!] 
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3_delete_3.png}
+    \end{center}
+
+    \vspace{-1.5em}
+     \caption{Definition (\ref{def:2-3_tree_delete})'s bullets -- 1K Parent (c). (1K.c) 4 is deleted, causing 1 and 3 to merge; However the 
+     height must be maintained for a complete tree. (1K.ci) parent sibling keys rotate, beginning a deletion on 13. (1k.cii) parent key and sibling merge.}\label{fig:2-3_tree_delete_3}
+\end{figure}
+\newpage
+
+\newpage 
+
+\noindent
+Lastly, the intermediate/root deletion:
+
+\begin{figure}[ht!] 
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3_delete_4.png}
+    \end{center}
+
+    \vspace{-1.5em}
+     \caption{Definition (\ref{def:2-3_tree_delete})'s bullets -- Intermediate/Root Node deletion. 
+     (1) We desire to delete 10, but it's not a leaf node, hence we swap with its in-order predecessor, 8. (2) 10 Still isn't a leaf node, we swap with 7. (3) 10 is finally a leaf node, we delete it.
+     (4) The tree is rebalanced.}\label{fig:2-3_tree_delete_4}
+\end{figure}
+
+\noindent
+Other cases (without loss of generality) and implementation is left as an exercise to the reader.
 
 \newpage
