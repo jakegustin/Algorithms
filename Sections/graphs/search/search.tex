@@ -373,10 +373,12 @@ Consider an example as we build a binary search tree and performing the above op
 
 \noindent
 We can keep extending the binary tree to allow for more children, which allows us to search faster.
+
 \begin{Def}[Ternary \& N-ary Trees]
 
     A \textbf{ternary tree} is a tree where each parent node has at most three children. An \textbf{n-ary tree} is a tree where each parent node can have up to $n$ children.
 \end{Def}
+
 
 \begin{Def}[2-3 Tree -- Overview]
 
@@ -476,29 +478,48 @@ The next page provides a more complex example demonstrating the ``Parent is 2K''
 
 To delete a value $v$ after search in a 2-3 tree, we follow these steps:
     \begin{enumerate}
-        \item \textbf{Null:} Return some falsey value if $v$ does not exist.
-        \item \textbf{Leaf Node:} If $v$ is in a leaf node, remove it, and \textbf{rebalance} the tree if necessary:
+        \item \textbf{Leaf Node:} If $v$ is in a leaf node, remove it as follows:
         \begin{itemize}
-            \item \textbf{1K Parent:}
-            \begin{enumerate}
-            \item \textbf{2K Child-Node:} If $v$ sits in a child 2K \textbf{leaf}-node, remove $v$.
-            \item \textbf{1K Children:} If both children are 1K nodes, $v$ is removed, and 
-            the other child merges with the parent, becoming a 2K node with no children.
-            \item \textbf{1K \& 2K Children:} Say $v$ is deleted as a 1K child, leaving a 2K child under a 1K parent.
-            To rebalance the tree, take all three nodes and rebalance them into a valid 1K configuration.
-        \end{enumerate}
-        \item \textbf{2K Parent:}
+            \item \textbf{2K Parent:}
             \begin{enumerate}
             \item \textbf{2K Child-Node:} If $v$ sits in a child 2K \textbf{leaf}-node, remove $v$.
             \item \textbf{1K Child:} Say $v$ is removed from a 1K child. Then
             one parent key will merge with another child into a valid 1K configuration.
             \end{enumerate}
+
+            \item \textbf{1K Parent:}
+            \begin{enumerate}
+            \item \textbf{2K Child-Node:} If $v$ sits in a child 2K \textbf{leaf}-node, remove $v$.
+            \item \textbf{2K Sibling:} If $v$ is removed from a 1K child and its sibling is a 2K node, rotate the parent key and closest-order sibling key to
+            balance the tree back into a stable 1K configuration.
+            \item \textbf{1K Children:} If both children are 1K nodes, $v$ is removed. The parent key is copy/merged with the remaining
+            child (2K w/ no children), and the original parent (OP) is emptied. We now need to maintain the complete tree property:
+            \begin{enumerate}
+                \item \textbf{Parent Case:} To balance the tree requires taking from a parent key. If OP's parent is the root, 
+                we promote OP as the new root.
+                \item \textbf{Adgecent 2K Node:} If the OP has a 2K direct sibling, adopt OP's parent key, then
+                rotate the closest-order key from the sibling to the parent. OP now adopts the closest-order 
+                child from the sibling, balancing the tree from (1C:3C)$\to$(2C:2C) \#Children.
+                \item \textbf{No 2K Sibling:} If OP has no 2K sibling, adopt its closest-order parent key, then it merge with a sibling 1K node (becomes a 2K node).
+                This should balance the tree from (1C:2C)$\to$(3C) \#Children. If the parent becomes illegal, repeat the above steps.
+            \end{enumerate}
+        \end{enumerate}
+        
         \end{itemize}
         \item \textbf{Intermediate/Root Node:} If $v$ is not a leaf node,
-        we swap $v$ with either its in-order predecessor (largest left child) or in-order successor (smallest right child).
-        We continue to do such until we reach a leaf node, where we can then delete the value as per the above rules.
+        swap $v$ with either its in-order predecessor (largest left child) or successor (smallest right child)
+        repeatedly until it's a leaf node. Then follow the above steps to delete $v$.
     \end{enumerate}
         
 \end{Def}
+
+\begin{figure}[ht!] 
+    \begin{center}
+    \includegraphics[width=\textwidth]{./Sections/graphs/search/2_3_delete.png}
+    \end{center}
+     \caption{Definition (\ref{def:2-3_tree_delete})'s bullets -- 2K Parent (a \& b).}
+    
+     \label{fig:2-3_tree_delete}
+\end{figure}
 
 \newpage
