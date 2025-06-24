@@ -466,3 +466,36 @@ The next page provides a more complex example demonstrating the ``Parent is 2K''
      }\label{fig:2-3_tree_insert_complex}
   \end{figure}
 \newpage
+
+\begin{Def}[2-3 Tree -- Deletion]
+
+\label{def:2-3_tree_delete}
+
+To delete a value $v$ after search in a 2-3 tree, we follow these steps:
+    \begin{enumerate}
+        \item \textbf{Null:} Return some falsey value if $v$ does not exist.
+        \item \textbf{Leaf Node:} If $v$ is in a leaf node, remove it, and \textbf{rebalance} the tree if necessary:
+        \begin{itemize}
+            \item \textbf{1K Parent:}
+            \begin{enumerate}
+            \item \textbf{2K Child-Node:} If $v$ sits in a child 2K \textbf{leaf}-node, remove $v$.
+            \item \textbf{1K Children:} If both children are 1K nodes, $v$ is removed, and 
+            the other child merges with the parent, becoming a 2K node with no children.
+            \item \textbf{1K \& 2K Children:} Say $v$ is deleted as a 1K child, leaving a 2K child under a 1K parent.
+            To rebalance the tree, take all three nodes and rebalance them into a valid 1K configuration.
+        \end{enumerate}
+        \item \textbf{2K Parent:}
+            \begin{enumerate}
+            \item \textbf{2K Child-Node:} If $v$ sits in a child 2K \textbf{leaf}-node, remove $v$.
+            \item \textbf{1K Child:} Say $v$ is removed from a 1K child. Then
+            one parent key will merge with another child into a valid 1K configuration.
+            \end{enumerate}
+        \end{itemize}
+        \item \textbf{Intermediate/Root Node:} If $v$ is not a leaf node,
+        we swap $v$ with either its in-order predecessor (largest left child) or in-order successor (smallest right child).
+        We continue to do such until we reach a leaf node, where we can then delete the value as per the above rules.
+    \end{enumerate}
+        
+\end{Def}
+
+\newpage
