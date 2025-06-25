@@ -1,0 +1,96 @@
+\section{Information Theory}
+\subsection{Defining Information}
+
+\noindent
+Here we define ``information'' from a mathematical perspective, thinking about probabilities as opposed to correct or incorrect. 
+The following sections \textbf{heavily} reference Chris Terman's ``Computation Structures'' from the MIT OpenCourseWare \cite{terman2017computation_structures}.
+
+\begin{Def}[Information]
+
+    \label{def:info}
+
+    \textbf{Information} measures the amount of uncertainty about a given fact provided some data.
+\end{Def}
+
+\begin{Example}[Playing Deck of Cards]
+
+    \label{ex:card_info}
+
+    Given a 52-card deck, a card is drawn at random. One of the following data points is revealed:
+    \renewcommand{\labelenumi}{\alph{enumi})}
+    \begin{enumerate}
+        \item The card is a heart (13 possibilities).
+        \item The card is not the Ace of Spades (51 possibilities).
+        \item The card is the ``Suicide King,'' i.e., King of Hearts (1 possibility).
+    \end{enumerate}
+
+    \vspace{-1.5em}
+\end{Example}
+
+\begin{Def}[Quantifying Information]
+
+    \label{def:quant_info}
+
+    Given a discrete (finite) random variable $X$ with $n$ possible outcomes ($x_1, x_2, \ldots, x_n$) and a probability $P(X) = p_i$ for each outcome $x_i$, the \textbf{information content} of $X$ is defined as:
+    \[
+    I(X_i) := \log_2\left(\dfrac{1}{p_i}\right)
+    \]
+    \noindent
+    Where $1/p_i$ is the probability of $x_i$, while Log base 2 measures how many bits (0 or 1) are needed to represent the outcome.
+\end{Def}
+
+\newpage 
+
+\begin{Example}[Generalizing Information Content]
+
+    \label{ex:card_info_content}
+
+    A heart drawn from a 52-card deck may be represented as follows:
+    \[I(\text{heart}) = \log_2\left(\dfrac{1}{13/52}\right) \approx 2 \text{ bits}\]
+
+    \noindent
+    More generally, we may redefine the information content as follows:
+
+    \[
+        I(\text{data}) = \log_2\left(\dfrac{1}{M \cdot (1/N)}\right) = \log_2 \left(\dfrac{N}{M}\right)
+    \]
+
+    \noindent
+    Where $N$ is the total number of possible outcomes (e.g., 52 cards in a deck), and $M$ is the number of outcomes that match 
+    the data (e.g., 13 hearts in a deck). Hence, $M\cdot (1/N)$ is the amount of information received from the data. Consider two more examples:
+    \begin{itemize}
+        \item \textbf{Information in one coin flip:} $\log_2\left(2/1\right) = 1$ bit ($N:=2, M:=1$).
+        \item \textbf{Rolling 2 dice:} $\log_2\left(36/1\right) \approx 5.17$ or 6 bits ($N:=36, M:=1$).
+    \end{itemize}
+\end{Example}
+
+\noindent
+The next definition touches on, ``how many bits do we need to represent all outcomes?'' 
+\begin{Def}[Entropy]
+
+    \label{def:entropy}
+
+    The \textbf{entropy} of a discrete random variable $X$ is the average amount of information contained in all possible outcomes of $X$.
+    It is defined as:
+    \Large
+    \[
+    H(X) := E(I(X)) = \sum_{i=1}^{N} p_i \cdot \log_2\left(\dfrac{1}{p_i}\right)
+    \]
+
+    \normalsize
+    \noindent
+    Where function $E$ is the expected value (i.e., average) of the information content $I(X)$ across all outcomes of $X$.
+\end{Def}
+
+\begin{Tip} For refreshers on $\sum$ consider our other text:
+    \href{https://github.com/Concise-Works/Discrete-Math}{Concise Works: Discrete Math}.
+\end{Tip}
+
+\newpage 
+
+
+
+\newpage 
+
+
+
