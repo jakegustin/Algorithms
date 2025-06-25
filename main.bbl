@@ -1,5 +1,12 @@
 \begin{thebibliography}{1}
 
+\bibitem{shoup2008computational_introduction_ntb_v2}
+Victor Shoup.
+\newblock {\em A Computational Introduction to Number Theory and Algebra}.
+\newblock Cambridge University Press, version 2 edition, 2008.
+\newblock Electronic version distributed under Creative Commons
+  Attribution-NonCommercial-NoDerivs 3.0.
+
 \bibitem{terman2017computation_structures}
 Chris Terman.
 \newblock 6.004 computation structures, 2017.
