@@ -1,46 +1,47 @@
 \vspace{-2em}
-\section{Computers \& Number Base Systems}
+\section{Number Base System Encodings}
  
+\noindent
+We now explore how to represent our base two or any other base number in a fixed-length encoding.
 
-\begin{Def}[Turing Machine]
+% \begin{Def}[Turing Machine]
 
-    A \textbf{Turing Machine} is a theoretical computational model used to describe the capabilities of a general-purpose \textbf{computer}. It consists of an infinite tape (memory) and a read/write head processing symbols on the tape, one at a time, according to a set of predefined rules. The machine moves left or right, reading or writing symbols, and changing states based on what it reads. 
+%     A \textbf{Turing Machine} is a theoretical computational model used to describe the capabilities of a general-purpose \textbf{computer}. It consists of an infinite tape (memory) and a read/write head processing symbols on the tape, one at a time, according to a set of predefined rules. The machine moves left or right, reading or writing symbols, and changing states based on what it reads. 
     
-    The machine \textbf{halts} once it reaches a final state or continues indefinitely. Serving as a flexible, \textbf{higher-order function} (a function which receives functions).
-\end{Def}
+%     The machine \textbf{halts} once it reaches a final state or continues indefinitely. Serving as a flexible, \textbf{higher-order function} (a function which receives functions).
+% \end{Def}
 
-\begin{Def}[Von Neumann Architecture]
+\begin{Def}[Number Base Fixed-length Encoding]
 
-    Modern computers operate on a model known as the \textbf{Von Neumann architecture}, which consists of three primary components:
-    \begin{enumerate}
-        \item \textbf{Memory}: Stores data and instructions as sequences of bits.
-        \item \textbf{Arithmetic and Logic Unit (ALU)}: Executes operations such as addition, subtraction, multiplication, and division on numbers stored in memory.
-        \item \textbf{Control Unit}: Directs the execution of instructions and manages the flow of data between memory and the ALU.
-    \end{enumerate}
-    
+    \label{def:number_base_fixed_length_encoding}
+
     \noindent
-    Where numbers are stored in memory cells, each cell holding an integer value represented in a fixed base, typically \(B = 2\), meaning \textbf{binary}. Where each digit is less than the base \(B\). We represent integers in memory as:
-    
+    Each memory cell in the computers stack is an integer value represented in a fixed base, typically \(B = 2\), 
+    meaning \textbf{binary}. Where each digit is less than the base \(B\). We represent integers in memory as:
+
     \[
     a = \sum_{i=0}^{k-1} a_i B^i
     \]
     
     \noindent
-    where \( a_i \) represents the individual digits, and \(B\) is the base. For large integers, computations may require manipulating several memory cells to store the full number.
+    Where \( a_i \) represents the individual digits, and \(B\) is the base. For large integers, computations may require manipulating several memory cells to store the full number.
 \end{Def}
 
 \noindent
-\textbf{Example:} Consider the integer $a = 13$, and let us represent it in base $B = 2$ (binary). We can express this number as a sum of powers of $2$, corresponding to the binary representation of $13$:
-    
+\begin{Example}[Binary \& Decimal Representations] 
+
+Consider the integer, $a = 13$, in base, $B := 2$ \textbf{(binary)}, using Definition \ref{def:number_base_fixed_length_encoding}:
+
+\Large
 \[
-a = 1 \cdot 2^3 + 1 \cdot 2^2 + 0 \cdot 2^1 + 1 \cdot 2^0 = 8 + 4 + 0 + 1 = 13
+a = \underbracket{(\text{\textcolor{red}{1}} \cdot 2^3) + (\text{\textcolor{red}{1}} \cdot 2^2) + (\text{\textcolor{red}{0}} \cdot 2^1) + (\text{\textcolor{red}{1}} \cdot 2^0)}_{\text{binary: \textcolor{red}{1101}}} = 8 + 4 + 0 + 1 = 13
 \]
+\normalsize
 
+\vspace{1em}
 \noindent
-In binary, this is represented as the sequence of digits: $a = (1101)_2$. Here, the coefficients $a_3 = 1$, $a_2 = 1$, $a_1 = 0$, and $a_0 = 1$ correspond to the binary digits of $13$.
-
-\noindent
-Similarly, if we want to represent $a = 45$ in base \textbf{$B = 10$ (decimal)}, we write:
+Here, the coefficients $a_3 = 1$, $a_2 = 1$, $a_1 = 0$, and $a_0 = 1$ correspond to the binary digits of $13$, where each 
+power of $2$ represents the binary place value. Similarly, if we want to represent, $a = 45$, in base, \textbf{$B := 10$ (decimal)}:
 
 \[
 a = 4 \cdot 10^1 + 5 \cdot 10^0 = 40 + 5 = 45
@@ -48,13 +49,19 @@ a = 4 \cdot 10^1 + 5 \cdot 10^0 = 40 + 5 = 45
 
 \noindent
 In this case, the coefficients $a_1 = 4$ and $a_0 = 5$ correspond to the decimal digits of $45$.
+\end{Example}
 
-
+\noindent
+We continue to common bases that one may encounter in computing and mathematics:
 \begin{Def}[Hexadecimal]
-    
-        \textbf{Hexadecimal} base $B=16$, using digits 0-9 and the letters A-F, where $A=10$, $B=11$, $C=12$, $D=13$, $E=14$, and $F=15$. Hexadecimal is commonly used in computing due to its compact representation of binary data. For example, a \textbf{byte} (8 bits) can be represented as two hexadecimal digits, simplifying the display of binary data.
+    \textbf{Hexadecimal} base $B=16$, using digits 0-9 and the letters A-F, where:
+    \begin{center}
+        $A=10$, $B=11$, $C=12$, $D=13$, $E=14$, and $F=15$.
+    \end{center} Hexadecimal is commonly used in computing due to its compact representation of binary data. E.g., 
+    A \underline{\textbf{byte} (8 bits)} can be represented as two hexadecimal digits, simplifying the display of binary data.
 \end{Def}
 
+\newpage
 
 \begin{theo}[Base $2\leftrightarrow16$ Conversion]
 
@@ -75,15 +82,15 @@ In this case, the coefficients $a_1 = 4$ and $a_0 = 5$ correspond to the decimal
         \item Finally, combine all $B$ groups.
     \end{enumerate}
     \noindent
-    Additionally we may also trim any leading 0's.
+    Additionally, we may also trim any leading 0's.
 \end{theo}
 
 \noindent
-\textbf{Example:}
+\begin{Example}[Base $2\leftrightarrow16$ Conversion]
     \begin{itemize}
         \item Binary to Hexadecimal:
         \[
-        101101111010_2 \quad \Rightarrow \quad \text{Group as } ([1011] \ [0111] \ [1010]) \quad \Rightarrow \quad B7A_{16}
+        101101111010_2 \quad \Rightarrow \quad \text{Group as } (\underbracket{[1011]}_{11} \ \underbracket{[0111]}_{7} \ \underbracket{[1010]}_{10}) \quad \Rightarrow \quad B7A_{16}
         \]
         \item Hexadecimal to Binary:
         \[
@@ -91,40 +98,56 @@ In this case, the coefficients $a_1 = 4$ and $a_0 = 5$ correspond to the decimal
         \]
         \noindent
     \end{itemize}
-    \noindent
 
-\newpage 
+\end{Example}
 
 \noindent
-The following definition is for completeness: applications of such a base are currently uncommon.
+The following definition is for completeness: applications of such a base are currently seldom.
 \begin{Def}[Unary]
     
-    \textbf{Unary}, base $B=1$. A system where each number is represented by a sequence of $B$ symbols. Where the number $n$ is represented by $n$ symbols. Often used in theoretical computer science to prove the existence of computable functions.
+    \textbf{Unary}, base $B=1$. A system where each number is represented by a sequence of the same symbol. 
+    This system is more theoretical than practical given today's systems.\\
+
+    \noindent
+    Given a toy unary system, we may represent numbers with a single symbol ``I'': $5 = \texttt{IIIII}$ or $2= \texttt{II}$. 
+    The absence of symbols may represent 0.
 \end{Def}
-\noindent
-\textbf{Example:} The number $5$ in unary is represented by $5$ symbols: $5 = \texttt{IIIII}$ or $2= \texttt{II}$. There is no concept of 0, the absence of symbols represents 0.\\
+
 \begin{Def}[Most \& Least Significant Bit]
     
-    In a binary number, the \textbf{most significant bit (MSB)} is the leftmost bit. The \textbf{least significant bit (LSB)} is the rightmost bit.
+    In a binary number, the \textbf{most significant bit (MSB)} is the leftmost bit. The \textbf{least significant bit (LSB)} is the rightmost bit.\\
+
+    \noindent
+    E.g., In the byte (8 bits), $[1111 \ 1110]_2$, the MSB = 1 and the LSB = 0.
 \end{Def}
-\textbf{Example:} Consider this byte (8 bits), $[1111 \ 1110]_2$, the MSB = 1 and the LSB = 0.  
 
 \begin{theo}[Adding Binary]
 
-    We may use the add and carry method alike decimal addition:
-    \textbf{Binary Addition Rules:}
-    \begin{itemize}
-        \item $0 + 0 = 0$
-        \item $0 + 1 = 1$
-        \item $1 + 0 = 1$
-        \item $1 + 1 = 0 \quad (\text{add 1 to the next digit (left)})$
-    \end{itemize}
+    We may use the add and carry method alike decimal addition:\\
+    
+    \begin{minipage}{0.30\textwidth}
+        \begin{itemize}
+            \item $0 + 0 = 0$
+            \item $0 + 1 = 1$
+        \end{itemize}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.58\textwidth}
+        \begin{itemize}
+            \item $1 + 0 = 1$
+            \item $1 + 1 = 0 \quad (\text{add 1 to the next digit (left)})$
+        \end{itemize}
+    \end{minipage}
+
+    \vspace{1em}
     \noindent
-    We call the last step, \textbf{carry}, as we carry our overflow to the next digit.
+    We call the last step a \textbf{carry}, as we carry our overflow to the next digit.
 \end{theo}
 
-    \noindent
-    \textbf{Example:} Adding $0010\ 0011\ 0100_2$ and $0100_2$:
+\begin{Example}[Binary Addition]
+    
+\noindent   
+Adding $0010\ 0011\ 0100_2$ and $0100_2$:
     \begin{equation*}
         \begin{array}{B3}
              1       &                             1000 &  \carry 0\textcolor{red}{1}00 \\
@@ -134,10 +157,9 @@ The following definition is for completeness: applications of such a base are cu
         \end{equation*}
 \noindent
 Where $[1\ 1000\ 0100]_2 + [0\ 0001\ 0100]_2 = [1\ 1001\ 1000]_2$.
+\end{Example}
 
-\newpage
-
-\begin{theo}[Signed Binary Numbers - Two's Complement]
+\begin{Def}[Signed Binary Numbers - Two's Complement]
     
     In a \textbf{two's complement system}, an $n$-bit signed (positive or negative) binary number can represent values in the range $[-2^{n-1}, 2^{n-1}-1]$. Then by most significant bit (MSB):
     \begin{itemize}
@@ -150,13 +172,17 @@ Where $[1\ 1000\ 0100]_2 + [0\ 0001\ 0100]_2 = [1\ 1001\ 1000]_2$.
         \item Take an unsigned binary number and invert all bits, turning 0's to 1's and 1's to 0's.
         \item Finally add 1 to the least significant bit.
     \end{enumerate}
-\end{theo}
-\textbf{Example:} Converting $-5$ into a 4-bit two's complement:
+\end{Def}
+
+\begin{Example}[Two's Complement Conversion]
+    
+    \noindent
+    Converting $-5$ into a 4-bit two's complement:
     \begin{align*}
         5 \rightarrow 0101 \quad & \text{(binary for 5)} \\
          1010 \quad & \text{(inverted)} \\
          1011 \quad & \text{(add 1)}
     \end{align*}
     Thus, $-5$ is represented as $1011$ in 4-bits under two's complement.
-
+\end{Example}
     

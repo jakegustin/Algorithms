@@ -17,18 +17,19 @@ The game we play in the following algorithms is to compute large integers withou
     We will use the notation $\|a\|$ to denote the number of digits in the integer $a$. For example, $\|123\| = 3$ and $\|0\| = 1$.
 \end{Func}
 
-\newpage
+\noindent
+\noindent
+Our first hurdle is long division as , which will set up long addition and subtraction for success.
+
+\noindent
+\textbf{Scenario - Grade School Long Division:} Goes as follows, take $\frac{a}{b}$. Find how times $b$ fits into $a$ evenly, $q$ times. Then $a-bq$ is our remainder $r$.
 \begin{Def}[Computer Integer Division]
 
     Our ALU  \underline{only returns the quotient after division.} We denote the quotient as $\floor*{a/b}:a,b\in\Z$.
 \end{Def}
 
-\noindent
-Our first hurdle is long division as , which will set up long addition and subtraction for success.
-
-\noindent
-\textbf{Scenario - Grade School Long Division:} Goes as follows, take $\frac{a}{b}$. Find how times $b$ fits into $a$ evenly, $q$ times. Then $a-bq$ is our remainder $r$.\\
-\textbf{Examples:} let $a=\{12,5,17,40,89\}$, $b=\{4,2,3,9,10\}$ respectively, and base $B=10$,
+\begin{Example}[Long Division]
+let $a=\{12,5,17,40,89\}$, $b=\{4,2,3,9,10\}$ respectively, and base $B=10$,
 \begin{center}
     (1.)\intlongdivision{12}{4} (2.)\intlongdivision{5}{2} (3.)\intlongdivision{17}{3} (4.)\intlongdivision{40}{9} (5.)\intlongdivision{89}{10} 
 \end{center}
@@ -51,6 +52,7 @@ create an algorithm to compute this process.\\
 \noindent
 Notice that as we increase the power of 2, the number of bits shift left towards a higher-order bit. Now, instead of calculating powers of 
 2, we shift bits left or right, to yield instantaneous results.
+\end{Example}
 
 \begin{theo}[Binary Bit Shifting (Powers of 2)]
 
