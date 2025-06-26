@@ -133,12 +133,65 @@ Let's discuss how we might go about representing our outcomes:
 
     \label{def:encoding}
     
-        An \textbf{encoding} is an unambiguous mapping from a set of symbols to a set of bit strings:
+        An \textbf{encoding} is an \underline{unambiguous} mapping from a set of symbols to a set of bit strings:
         \begin{itemize}
                 \item \textbf{Fixed-length encoding:} Uses a fixed number of bits to represent each symbol.
                 \item \textbf{Variable-length encoding:} Uses a different number of bits for each symbol.
         \end{itemize}
 \end{Def}
+
+\newpage 
+
+\begin{Example}[Encoding Four Symbols]
+
+    \label{ex:encoding_four}
+
+    Consider the four symbols $A, B, C, D$ and each possible encoding for them:\\
+
+    \noindent
+    \begin{center}
+   
+  \begin{tabular}{c c c c c c}
+    \toprule
+    & \multicolumn{4}{c}{\textbf{Encoding for each symbol}} & \textbf{Encoding for,} \\
+    &A & B & C & D & ``ABBA'' \\
+    \midrule
+    1.)&\texttt{00} & \texttt{01}  & \texttt{10}  & \texttt{11}  & \texttt{00 01 01 00} \\
+    2.)&\texttt{01} & \texttt{1}   & \texttt{000} & \texttt{001} & \texttt{01 1 1 01}  \\
+    3.)&\texttt{0}  & \texttt{1}   & \texttt{10}  & \texttt{11}  & \texttt{0 1 1 0}    \\
+    \bottomrule
+  \end{tabular}
+
+    \end{center}
+
+    \vspace{1em}
+  \noindent
+  (1) Is a fixed-length encoding, (2) is a variable-length encoding, and (3) is also a variable-length encoding and
+  uses fewer bits; \textbf{However}, it is ambiguous. Depending on how our program reads the string, it may group and misinterpret 
+  the bits.\\
+
+  \noindent
+  E.g., (3) could be, ``0 11 0'' (A D A) or `` 0 1 10'' (A B C). Hence, an invalid encoding.
+\end{Example}
+
+\begin{theo}[Binary Tree Encoding]
+
+    \label{theo:binary_tree_encoding}
+
+    Binary trees may represent unambiguous encodings, where each symbol is a leaf 
+    node, and each edge represents the next bit. Since each path is unique, the encoding is unambiguous.
+\end{theo}
+
+\begin{figure}[ht!]
+
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/comp/info/binary_tree_encoding.png}
+    \caption{Encodings start at the root, each edge taken writes the next bit.}
+
+    \label{fig:binary_tree_encoding}
+\end{figure}
+
+\newpage 
 
 \newpage 
 
