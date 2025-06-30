@@ -18,6 +18,8 @@
     as $\lfloor \log_2 |a| \rfloor + 1$ correlates to the highest power of 2 required to represent $a$.
 \end{theo}
 
+
+\vspace{-1em}
 \begin{Example}[Base 10 and Base 2 Lengths]
 
 \label{ex:log_length}
@@ -36,6 +38,7 @@ Additionally, if $a=0_2$ then $\|a\|=1$. as $a^0=1$.
 \end{Example}
 
 
+\vspace{-.5em}
 \begin{theo}[Splitting Higher and Lower Bits]
 
     Let $a$ be a binary number with $n$ bits. We can split $a$ into two numbers $A_1$ and $A_0$ with $n/2$ bits each,
@@ -45,25 +48,19 @@ Additionally, if $a=0_2$ then $\|a\|=1$. as $a^0=1$.
 
 \end{theo}
 
-\begin{Example}[Splitting Base 10]
+\vspace{-1em}
+\begin{Example}[Splitting \& Shifting Base 10 and 2]
 
 \label{ex:split_base}
 
-\vspace{-1em}
-Start with base 10, and split the first 5 digits of $a=745,562,010$.
-we take the length $\|a\|:=\floor{\log_{10}(745,562,010)}+1=9$, as $10^8\leq 745,562,010<10^9$:
+\vspace{-.5em}
+Given $a=745,562,010_{10}$, we split it in half as follows:
 \[ A_1=\frac{745,562,010}{10^{\ceil{9/2}}}=7455, \quad \text{ and } \quad A_0=745,562,010 \text{ mod } 10^{\ceil{9/2}}=62,010 \]
 \noindent
 We can use the same bit shifting technique from Theorem (\ref{theo:bit_shift}) for base 10:
 $$[745,562,010]_{10} \text{ right shift by 5, } [000,007,455]_{10}\ 62,010.$$ 
-\end{Example}
 
-\begin{Example}[Splitting Base 2]
-
-\label{ex:split_base2}
-
-\vspace{-1em}
-Continuing from Example (\ref{ex:split_base}), we can also split the same number in base 2.\\
+\noindent
 Given $[1111\ 1111\ 1001\ 1001_2]$ ($32665_{10}$), which is 16 bits long, we can split it in half, as follows:
 
 \[ 
@@ -73,6 +70,7 @@ A_1=\frac{1111\ 1111\ 1001\ 1001_2}{2^{\ceil{16/2}}}=1111\ 1111_2
 
 \vspace{-2em}
 \end{Example}
+
 
 
 \noindent
