@@ -192,8 +192,56 @@ Let's discuss how we might go about representing our outcomes:
 \end{figure}
 
 \newpage 
+\noindent
 
+\begin{theo}[Binary Tree Encoding -- Fixed-Length]
 
+    \label{theo:fixed_length_encoding}
+
+    \noindent
+    A fixed-length encoding is optimal when the number of symbols $n$ bear an equal probability of occurrence. 
+    In a binary tree encoding, all leaves have the same depth.\\
+
+    \noindent
+    I.e., for $n$ symbols, each have a probability of $1/n$, hence an entropy of:
+    \[
+    H(X) = \sum_{i=1}^{n} \left(\dfrac{1}{n} \cdot \log_2\left(\dfrac{1}{1/n}\right)\right) = \log_2(n)
+    \]
+\end{theo}
+
+\begin{figure}[ht!]
+
+    \centering
+    \includegraphics[width=\textwidth]{./Sections/comp/info/bt_fixed.png}
+    \caption{A fixed-length encoding for four symbols, represented as a binary tree.}
+
+    \label{fig:fixed_length_encoding}
+\end{figure}
+
+\begin{theo}[Choosing Variable-Length Encoding]
+
+    \label{theo:variable_length_encoding}
+
+    \noindent
+    If a symbol $A$ has the high probability of occurrence, it should be represented with the shortest possible bit string.
+    Vice versa, if symbol $B$ has the low probability, then it should receive the longest bit string.\\
+
+    \noindent
+    E.g., in Figure (\ref{fig:binary_tree_encoding}), the symbol $B$ may be assumed to have the highest probability of occurrence,
+    with $C$ and $D$ having the lowest.
+\end{theo}
+
+\begin{theo}[Variable vs. Fixed-Length Encoding]
+
+    \label{theo:variable_vs_fixed_length_encoding}
+
+    \noindent
+    Though we would like to use a variable-length encoding in theory, a fixed-length encoding for complex 
+    data structures is provides simplicity and scalability.
+\end{theo}
+
+\noindent
+Moving forward we focus on such fixed-length encodings.
 
 \newpage 
 
