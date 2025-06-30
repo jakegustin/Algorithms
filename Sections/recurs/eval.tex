@@ -369,7 +369,6 @@ To illustrate the above proof, we can draw a recursion tree for merge sort:\\
 
     \label{theo:iterative}
 
-    \vspace{-1em}
     Given a function $T(n)$ which has a recurrence relation---meaning it calls 
     upon itself in its own definition---we may repeatedly substitute such self-references
     back into $T(n)$.
@@ -380,6 +379,7 @@ To illustrate the above proof, we can draw a recursion tree for merge sort:\\
 \end{theo}
 \begin{Proof}[Iterative Substitution Method (plug-and-chug) - MergeSort]
 
+    \vspace{-.5em}
     Merge sort has the recurrence relation $T(n) = 2T(n/2) + \Theta(n)$, for which the base case is $T(1)$.
     We substitute $T(n/2)$ into $T(n)$:
     \begin{align*}
@@ -416,13 +416,16 @@ Now we identify what makes our recurrence $T(n/2^k) = T(1)$, i.e., where is $n/2
 \end{align*}
 Hence, merge sort has a time complexity of $O(n\log n)$.
 \end{Proof}
+\begin{Tip}
+    Live Demo: \href{https://youtu.be/AJmDcuU42JY?t=2526}{Evaluating Recursion -- Master Method}
+\end{Tip}
 
 \newpage 
 
 \noindent
 
 \subsection{Efficiency of Multiplication}
-Recall Section (\ref{sec:effic}), which discusses manipulating base 2. There is a problem when trying to 
+Recall Section (\ref{sec:base_encodings}), which discusses manipulating base 2. There is a problem when trying to 
 multiply two $n$-bit integers, as we have to compute $n^2$ products, which is inefficient. We can attempt to reduce the number of products by using a divide-and-conquer approach.\\
 \[A_1 2^{\ceil{n/2}}+A_0=:a \quad \times \quad b:= B_1 2^{\ceil{n/2}}+B_0.\]
 \noindent
@@ -470,6 +473,7 @@ We need to compute 4 products, $(A_1B_1)$, $(A_1B_0), (B_1A_0)$, and $(A_0B_0)$.
     \textbf{Time Complexity:} $O(n^2)$, as in our master method $T(n)=4T(n/2)+O(n)$, Theorem (\ref{theo:master}).\\
     \textbf{Space Complexity:} $O(n)$, storing $n+n$ bits for $a$ and $b$, while we track $O(\log_2 n)$ depth in the recursion stack.
 \end{Func}
+
 
 \noindent
 As one might of noticed, we didn't improve the time complexity whatsoever. This is where we employ a clever mathematical trick.
@@ -521,12 +525,6 @@ We employ the above strategy, which is \textbf{Karatsuba's multiplication algori
     \textbf{Time Complexity:} $O(n^{\log_2 3}) \approx O(n^{1.585})$, as in our master method $T(n)=3T(n/2)+O(n)$, Theorem (\ref{theo:master}).\\
     \textbf{Space Complexity:} $O(n)$.
 \end{Func}
-
-\newpage
-
-\begin{Tip}
-    Live Demo: \url{https://youtu.be/Ob8SM0fz6p0?si=Z4PZQDWOXa7deEHA}
-\end{Tip}
 
 \newpage 
 

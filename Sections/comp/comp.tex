@@ -1,5 +1,7 @@
 \vspace{-2em}
 \section{Number Base System Encodings}
+
+\label{sec:base_encodings}
  
 \noindent
 We now explore how to represent our base two or any other base number in a fixed-length encoding.
@@ -124,7 +126,7 @@ The following definition is for completeness: applications of such a base are cu
 \begin{theo}[Adding Binary]
 
     We may use the add and carry method alike decimal addition:\\
-    
+
     \begin{minipage}{0.30\textwidth}
         \begin{itemize}
             \item $0 + 0 = 0$
@@ -185,4 +187,50 @@ Where $[1\ 1000\ 0100]_2 + [0\ 0001\ 0100]_2 = [1\ 1001\ 1000]_2$.
     \end{align*}
     Thus, $-5$ is represented as $1011$ in 4-bits under two's complement.
 \end{Example}
+
+\begin{Def}[Big \& Little Endian]
     
+    \textbf{Big Endian} and \textbf{Little Endian} are two ways of storing multi-byte data in memory:
+    \begin{itemize}
+        \item \textbf{Big Endian:} The most significant byte (MSB) is stored at the lowest memory address 
+        (How English reads and writes).
+        \item \textbf{Little Endian:} The least significant byte (LSB) is stored at the lowest memory address.
+    \end{itemize}
+
+    \noindent
+    Subsequent bytes are stored in increasing order. \textbf{Note:} A single byte has no endianness.
+\end{Def}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{sections/comp/big_endian.png}
+    \caption{Big Endian vs Little Endian Representation of $0xaabbccdd$. Recall that $0x$ denotes a hexadecimal number,
+    and $aa$ is a whole byte (8 bits) in hexadecimal.}
+\end{figure}
+
+\begin{Tip} The name ``endian'' comes from \emph{Gulliver's Travels} by Jonathan Swift, where
+    Gulliver encounters two factions of people while traveling to the island of Lilliput. 
+    One faction, the \textbf{Big-Endian}, believes that eggs should be cracked at the big end, 
+    while the other faction, the \textbf{Little-Endian}, believes that eggs should be cracked at the little end.
+\end{Tip}
+
+    
+\newpage
+
+\begin{theo}[Commincation \& Endianess]
+
+    \label{theo:communication_endianess}
+
+    When communicating between systems, it is crucial to agree on the endianness of the data being sent. 
+    If one system uses big-endian and the other uses little-endian, the data will be misinterpreted. 
+    E.g., According to \href{https://datatracker.ietf.org/doc/html/rfc793}{RFC 793}, all the fields in network 
+    headers must be big-endian.\\
+
+    \noindent
+    \rule{\textwidth}{0.4pt}\\
+    \noindent
+    \textbf{Note:} When debugging one might encounter an issue with endianness. Suppose we read the little-endian value
+    $0xaabbccdd$ two bytes at a time. This gives us $A_1 = 0xccdd$ and $A_2 = 0xaabb$. The computer read both values 
+    $B_1 = ddcc$ and $B_2 = bbaa$, translating it before sending it back to the debugger. This can cause issues as this is far beyond 
+    the original value.
+\end{theo}

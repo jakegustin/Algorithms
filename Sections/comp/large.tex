@@ -14,12 +14,12 @@ we will re-visit encodings at the bit \& byte level of abstraction.
 The game we play in the following algorithms is to compute large integers without exceeding wordsize. Moving forward, we assume our machine is a typical 64-bit system.
 \begin{Func}[Length of digits - $\|a\|$]
 
+    \vspace{-.5em}
     We will use the notation $\|a\|$ to denote the number of digits in the integer $a$. For example, $\|123\| = 3$ and $\|0\| = 1$.
 \end{Func}
 
 \noindent
-\noindent
-Our first hurdle is long division as , which will set up long addition and subtraction for success.
+Our first hurdle is long division as , which will set up long addition and subtraction for success.\\
 
 \noindent
 \textbf{Scenario - Grade School Long Division:} Goes as follows, take $\frac{a}{b}$. Find how times $b$ fits into $a$ evenly, $q$ times. Then $a-bq$ is our remainder $r$.
