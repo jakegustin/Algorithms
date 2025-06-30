@@ -368,6 +368,8 @@ To illustrate the above proof, we can draw a recursion tree for merge sort:\\
 \begin{theo}[Iterative Substitution Method (plug-and-chug)]
 
     \label{theo:iterative}
+
+    \vspace{-1em}
     Given a function $T(n)$ which has a recurrence relation---meaning it calls 
     upon itself in its own definition---we may repeatedly substitute such self-references
     back into $T(n)$.
@@ -413,8 +415,114 @@ Now we identify what makes our recurrence $T(n/2^k) = T(1)$, i.e., where is $n/2
     &= \Theta(n\log n);
 \end{align*}
 Hence, merge sort has a time complexity of $O(n\log n)$.
-
 \end{Proof}
+
+\newpage 
+
+\noindent
+
+\subsection{Efficiency of Multiplication}
+Recall Section (\ref{sec:effic}), which discusses manipulating base 2. There is a problem when trying to 
+multiply two $n$-bit integers, as we have to compute $n^2$ products, which is inefficient. We can attempt to reduce the number of products by using a divide-and-conquer approach.\\
+\[A_1 2^{\ceil{n/2}}+A_0=:a \quad \times \quad b:= B_1 2^{\ceil{n/2}}+B_0.\]
+\noindent
+Then we have,
+\begin{align*}
+    a\cdot b &=(A_1 2^{\ceil{n/2}}+A_0)(B_1 2^{\ceil{n/2}}+B_0)\\
+    &=(A_1 2^{\ceil{n/2}})(B_1 2^{\ceil{n/2}})+(A_1 2^{\ceil{n/2}})B_0+(B_1 2^{\ceil{n/2}})A_0+A_0B_0\\
+    &=(A_1B_1)2^{n}+(A_1B_0+B_1A_0)2^{\ceil{n/2}}+A_0B_0.
+\end{align*}
+\noindent
+We need to compute 4 products, $(A_1B_1)$, $(A_1B_0), (B_1A_0)$, and $(A_0B_0)$. We now attempt to solve them independently:
+
+\begin{Func}[Multiplication of $n$-bit Integers - \textit{Multiply()}]
+    Let $a$ and $b$ be $n$-bit integers of base 2. This algorithm recursively computes the product of $a$ and $b$ using a straightforward divide-and-conquer approach.
+
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} $n, a, b$ (where $a$ and $b$ are $n$-bit integers)\\
+    \textbf{Output:} The product $a \times b$\\
+
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        \SetKwProg{Fn}{Function}{:}{\KwRet{}}
+        \Fn{\textit{Multiply}($n, a, b$)}{
+            \If{$n < 2$}{
+                \textbf{return} the result of grade-school multiplication for $a \times b$\;
+            }
+            \Else{
+                $A_1 \gets a \div 2^{n/2};\ A_0 \gets a \bmod 2^{n/2}$\;
+                $B_1 \gets b \div 2^{n/2};\ B_0 \gets b \bmod 2^{n/2}$\;
+
+                \vspace{.5em}
+                $p_1 \gets \textit{Multiply}(n/2, A_1, B_1)$\;
+                $p_2 \gets \textit{Multiply}(n/2, A_1, B_0)$\;
+                $p_3 \gets \textit{Multiply}(n/2, A_0, B_1)$\;
+                $p_4 \gets \textit{Multiply}(n/2, A_0, B_0)$\;
+
+                \textbf{return} $p_1 \cdot 2^n + (p_2 + p_3) \cdot 2^{n/2} + p_4$\;
+            }
+        }
+    \end{algorithm}
+    \noindent\rule{\textwidth}{0.4pt}
+
+    \noindent
+    \textbf{Time Complexity:} $O(n^2)$, as in our master method $T(n)=4T(n/2)+O(n)$, Theorem (\ref{theo:master}).\\
+    \textbf{Space Complexity:} $O(n)$, storing $n+n$ bits for $a$ and $b$, while we track $O(\log_2 n)$ depth in the recursion stack.
+\end{Func}
+
+\noindent
+As one might of noticed, we didn't improve the time complexity whatsoever. This is where we employ a clever mathematical trick.
+\newpage
+
+\label{page:karatsuba}
+\noindent
+Observe the full term, $c:=(\textcolor{red}{A_1B_1})2^{n}+(\textcolor{blue}{A_1B_0+B_1A_0})2^{\ceil{n/2}}+\textcolor{red}{A_0B_0}.$ Say we computed some term,
+\[z:=(A_1+A_0)(B_1+B_0)=(\textcolor{red}{A_1B_1})+\textcolor{blue}{(A_1B_0)+(B_1A_0)}+(\textcolor{red}{A_0B_0}).\]
+\noindent
+Notice how $z$ also contains $(A_1B_1)$ and $(A_0B_0)$, which are also in $c$. Say
+$m=(A_1B_0)+(B_1A_0)$. Let $x:=(A_1B_1)$ and $y:=(A_0B_0)$ then $z-x-y=m$. This reduces the number of multiplications to 3, as we only compute
+ $(A_1B_1)$, $(A_0B_0)$ once, and then $z$.\\
+
+\noindent
+We employ the above strategy, which is \textbf{Karatsuba's multiplication algorithm}:
+
+\begin{Func}[Karatsuba's Multiplication Algorithm - \textit{KMul()}]
+    Let $a$ and $b$ be $n$-bit integers of base 2. This algorithm recursively computes the product of $a$ and $b$ using a divide-and-conquer approach.
+
+    \vspace{.5em}
+    \noindent
+    \textbf{Input:} $n, a, b$ (where $a$ and $b$ are $n$-bit integers)\\
+    \textbf{Output:} The product $a \times b$\\
+
+    \begin{algorithm}[H]
+        \SetAlgoLined
+        \SetKwProg{Fn}{Function}{:}{\KwRet{}}
+        \Fn{\textit{Multiply}($n, a, b$)}{
+            \If{$n < 2$}{
+                \textbf{return} the result of grade-school multiplication for $a \times b$\;
+            }
+            \Else{
+                $A_1 \gets a \div 2^{n/2};\ A_0 \gets a \bmod 2^{n/2}$\;
+                $B_1 \gets b \div 2^{n/2};\ B_0 \gets b \bmod 2^{n/2}$\;
+
+                \vspace{.5em}
+                $x \gets \textit{Multiply}(n/2, A_1, B_1)$\;
+                $y \gets \textit{Multiply}(n/2, A_0, B_0)$\;
+                $z \gets \textit{Multiply}(n/2, A_1 + A_0, B_1 + B_0)$\;
+
+                \textbf{return} $x \cdot 2^n + (z - x - y) \cdot 2^{n/2} + y$\;
+            }
+        }
+    \end{algorithm}
+    \noindent\rule{\textwidth}{0.4pt}
+
+    \noindent
+    \textbf{Time Complexity:} $O(n^{\log_2 3}) \approx O(n^{1.585})$, as in our master method $T(n)=3T(n/2)+O(n)$, Theorem (\ref{theo:master}).\\
+    \textbf{Space Complexity:} $O(n)$.
+\end{Func}
+
+\newpage
 
 \begin{Tip}
     Live Demo: \url{https://youtu.be/Ob8SM0fz6p0?si=Z4PZQDWOXa7deEHA}

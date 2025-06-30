@@ -345,6 +345,8 @@ We create an algorithm to compute this process in the following function:
 
 \newpage
 \begin{Func}[Decimal to Binary Conversion - \textit{DecToBin()}]
+
+    \vspace{-.5em}
     This function converts a decimal number $n$ into its binary equivalent by repeatedly dividing the decimal number by 2 and recording the remainders.
 
     \vspace{.5em}
@@ -373,7 +375,11 @@ We create an algorithm to compute this process in the following function:
 \end{Func}
 
 \noindent
-\textbf{Example:} Converting 89 to binary given the above function:
+
+\begin{Example}[Decimal to Binary Conversion]
+
+    \vspace{-1em}
+    Let $n = 89_{10}$. We apply the function \textit{DecToBin($n$)} to show $89_{10} = 1011001_2$:
 \begin{align*}
     89_{10} &\div 2 = 44 \quad \text{rem} \ 1, \longleftarrow \textbf{ LSB}&   \\
     44_{10} &\div 2 = 22 \quad \text{rem} \ 0,& \\
@@ -383,7 +389,9 @@ We create an algorithm to compute this process in the following function:
     2_{10} &\div 2 = 1 \quad \ \text{rem} \ 0,& \\
     1_{10} &\div 2 = 0 \quad \ \text{rem} \ 1.  \longleftarrow \textbf{ MSB} &  
 \end{align*}
-Thus, $89_{10} = 1011001_2$.
+
+\vspace{-2em}
+\end{Example}
 
 \begin{theo}[Time Complexity of Basic Arithmetic Operations]
     
