@@ -351,8 +351,38 @@ We will wrap up such with a final analogy that uses numbers:
         \includegraphics[width=\textwidth]{./Sections/circuits/vtc.png}
         \caption{A Voltage Transfer Characteristics (VTC) diagram, showing the input-output relationship of a device. 
         The horizontal axis represents the input voltage, while the vertical axis represents the output voltage. 
-        The invalid output regions are shaded in red. The VTC is the bold line that crosses each point. \textbf{Note:} We don't care about the output when the input 
-        is already in the forbidden zone, hence the output is undefined in that region. Moreover, the VTC is allowed flexibility
-        to fluctuate in such regions.}
+        The invalid output regions are shaded in red. The VTC is the bold line that crosses each point. Possible points: (1-2) received a
+        low input and output reading, (3-6) undefined, and (7-8) high input and output reading. E.g., an inverter device (inverts logic) would be a vertical flip of the above VTC curve.}
         \label{fig:vtc}
     \end{figure}
+
+    \noindent
+    Notice how in Figure (\ref{fig:vtc}) the center white region is taller than it is wide:
+    \begin{theo}[Properties of VTC -- Gain \& Nonlinearity]
+
+    \label{theo:vtc_gain_nonlinearity}
+    \noindent
+    Since more leeway is allowed for input voltages, the following suffices $V_{OH} - V_{OL} > V_{IH} - V_{IL}$.
+    We can compactly write this as:
+    \begin{itemize}
+        \item \textbf{Width of the transition (x-axis):} 
+        $\Delta V_{in} = V_{IH} - V_{IL}$.
+        \item \textbf{Height of the swing (y-axis):} 
+        $\Delta V_{out} = V_{OH} - V_{OL}$.
+    \end{itemize}
+
+    \noindent
+    Since $\Delta V_{out} > \Delta V_{in}$, the \textbf{gain} (average slope) satisfies:
+    $
+        \text{(avg.) gain}
+        = \dfrac{\Delta V_{out}}{\Delta V_{in}}
+        > 1.
+    $
+
+    \medskip
+
+    \noindent
+    Because of this ratio (gain $> 1$) small deviations (wiggles) in the input are amplified (exaggerated) in the output,
+    which \textbf{regenerates} the signal (i.e., the output is a reinforced version of the input). The slope of the VTC
+    must be \textbf{nonlinear} to ensure flat stable regions around 0 and 1 bits, and steep transitions between the forbidden zones (as seen in Figure \ref{fig:vtc}).
+    \end{theo}
