@@ -217,9 +217,10 @@ We will wrap up such with a final analogy that uses numbers:
         \]
 
         \noindent
-        Where $V_L$ is the lower bound and $V_H$ is the upper bound of the forbidden zone.
+        Where $V_L$ (low-level) and $V_H$ (high-level) are the region markers for valid voltage distinction.
     \end{Def}
 
+    \vspace{-.5em}
     \begin{Def}[Combinational Device]
 
         \label{def:combinational_device}
@@ -293,3 +294,65 @@ We will wrap up such with a final analogy that uses numbers:
     \newpage 
 
     \noindent
+    We offer a simple fix to this problem, by loosening up the thresholds during certain phases:
+
+    \begin{Def}[Noise Margins]
+
+        \noindent
+        To mitigate noise from outputs of a combinational device, we decrease the \emph{forbidden zone} (FZ) for the 
+        receiving device. The overlap between the output's FZ and the input's FZ is called the \textbf{noise margin}.
+        Concretely, we define the following:\\
+
+        \noindent
+        \includegraphics[width=\textwidth]{./Sections/circuits/noise_margin.png}
+
+        \noindent
+        Where, $V_{OL}$ and $V_{OH}$ are the output bounds, while $V_{IL}$ and $V_{IH}$ are the new input bounds.
+        Then $\mathrm{NM}_0$ is the noise margin for the 0-bit, and $\mathrm{NM}_1$ is the noise margin for the 1-bit. The smallest 
+        of the two is called the \textbf{noise immunity} of the device (i.e., the worst case that must be supported).
+    \end{Def}
+
+
+    \noindent
+    Now when building our systems or combinational devices we must standardize how a particular device behaves on 
+    inputs and outputs to account for the worst case noise.
+    \begin{Def}[Voltage Transfer Characteristics (VTC)]
+
+        \label{def:vtc}
+
+        \noindent
+        The \textbf{Voltage Transfer Characteristics} (VTC) is a graphical representation which shows how a device's inputs
+        affect its outputs after stabilization. The horizontal axis measures the input voltage, while the vertical axis measures the output voltage.
+
+        \begin{itemize}
+            \item \textbf{Horizontal Axis ($V_{in}$):} Contains $V_{IL}$ and $V_{IH}$:
+            \[V_{in} \leq V_{IL} \text{ (0-bit)} \quad \text{and} \quad V_{in} \geq V_{IH} \text{ (1-bit)}\]
+            \noindent
+            Otherwise, the input is in the forbidden zone.
+            \item \textbf{Vertical Axis ($V_{out}$):} Contains $V_{OL}$ and $V_{OH}$:
+            \[V_{OL} < \text{Invalid Outputs} < V_{OH} \quad \text{such that} \quad V_{in} < V_{OL}, V_{in} > V_{OH}\]
+            \noindent
+            I.e., if the input is already in the forbidden zone, the output is irrelevant.
+        \end{itemize}
+
+        \noindent
+        It's given that the device must perform properly such that a $V_{in} > V_{IH}$ will always yield a $V_{out} > V_{OH}$, and a $V_{in} < V_{IL}$ will always yield a $V_{out} < V_{OL}$.
+        Each device has its own VTC, plotting the input-output relationship. The resulting curve is the \textbf{VTC} of the device.
+    \end{Def}
+
+    \noindent
+    \underline{Diagram next page.}
+
+    \newpage
+
+    \begin{figure}[ht!]
+
+        \centering
+        \includegraphics[width=\textwidth]{./Sections/circuits/vtc.png}
+        \caption{A Voltage Transfer Characteristics (VTC) diagram, showing the input-output relationship of a device. 
+        The horizontal axis represents the input voltage, while the vertical axis represents the output voltage. 
+        The invalid output regions are shaded in red. The VTC is the bold line that crosses each point. \textbf{Note:} We don't care about the output when the input 
+        is already in the forbidden zone, hence the output is undefined in that region. Moreover, the VTC is allowed flexibility
+        to fluctuate in such regions.}
+        \label{fig:vtc}
+    \end{figure}
