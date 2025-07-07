@@ -8,45 +8,45 @@ Database file #1: ref.bib
 Warning--entry type for "terman2017computation_structures" isn't style-file defined
 --line 57 of file ref.bib
 Warning--to sort, need author or key in what_is_transistor2022
-You've used 6 entries,
+You've used 7 entries,
             2118 wiz_defined-function locations,
-            527 strings with 4776 characters,
-and the built_in function-call counts, 1252 in all, are:
-= -- 121
-> -- 36
+            532 strings with 5097 characters,
+and the built_in function-call counts, 1465 in all, are:
+= -- 142
+> -- 43
 < -- 0
-+ -- 17
-- -- 10
-* -- 40
-:= -- 207
-add.period$ -- 20
-call.type$ -- 6
-change.case$ -- 23
++ -- 20
+- -- 12
+* -- 45
+:= -- 243
+add.period$ -- 24
+call.type$ -- 7
+change.case$ -- 27
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 42
-empty$ -- 134
-format.name$ -- 10
-if$ -- 277
+cite$ -- 8
+duplicate$ -- 49
+empty$ -- 156
+format.name$ -- 12
+if$ -- 324
 int.to.chr$ -- 0
-int.to.str$ -- 6
+int.to.str$ -- 7
 missing$ -- 0
-newline$ -- 35
-num.names$ -- 10
-pop$ -- 49
+newline$ -- 41
+num.names$ -- 12
+pop$ -- 59
 preamble$ -- 1
-purify$ -- 17
+purify$ -- 20
 quote$ -- 0
-skip$ -- 39
+skip$ -- 44
 stack$ -- 0
-substring$ -- 31
-swap$ -- 6
+substring$ -- 36
+swap$ -- 7
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 24
+type$ -- 28
 warning$ -- 1
-while$ -- 10
-width$ -- 7
-write$ -- 66
+while$ -- 12
+width$ -- 8
+write$ -- 77
 (There were 2 warnings)
