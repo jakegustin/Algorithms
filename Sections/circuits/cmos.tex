@@ -229,21 +229,21 @@ Let's visualize what we've learned so far:
 
     A MOSFET \textbf{N-Channel Enhancement} is constructed as follows:
     \begin{itemize}
-      \item \textbf{Substrate:} A base-layer of P-type material from which all parts will build upon (i.e., foundation of our house).
+      \item \textbf{Substrate:} A base-layer of P-type material from which all parts will build upon.
       \item \textbf{Source \& Drain:} Two motes are dug at either ends of the substrate and filled with N-type material;
       One for our \textbf{source} and the other for our \textbf{drain}. Two metal contacts are placed on these motes (our terminals);
       A body of metal is connected to the bottom of the substrate (\textbf{base-terminal}), which connects to the source terminal.
-      \item \textbf{Gate:} A layer of silicon dioxide (SiO$_2$) blankets the top of the substrate and other semiconductor parts.
-      A metal contact pad is placed between the motes on top of the SiO$_2$ layer, forming the \textbf{gate terminal}. Since 
-      SiO$_2$ is a superb insulator, it prevents the gate terminal from touching the substrate.
-      \item \textbf{Channeling:} SiO$_2$ is a \textbf{dielectric} material, meaning that when a charge is applied to one side, the opposite charge builds on the other side, 
-      creating an electric field. When a positive charge is applied, it attracts negative electrons from the other side, creating a \textbf{channel} (i.e., bridge) 
-      between the two motes (source to drain), allowing current to flow.
+      \item \textbf{Gate:} A metal contact pad is placed between the motes on top of the SiO$_2$ layer, forming the \textbf{gate terminal}.
+      A layer of silicon dioxide (SiO$_2$) is sandwiched between the gate and the substrate.
+      Since SiO$_2$ is a superb insulator, it prevents the gate terminal from touching/interacting with the substrate.
+      \item \textbf{Channeling:} SiO$_2$ is a \textbf{dielectric} material, meaning that when a charge is applied to one side, the opposite charge builds on the other side,
+      creating an electric field. When a positive charge is applied, it attracts negative electrons from the other side, creating a \textbf{channel} (i.e., bridge)
+      between the two motes (source to drain), allowing current.
     \end{itemize}
     
     \noindent
     The \textbf{M}etal from gates, the \textbf{O}xide from the SiO$_2$ layer, the \textbf{S}emiconductor from the substrate and motes, and 
-    the \textbf{FET} from the field-effect, gives us the name \textbf{MOSFET}.\\
+    the \textbf{FET} from the field-effect, gives us the name \textbf{MOSFET}.
 
     \noindent
     \rule{\textwidth}{0.4pt}\\
@@ -251,3 +251,20 @@ Let's visualize what we've learned so far:
     For \textbf{N-Channel Depletion}, A \emph{thin} N-type substrate-channel is already present, bridging the two motes (source and drain) together.
     Once a negative charge is applied to the gate, positive holes are attracted, weakening the channel; This effectively stops the flow of current.
 \end{Def}
+
+\vspace{-1em}
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=.91\textwidth]{Sections/circuits/mosfet.png}
+  \caption{N-Channel Enhancement (off). Negative battery side to source, positive to drain.}
+  \label{fig:mosfet}
+\end{figure}
+
+\newpage
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=.91\textwidth]{Sections/circuits/mosfet-on.png}
+  \caption{N-Channel Enhancement (on). Negative battery side to gate, positive to source.}
+  \label{fig:mosfet-on}
+\end{figure}
