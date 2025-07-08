@@ -131,7 +131,8 @@ Now to what we've been waiting for:
     are interested in two types of doping \cite{engineermindset2024mosfet}:
     \begin{itemize}
         \item \textbf{N-type:} When adding an element like phosphorus (P), EC of (2, 8, 5), is added to the silicon lattice, one electron goes unused after the covalent bonding. This free electron creates a \textbf{negative charge carrier} (hence N-type).
-        \item \textbf{P-type:} Conversely, adding boron (B), EC of (2, 8, 3), creates a \textbf{positive charge carrier} (hence P-type), as boron won't be able to share an electron equal amongst all its neighbors, leaving a \textbf{hole} (an empty space where an electron could be) in the lattice.
+        \item \textbf{P-type:} Conversely, adding boron (B), EC of (2, 8, 3), creates a \textbf{positive charge carrier} (hence P-type). This is because boron won't have 
+        enough to share with its neighbors, causing \textbf{holes} (absence of electrons), overall lowering the density of electrons.
     \end{itemize}
 \end{Def}
 
@@ -163,8 +164,40 @@ Let's visualize what we've learned so far:
 \noindent
 \begin{figure}[ht!] 
   \centering
-  \includegraphics[width=\textwidth]{Sections/circuits/doping2.png}
-  \caption{(1) Shows a P-type silicon lattice, where boron (B) atoms are added, creating holes in the lattice.
-  (2) Shows an N-type silicon lattice, where phosphorus (P) atoms are added, creating free electrons.}
+  \includegraphics[width=\textwidth]{Sections/circuits/n-type.png}
+  \caption{(1) Shows a single phosphorus atom (P) and its valence electrons (5 black dots).
+  (2) A silicon lattice where phosphorus is doped, creating free electrons (thick dots with holes). }
   \label{fig:doping2}
+\end{figure}
+
+\vspace{-1em}
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{Sections/circuits/p-type.png}
+  \caption{(1) Shows a single boron atom (B) and its valence electrons (3 black dots).
+  (2) Shows a flattened silicon lattice where boron is doped, creating holes (halo dots). }
+  \label{fig:doping3}
+\end{figure}
+
+\newpage 
+
+\noindent
+Now to create our channel for electricity to flow:
+\begin{Def}[N-type \& P-type Junctions]
+
+    \label{def:n_p_junctions}
+
+   When a N-type and P-type material are placed next to each other 
+   creates a \textbf{PN-junction}. At this junction, we get a \textbf{depletion region},
+   where N-type electrons and P-type holes cross; This leaves a 
+   slightly positive region on the N-type side and a slightly negative region on the P-type side.
+   This manifests an electric field, creating a barrier, preventing further flow across the junction \cite{engineermindset2024mosfet}.
+\end{Def}
+
+\noindent
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{Sections/circuits/pn-junction.png}
+  \caption{A PN-junction, where the depletion region is shown in blue. The electric field is shown as arrows.}
+  \label{fig:pn-junction}
 \end{figure}
