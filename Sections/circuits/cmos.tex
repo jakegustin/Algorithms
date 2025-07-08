@@ -198,6 +198,47 @@ Now to create our channel for electricity to flow:
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=\textwidth]{Sections/circuits/pn-junction.png}
-  \caption{A PN-junction, where the depletion region is shown in blue. The electric field is shown as arrows.}
+  \caption{A PN-junction, where the depletion region is shown in gray.}
   \label{fig:pn-junction}
 \end{figure}
+
+\begin{Def}[MOSFET -- High-Level Overview]
+
+    \label{def:mosfet_overview}
+
+    A \textbf{MOSFET} is a type of FET, there are two types of MOSFETs:
+    \begin{itemize}
+      \item \textbf{N-Channel:} Requires a \textbf{positive} voltage to the gate terminal to activate.
+      \item \textbf{P-Channel:} Requires a \textbf{negative} voltage to the gate terminal to activate.
+    \end{itemize}
+    \noindent
+    The starting state of which may be of two types:
+    \begin{itemize}
+      \item \textbf{Enhancement:} These are normally \textbf{off} (i.e., no current flows), until activated.
+      \item \textbf{Depletion:} These are normally \textbf{on} (i.e., current flows), until activated.
+    \end{itemize}
+  \end{Def}
+
+\newpage 
+
+\begin{Def}[MOSFET -- Anatomy of N-Channel]
+
+    \label{def:mosfet}
+
+    A MOSFET is constructed as follows:
+    \begin{itemize}
+      \item \textbf{Substrate:} A base-layer of P-type material from which all parts will build upon (i.e., foundation of our house).
+      \item \textbf{Source \& Drain:} Two motes are dug at either ends of the substrate and filled with N-type material;
+      One for our \textbf{source} and the other for our \textbf{drain}. Two metal contacts are placed on these motes (our terminals);
+      A body of metal is connected to the bottom of the substrate (\textbf{base-terminal}), which connects to the source terminal.
+      \item \textbf{Gate:} A layer of silicon dioxide (SiO$_2$) blankets the top of the substrate and other semiconductor parts.
+      A metal contact pad is placed between the motes on top of the SiO$_2$ layer, forming the \textbf{gate terminal}.
+    \end{itemize}
+    we start with a P-type base-layer, which acts as a buffer between two 
+    N-type layer motes on either side; These motes create a PN-junction wit the base-layer. Metal is connected 
+    to the N-type motes, one for source and sink (Drain). Another metal body is connected to the bottom of the base-layer
+    connected to the source. A layer of Silicon dioxide (SiO$_2$) blankets the top of the base-layer, covering the source and drain.
+    a metal contact pad is placed above the SiO$_2$ layer, which forms the gate terminal.
+    The silicon dioxide is superb insulator, keeping the gate terminal from touching the base-layer. SiO$_2$ 
+    is also \textbf{Dielectric}, meaning it when a positive charge is applied to one side, a negative charge builds on the other side, creating an electric field. 
+\end{Def}
