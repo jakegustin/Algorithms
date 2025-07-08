@@ -181,8 +181,6 @@ Let's visualize what we've learned so far:
 
 \newpage 
 
-\noindent
-Now to create our channel for electricity to flow:
 \begin{Def}[N-type \& P-type Junctions]
 
     \label{def:n_p_junctions}
@@ -194,6 +192,7 @@ Now to create our channel for electricity to flow:
    This manifests an electric field, creating a barrier, preventing further flow across the junction \cite{engineermindset2024mosfet}.
 \end{Def}
 
+\vspace{-1.5em}
 \noindent
 \begin{figure}[ht!]
   \centering
@@ -205,17 +204,20 @@ Now to create our channel for electricity to flow:
 \begin{Def}[MOSFET -- High-Level Overview]
 
     \label{def:mosfet_overview}
-
-    A \textbf{MOSFET} is a type of FET, there are two types of MOSFETs:
-    \begin{itemize}
-      \item \textbf{N-Channel:} Requires a \textbf{positive} voltage to the gate terminal to activate.
-      \item \textbf{P-Channel:} Requires a \textbf{negative} voltage to the gate terminal to activate.
-    \end{itemize}
     \noindent
-    The starting state of which may be of two types:
+    A \textbf{MOSFET} (Metal-Oxide-Semiconductor Field-Effect Transistor) is a type of FET that uses its gate to control the flow of current.
+    It consists of two default starting states:
     \begin{itemize}
-      \item \textbf{Enhancement:} These are normally \textbf{off} (i.e., no current flows), until activated.
-      \item \textbf{Depletion:} These are normally \textbf{on} (i.e., current flows), until activated.
+      \item \textbf{Enhancement:} Normally \textbf{off} (i.e., no current flows), until such voltage is applied:
+      \begin{itemize}
+        \item \textbf{N-Channel Enhancement:} A positive voltage.
+        \item \textbf{P-Channel Enhancement:} A negative voltage.
+      \end{itemize}
+      \item \textbf{Depletion:} Normally \textbf{on} (i.e., current flows), until such voltage is applied:
+      \begin{itemize}
+        \item \textbf{N-Channel Depletion:} A negative voltage.
+        \item \textbf{P-Channel Depletion:} A positive voltage.
+        \end{itemize}
     \end{itemize}
   \end{Def}
 
@@ -225,20 +227,27 @@ Now to create our channel for electricity to flow:
 
     \label{def:mosfet}
 
-    A MOSFET is constructed as follows:
+    A MOSFET \textbf{N-Channel Enhancement} is constructed as follows:
     \begin{itemize}
       \item \textbf{Substrate:} A base-layer of P-type material from which all parts will build upon (i.e., foundation of our house).
       \item \textbf{Source \& Drain:} Two motes are dug at either ends of the substrate and filled with N-type material;
       One for our \textbf{source} and the other for our \textbf{drain}. Two metal contacts are placed on these motes (our terminals);
       A body of metal is connected to the bottom of the substrate (\textbf{base-terminal}), which connects to the source terminal.
       \item \textbf{Gate:} A layer of silicon dioxide (SiO$_2$) blankets the top of the substrate and other semiconductor parts.
-      A metal contact pad is placed between the motes on top of the SiO$_2$ layer, forming the \textbf{gate terminal}.
+      A metal contact pad is placed between the motes on top of the SiO$_2$ layer, forming the \textbf{gate terminal}. Since 
+      SiO$_2$ is a superb insulator, it prevents the gate terminal from touching the substrate.
+      \item \textbf{Channeling:} SiO$_2$ is a \textbf{dielectric} material, meaning that when a charge is applied to one side, the opposite charge builds on the other side, 
+      creating an electric field. When a positive charge is applied, it attracts negative electrons from the other side, creating a \textbf{channel} (i.e., bridge) 
+      between the two motes (source to drain), allowing current to flow.
     \end{itemize}
-    we start with a P-type base-layer, which acts as a buffer between two 
-    N-type layer motes on either side; These motes create a PN-junction wit the base-layer. Metal is connected 
-    to the N-type motes, one for source and sink (Drain). Another metal body is connected to the bottom of the base-layer
-    connected to the source. A layer of Silicon dioxide (SiO$_2$) blankets the top of the base-layer, covering the source and drain.
-    a metal contact pad is placed above the SiO$_2$ layer, which forms the gate terminal.
-    The silicon dioxide is superb insulator, keeping the gate terminal from touching the base-layer. SiO$_2$ 
-    is also \textbf{Dielectric}, meaning it when a positive charge is applied to one side, a negative charge builds on the other side, creating an electric field. 
+    
+    \noindent
+    The \textbf{M}etal from gates, the \textbf{O}xide from the SiO$_2$ layer, the \textbf{S}emiconductor from the substrate and motes, and 
+    the \textbf{FET} from the field-effect, gives us the name \textbf{MOSFET}.\\
+
+    \noindent
+    \rule{\textwidth}{0.4pt}\\
+    \noindent
+    For \textbf{N-Channel Depletion}, A \emph{thin} N-type substrate-channel is already present, bridging the two motes (source and drain) together.
+    Once a negative charge is applied to the gate, positive holes are attracted, weakening the channel; This effectively stops the flow of current.
 \end{Def}
