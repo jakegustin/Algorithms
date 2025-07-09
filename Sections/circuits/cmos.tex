@@ -149,6 +149,7 @@ Let's visualize what we've learned so far:
   \label{fig:atom}
 \end{figure}
 
+\vspace{2em}
 \begin{figure}[ht!]
 
   \centering
@@ -232,7 +233,7 @@ Let's visualize what we've learned so far:
       \item \textbf{Substrate:} A base-layer of P-type material from which all parts will build upon.
       \item \textbf{Source \& Drain:} Two motes are dug at either ends of the substrate and filled with N-type material;
       One for our \textbf{source} and the other for our \textbf{drain}. Two metal contacts are placed on these motes (our terminals);
-      A body of metal is connected to the bottom of the substrate (\textbf{base-terminal}), which connects to the source terminal.
+      A body of metal is connected to the bottom of the substrate (\textbf{base/body terminal}), which connects to the source terminal.
       \item \textbf{Gate:} A metal contact pad is placed between the motes on top of the SiO$_2$ layer, forming the \textbf{gate terminal}.
       A layer of silicon dioxide (SiO$_2$) is sandwiched between the gate and the substrate.
       Since SiO$_2$ is a superb insulator, it prevents the gate terminal from touching/interacting with the substrate.
@@ -262,6 +263,30 @@ Let's visualize what we've learned so far:
 
 \newpage
 
+\begin{theo}[Flow of Electrons]
+
+  \label{theo:flow_of_electrons}
+
+  Recall that a body of electrons that are negatively charged (low potential), have a surplus of electrons.
+  A positive charge (high potential) reflects a deficit of electrons. Therefore, when given the chance
+  (alike water), electrons will flow to fill the void.
+\end{theo}
+
+\begin{Tip} An empty stomach has a high potential for food, while a full stomach has a low potential,
+  as there's not much more room left to stuff food into.
+\end{Tip}
+
+\begin{Def}[MOSFET -- N-Channel Battery Configuration]
+
+    \label{def:mosfet_gate_interaction}
+
+    One battery is used to power the MOSFET, and another to control the gate.
+    The source connects to the negative, and the drain to the positive side of the battery.
+    
+    The gate is connected to a second battery, which can be either positive or negative, depending on the MOSFET type.
+    The \textbf{other} end of this battery is connected to the source terminal.
+\end{Def}
+
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=.91\textwidth]{Sections/circuits/mosfet-on.png}
@@ -270,33 +295,131 @@ Let's visualize what we've learned so far:
   SiO$_2$ layer, creating a channel between the source and drain.}
   \label{fig:mosfet-on}
 \end{figure}
-\noindent
-One might ask now, why does the drain have a positive charge?
-\begin{theo}[Flow of Electrons]
 
-  \label{theo:flow_of_electrons}
 
-  Recall that a body of electrons that are negatively charged, have a surplus of electrons.
-  A positive charge reflects a deficit of electrons. Therefore, when given the chance
-  (alike water), electrons will flow to fill the void.
-\end{theo}
+% \begin{Tip} The same goes with heat, there technically is no such thing as the
+%   ``cold'', it is just the lack of heat. At a high-level, heat is how fast atoms are jittering around.
 
-\begin{Tip} The same goes with heat, there technically is no such thing as the
-  ``cold'', it is just the lack of heat. At a high-level, heat is how fast atoms are jittering around.
-\end{Tip}
+%   Though for different reasons, heat rushes into the cold as it's ``jittery'' while the cold is ``still''.
+%   Analogously, its relatively easier to run across a forest of trees than a field of dancing people; The chance
+%   of bumping into someone knocking you off course than a tree is much higher.
+% \end{Tip}
 
 \newpage 
 
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=.91\textwidth]{Sections/circuits/mosfet-depletion.png}
-  \caption{N-Channel Depletion (on). Negative battery side to gate, positive to source, attracts 
-  holes to the channel, weakening it.}
+  \caption{N-Channel Depletion (on). Negative charge to gate, creates holes into the channel.}
   \label{fig:mosfet-depletion}
 \end{figure}
 
+\vspace{-1em}
 \begin{Def}[MOSFET -- Anatomy of P-Channel]
 
     \label{def:mosfet_p_channel}
 
-    The P-Channel variation
+    The P-Channel variation follows the same logic as the N-Channel Definition (\ref{def:mosfet});
+    Instead, we swap N-type for P-type materials, and vice versa. Then apply negative for Enhancement
+    and positive for Depletion on the gate to open or close the channel respectively (\ref{def:mosfet_overview}).
+    \textbf{In particular}, source now connects to a high potential and drain to a low potential.
+
+\end{Def}
+
+\vspace{-1em}
+\begin{figure}[ht!]
+  \centering
+    \includegraphics[width=.9\textwidth]{Sections/circuits/mosfet-symbol.png}
+  \caption{MOSFET symbols, \textbf{G} (gate), \textbf{S} (source), \textbf{D} (drain), and \textbf{B} (body) terminals.}
+  \label{fig:mosfet-symbol}
+\end{figure}
+
+\newpage 
+
+\subsection{MOSFETs in CMOS Logic Gates}
+
+\noindent
+This section will cover how we take MOSFETs and use them to build logic gates.
+
+\begin{Def}[Gate-Source Voltage $V_{GS}$]
+
+  \label{def:gate_source_voltage}
+
+  Recall Definition (\ref{def:mosfet_gate_interaction}), the gate battery's opposite end is connected to the source terminal.
+  This serves as a zero-volt reference for the gate terminal.
+  The difference in potential between the gate and source terminals is called the \textbf{gate-source voltage} ($V_{GS}$):
+  \[
+    V_{GS} = V_{G} - V_{S},
+  \]
+  
+  \noindent
+  Once $V_{GS}$ exceeds the threshold voltage $V_{TN}$ (for N-channel) or is below the threshold voltage $V_{TP}$ (for P-channel), the MOSFET turns on, allowing current to flow from source to drain.
+\end{Def}
+
+\begin{Tip} Notice that source takes from gate, i.e., for N-channel, the gate must overcome the source's 
+  negative charge. Hence we must exceed a threshold voltage to turn on the MOSFET.
+  For P-channel, the same logic applies, but in reverse, as the components are implemented in a complementary manner.
+\end{Tip}
+
+\begin{Def}[Pull-Up \& Pull-Down Switches]
+
+  \label{def:pull_up_down_switches}
+
+  Let $V_{DD}$ be the positive supply (“logical 1”) and ground (0 V) be “logical 0.”  A CMOS logic gate uses:
+  \begin{itemize}
+    \item \textbf{Pull-Down Switch} (Off: 0, On: 1): N-channel enhancement. If $V_{GS} > V_{TN}$, source connects to drain, producing a logical 1.
+    \item \textbf{Pull-Up Switch} (Off: 1, On: 0): P-channel enhancement. If $V_{GS} < V_{TP}$, source connects to $V_{DD}$, producing a logical 1.
+  \end{itemize}
+\end{Def}
+\begin{Tip} Think of pull-down as ``pulling down to the ground'' to allow electrons to escape.
+
+  Additionally, the ``DD'' in $V_{DD}$ does not stand for anything; it was made not to be confused with 
+  $V_D$, the voltage at the drain terminal. Though, unimaginative, it is simply convention.
+\end{Tip}
+\newpage 
+
+\begin{Def}[CMOS Logic Gate]
+
+  \label{def:cmos_logic_gate}
+
+  A \textbf{CMOS logic gate} is a circuit that uses \textbf{C}omplementary \textbf{MOS}FETs to perform logical operations. It consists of:
+  \begin{itemize}
+    \item \textbf{Pull-Down Network (PDN):} N-channel MOSFETs (NFET) connected to ground.
+    \item \textbf{Pull-Up Network (PUN):} P-channel MOSFETs (PFET) connected to $V_{DD}$.
+  \end{itemize}
+  
+  \noindent
+  The output is high when the PUN is active and the PDN is inactive, and vice versa.
+\end{Def}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{Sections/circuits/pun_pdn.png}
+  \caption{Simple CMOS logic gate, where \textbf{GND} stands for ground, \textbf{$V_{DD}$} for positive supply.
+  \textbf{Note:} That even if the circuit is disconnected, the output may still \emph{``remember''} its last state for some 
+  time until the charge dissipates.}
+  \label{fig:cmos-logic-gate}
+\end{figure}
+
+\begin{Def}[Simplified NFET \& PFET Symbols]
+
+  \noindent
+  The following simplifies the NFET and PFET symbols from Figure (\ref{fig:mosfet-symbol}) for 
+  repetitive use:
+
+  \begin{center}
+    
+    \includegraphics[width=\textwidth]{Sections/circuits/np_simp.png}
+  \end{center}
+  
+  \noindent
+  (1) NFET, conducts when $A$ is high; (2) PFET, conducts when $A$ is low (i.e., $\overline{A}$).
+
+\end{Def}
+
+\newpage
+
+\begin{Def}[MOSFET Logic Gates -- AND, OR]
+
+  Below shows logic gates, AND and OR, using MOSFETs (NFET and PFET):
+  
