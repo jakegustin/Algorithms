@@ -265,6 +265,38 @@ Let's visualize what we've learned so far:
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=.91\textwidth]{Sections/circuits/mosfet-on.png}
-  \caption{N-Channel Enhancement (on). Negative battery side to gate, positive to source.}
+  \caption{N-Channel Enhancement (on). Negative battery side to gate, positive to source.
+  Positive charge given to the gate attracts negative electrons on the other side of the 
+  SiO$_2$ layer, creating a channel between the source and drain.}
   \label{fig:mosfet-on}
 \end{figure}
+\noindent
+One might ask now, why does the drain have a positive charge?
+\begin{theo}[Flow of Electrons]
+
+  \label{theo:flow_of_electrons}
+
+  Recall that a body of electrons that are negatively charged, have a surplus of electrons.
+  A positive charge reflects a deficit of electrons. Therefore, when given the chance
+  (alike water), electrons will flow to fill the void.
+\end{theo}
+
+\begin{Tip} The same goes with heat, there technically is no such thing as the
+  ``cold'', it is just the lack of heat. At a high-level, heat is how fast atoms are jittering around.
+\end{Tip}
+
+\newpage 
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=.91\textwidth]{Sections/circuits/mosfet-depletion.png}
+  \caption{N-Channel Depletion (on). Negative battery side to gate, positive to source, attracts 
+  holes to the channel, weakening it.}
+  \label{fig:mosfet-depletion}
+\end{figure}
+
+\begin{Def}[MOSFET -- Anatomy of P-Channel]
+
+    \label{def:mosfet_p_channel}
+
+    The P-Channel variation
