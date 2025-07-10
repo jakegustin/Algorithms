@@ -419,7 +419,16 @@ This section will cover how we take MOSFETs and use them to build logic gates.
 
 \newpage
 
-\begin{Def}[MOSFET Logic Gates -- AND, OR]
+\begin{Def}[MOSFET Logic Gates -- AND, NAND]
 
-  Below shows logic gates, AND and OR, using MOSFETs (NFET and PFET):
-  
+  \label{def:mosfet_logic_gates}
+
+  Below shows logic gates, AND and NAND, using MOSFETs (NFET and PFET):
+
+  \begin{center}
+  \includegraphics[width=\textwidth]{Sections/circuits/and_nand.png}
+  \end{center}
+
+  \noindent
+  (1) AND gate, conducts when both $A$ and $B$ are high ($A\cdot B$); (2) NAND gate, conducts when $A$ or $B$ is low ($\overline{A}+\overline{B}=\overline{A\cdot B}$).
+\end{Def}
