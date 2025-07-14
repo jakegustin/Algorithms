@@ -336,7 +336,7 @@ Let's visualize what we've learned so far:
 
 \newpage 
 
-\subsection{MOSFETs in CMOS Logic Gates}
+\subsection{Building Logic Gates from Transistors}
 
 \noindent
 This section will cover how we take MOSFETs and use them to build logic gates.
@@ -392,6 +392,7 @@ This section will cover how we take MOSFETs and use them to build logic gates.
   The output is high when the PUN is active and the PDN is inactive, and vice versa.
 \end{Def}
 
+\vspace{-1em}
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=\textwidth]{Sections/circuits/pun_pdn.png}
@@ -404,8 +405,7 @@ This section will cover how we take MOSFETs and use them to build logic gates.
 \begin{Def}[Simplified NFET \& PFET Symbols]
 
   \noindent
-  The following simplifies the NFET and PFET symbols from Figure (\ref{fig:mosfet-symbol}) for 
-  repetitive use:
+  Below are input gates $A$ and $B$, with two other terminals $T_1$ and $T_2$, simplifying Figure(\ref{fig:cmos-logic-gate}):
 
   \begin{center}
     
@@ -413,22 +413,40 @@ This section will cover how we take MOSFETs and use them to build logic gates.
   \end{center}
   
   \noindent
-  (1) NFET, conducts when $A$ is high; (2) PFET, conducts when $A$ is low (i.e., $\overline{A}$).
+  (1) NFET, $T_1$ output, and $T_2$ ground; (2) PFET, $T_1$ is $V_{DD}$ (typically 1 V), and $T_2$ output \cite{youtube:1rZyGL1K5QI}.
 
 \end{Def}
 
 \newpage
 
-\begin{Def}[MOSFET Logic Gates -- AND, NAND]
+\noindent
+\begin{Def}[Open \& Closed Circuits -- NFET \& PFET Logic]
 
-  \label{def:mosfet_logic_gates}
+  \label{def:open_closed_circuits}
 
-  Below shows logic gates, AND and NAND, using MOSFETs (NFET and PFET):
+  A \textbf{closed circuit} is a complete path for current to flow, while an \textbf{open circuit} is an incomplete path:
 
   \begin{center}
-  \includegraphics[width=\textwidth]{Sections/circuits/and_nand.png}
+  \includegraphics[width=\textwidth]{Sections/circuits/open_closed.png}
   \end{center}
 
   \noindent
-  (1) AND gate, conducts when both $A$ and $B$ are high ($A\cdot B$); (2) NAND gate, conducts when $A$ or $B$ is low ($\overline{A}+\overline{B}=\overline{A\cdot B}$).
+  (1) An NFET is closed when given a digital 1 (high voltage), while (2) a PFET, is open;\\
+  (3) NFET, open when given 0 (low voltage), while (4) a PFET is closed.
 \end{Def}
+
+\begin{Def}[MOSFET Logic Gate -- Not]
+
+  \label{def:mosfet_logic_gate_not}
+
+  Below shows a logic gate, NOT, using MOSFETs (NFET and PFET):
+
+  \begin{center}
+  \includegraphics[width=\textwidth]{Sections/circuits/not.png}
+  \end{center}
+
+  \noindent
+  Both the NFET and PFET share the same input. The top line represents $V_{DD}$ (positive supply), while the bottom line is ground (triangle).
+  (1) input low, NFET is open, PFET is closed, output is high from $V_{DD}$; (2) input high, NFET is closed, PFET is open, output is low from ground.
+\end{Def}
+
