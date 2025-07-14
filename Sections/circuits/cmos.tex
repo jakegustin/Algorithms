@@ -336,7 +336,7 @@ Let's visualize what we've learned so far:
 
 \newpage 
 
-\subsection{Building Logic Gates from Transistors}
+\subsection{Logic Gates \& Functional Completeness}
 
 \noindent
 This section will cover how we take MOSFETs and use them to build logic gates.
@@ -413,7 +413,7 @@ This section will cover how we take MOSFETs and use them to build logic gates.
   \end{center}
   
   \noindent
-  (1) NFET, $T_1$ output, and $T_2$ ground; (2) PFET, $T_1$ is $V_{DD}$ (typically 1 V), and $T_2$ output \cite{youtube:1rZyGL1K5QI}.
+  (1) NFET, $T_1$ output, and $T_2$ ground; (2) PFET, $T_1$ is $V_{DD}$ (typically 1V), and $T_2$ output \cite{youtube:1rZyGL1K5QI}.
 
 \end{Def}
 
@@ -448,5 +448,91 @@ This section will cover how we take MOSFETs and use them to build logic gates.
   \noindent
   Both the NFET and PFET share the same input. The top line represents $V_{DD}$ (positive supply), while the bottom line is ground (triangle).
   (1) input low, NFET is open, PFET is closed, output is high from $V_{DD}$; (2) input high, NFET is closed, PFET is open, output is low from ground.
+  \textbf{Important:} A black dot connecting two or more lines represents a connection.
 \end{Def}
 
+\newpage 
+
+\begin{Def}[Functional Completeness]
+
+  \label{def:functional_completeness}
+
+ it can be used to express all possible Boolean functions.
+    For example, the set of operators $\{\text{AND, OR, NOT}\}$ is functionally complete.
+    However, we can do better. The NAND gate (and NOR gate) by itself is functionally complete.
+\end{Def}
+
+\begin{Example}[Functionally Complete Sets of Operators]
+
+    \begin{enumerate}
+  \item $\{\mathrm{NAND}\}$ alone
+    \begin{align*}
+      \neg A &= A \operatorname{NAND} A,\\
+      A\land B &= \neg\bigl(A \operatorname{NAND} B\bigr)
+                = \bigl(A \operatorname{NAND} B\bigr)\operatorname{NAND}\ \bigl(A \operatorname{NAND} B\bigr),\\
+      A\lor B  &= (A \operatorname{NAND} A)\operatorname{NAND}\ (B \operatorname{NAND} B).
+    \end{align*}
+
+  \item $\{\mathrm{NOR}\}$ alone
+    \begin{align*}
+      \neg A &= A \operatorname{NOR} A,\\
+      A\lor B  &= \neg\bigl(A \operatorname{NOR} B\bigr)
+                = \bigl(A \operatorname{NOR} B\bigr)\operatorname{NOR}\ \bigl(A \operatorname{NOR} B\bigr),\\
+      A\land B &= (A \operatorname{NOR} A)\operatorname{NOR}\ (B \operatorname{NOR} B).
+    \end{align*}
+
+    \item $\{\land,\neg\}$ alone
+    \begin{align*}
+      \neg A   &= \neg A,\\
+      A\land B &= A\land B,\\
+      A\lor B  &= \neg\bigl(\neg A \land \neg B\bigr).
+    \end{align*}
+
+  \item $\{\lor,\neg\}$ alone
+    \begin{align*}
+      \neg A   &= \neg A,\\
+      A\lor B  &= A\lor B,\\
+      A\land B &= \neg\bigl(\neg A \lor \neg B\bigr).
+    \end{align*}
+
+  \item $\{\to,\neg\}$ alone
+    \begin{align*}
+      \neg A   &= \neg A,\\
+      A\lor B  &= \neg A \to B,\\
+      A\land B &= \neg\bigl(A \to \neg B\bigr).
+    \end{align*}
+\end{enumerate}
+
+\noindent
+Recall, $A \to B$ is logically equivalent to $\neg A \lor B$. 
+\end{Example}
+
+\newpage 
+
+\noindent
+Let's brainstorm possibilities for an AND and NAND, and elaborate on Defintition (\ref{def:cmos_logic_gate}):
+\begin{theo}[Balancing Series \& Parallel Connections]
+
+    \noindent
+    It's important in a CMOS circuit that the PUN and PDN are in fact complements of each other. Below
+    illustrates two types of connections:
+
+    \begin{center}
+      \includegraphics[width=\textwidth]{Sections/circuits/np_comp.png}
+    \end{center}
+
+    \noindent
+    (1) Shows a NFET \textbf{series} connection (i.e., sequentially connected). Theoretically in isolation, this represents
+    an AND gate ($A \cdot B$), meaning both $A$ and $B$ must be high to close the circuit. (2) Shows a PFET in \textbf{parallel} connection (i.e., side-by-side connected). As per complementarity, this represents the NAND gate
+    ($\overline{A} + \overline{B} = \overline{A \cdot B}$), by De Morgan's Law; Either $A$ or $B$ must be low to close the circuit.\\
+    \rule{\textwidth}{0.4pt}\\
+    \noindent
+    Hence to \textbf{balance}, between the PUN and PDN, we must ensure that:
+    \begin{itemize}
+        \item each NFET series requires a PFET parallel.
+        \item each PFET series requires a NFET parallel.
+    \end{itemize}
+
+    \noindent
+    This keeps our networks complementary, ensuring that \underline{when one is closed, the other is open}.
+\end{theo}
