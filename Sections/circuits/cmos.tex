@@ -513,6 +513,8 @@ Recall, $A \to B$ is logically equivalent to $\neg A \lor B$.
 Let's brainstorm possibilities for an AND and NAND, and elaborate on Defintition (\ref{def:cmos_logic_gate}):
 \begin{theo}[Balancing Series \& Parallel Connections]
 
+  \label{theo:balancing_series_parallel}
+
     \noindent
     It's important in a CMOS circuit that the PUN and PDN are in fact complements of each other. Below
     illustrates two types of connections:
@@ -535,4 +537,17 @@ Let's brainstorm possibilities for an AND and NAND, and elaborate on Defintition
 
     \noindent
     This keeps our networks complementary, ensuring that \underline{when one is closed, the other is open}.
+\end{theo}
+
+\newpage
+\begin{theo}[CMOS Logic Gate -- NAND]
+
+  \label{def:mosfet_logic_gate_nand}
+
+  \noindent
+  Combining both networks in Theorem (\ref{theo:balancing_series_parallel}) yields a NAND gate in the following configuration:
+
+  \begin{center}
+    \includegraphics[width=\textwidth]{Sections/circuits/nand.png}
+  \end{center}
 \end{theo}
