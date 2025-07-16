@@ -525,7 +525,9 @@ Let's brainstorm possibilities for an AND and NAND, and elaborate on Defintition
 
     \noindent
     (1) Shows a NFET \textbf{series} connection (i.e., sequentially connected). Theoretically in isolation, this represents
-    an AND gate ($A \cdot B$), meaning both $A$ and $B$ must be high to close the circuit. (2) Shows a PFET in \textbf{parallel} connection (i.e., side-by-side connected). As per complementarity, this represents the NAND gate
+    an AND gate ($A \cdot B$), meaning both $A$ and $B$ must be high to close the circuit. 
+    
+    (2) Shows a PFET in \textbf{parallel} connection (i.e., side-by-side connected). As per complementarity, this represents the NAND gate
     ($\overline{A} + \overline{B} = \overline{A \cdot B}$), by De Morgan's Law; Either $A$ or $B$ must be low to close the circuit.\\
     \rule{\textwidth}{0.4pt}\\
     \noindent
@@ -539,6 +541,15 @@ Let's brainstorm possibilities for an AND and NAND, and elaborate on Defintition
     This keeps our networks complementary, ensuring that \underline{when one is closed, the other is open}.
 \end{theo}
 
+\begin{Tip} Think about how to create this before moving to the next page.
+  understand that the placement of the output determines the logic of the circuit. 
+  Since PUNs default to high, think about how that might affect the output.
+
+  In CMOS, there must be both a PUN and PDN, think about how to balance the (2), from the above Theorem (\ref{theo:balancing_series_parallel}), to create a NAND gate.
+\end{Tip}
+
+
+
 \newpage
 \begin{theo}[CMOS Logic Gate -- NAND]
 
@@ -551,3 +562,19 @@ Let's brainstorm possibilities for an AND and NAND, and elaborate on Defintition
     \includegraphics[width=\textwidth]{Sections/circuits/nand.png}
   \end{center}
 \end{theo}
+
+\vspace{2em}
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{Sections/circuits/nand_1.png}
+  \caption{Both inputs are (0,0), PUN closed, PDN open, hence the output is high (1).}
+  \label{fig:nand-1}
+\end{figure}
+
+\begin{figure}[ht!]
+  \centering
+  \includegraphics[width=\textwidth]{Sections/circuits/nand_2.png}
+  \caption{Both inputs are (0,1), PUN half-closed reaching the output, PDN half-closed, but can't reach the output; Hence the output is high (1).}
+  \label{fig:nand-2}
+\end{figure}
+
