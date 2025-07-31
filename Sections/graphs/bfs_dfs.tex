@@ -1,4 +1,6 @@
+\vspace{-1em}
 \section{Breath-First and Depth-First Search}
+\subsection{High-Level Overview}
 Two general methods for traversing a graph are, \textbf{breadth-first search} and \textbf{depth-first search}.
 
 \label{sec:bfs_dfs}
@@ -7,38 +9,57 @@ Two general methods for traversing a graph are, \textbf{breadth-first search} an
     A \textbf{cycle} is a path that starts and ends at the same node.
 \end{Def}
 \textbf{Example:} In the above Figure (\ref{fig:adj_matri_dir}), $1\rightarrow 2 \rightarrow 3 \rightarrow 1$ form a cycle.
-\begin{Def}[Tree]
+\begin{Def}[Trees]
 
-    A \textbf{tree} is a connected graph with no cycles. A \textbf{leaf-nodes} is the outer-most nodes of a tree. A \textbf{branch} is a path from the root to a leaf.  
+    A \textbf{tree} is a connected graph with no cycles. A \textbf{leaf-nodes} is the outer-most nodes of a tree. A \textbf{branch} is a path from the root to a leaf.
+    \textbf{Interior nodes} have at least one child.  
 \end{Def}
+
+\begin{Tip}
+Watch this entire section: \href{https://youtu.be/xHYS6IdpaDc?feature=shared}{BFS \& DFS (Edge Types, Traversal Orders, \& Code)}.
+\end{Tip}
 \newpage
 \begin{theo}[Tree Identity]
 
     Let $G$ be an undirected graph of $n$ nodes. Then any two statements imply the third:
-    \begin{enumerate}
-        \item [(i.)] $G$ is connected.
-        \item [(ii.)] $G$ has $n-1$ edges.
-        \item [(iii.)] $G$ has no cycles.
-    \end{enumerate}
+    \begin{center}
+
+        \noindent
+        (i.) $G$ is connected. \quad
+        (ii.) $G$ has $n-1$ edges. \quad
+        (iii.) $G$ has no cycles.
+    \end{center}
 \end{theo}
 
 \begin{Def}[Rooted Trees]
-    
-        Let $T$ be a tree with a designated root node $r$. Then each degree is 
-        considered an outdegree, called a \textbf{child}, and its indegree its \textbf{parent}.
+
+        A tree \textbf{root} is a designated starting node, which all other nodes follow. The root has
+        no parent/ancestors (proceeding node), and all other nodes are descendants (children).\\
+
+        \noindent
+        A \textbf{subtree} is a tree formed by picking another node as the root, representing a subset of 
+        the original tree.
 \end{Def}
+
+
+\begin{Def}[Levels and Heights]
+
+  The \textbf{level} (or \textbf{depth}) of a node $v$ in a tree is the number of edges on the path from the root to $v$, so $\mathrm{level}(\text{root})=0$.  
+  The \textbf{height} of a node $v$ is the number of edges on the longest downward path from $v$ to any leaf.  
+  The \textbf{height} of a tree is defined as the height of its root node.
+\end{Def}
+
 \begin{figure}[h]
     \begin{center}
       \includegraphics[height=2in]{./Sections/graphs/rooted_tree.png}
     \end{center}
-     \caption{A rooted tree with root 1 and children $\{2,5,7\}$}\label{fig:rooted_tree}
+     \caption{The right shows a rooted tree with root $s$, with $a$ and $b$ as direct children. A possible
+     subtree starts with node $b$, only consisting of $\{b, e,f,g\}$. \textbf{Note:} A tree is 
+     not necessarily directed, while a rooted tree is (floods outwards from the root)}\label{fig:rooted_tree}
   \end{figure}
 
-\begin{Def}[Levels and Heights]
 
-    The \textbf{level} of a node is the number of edges from the root. The \textbf{height} of a tree is the maximum level of any node.
-\end{Def}
-\textbf{Example:} In Figure (\ref{fig:rooted_tree})'s rooted tree , node 5 has a level of 1, and the height of the tree is 2.
+
 \newpage
 \begin{Def}[Breadth-First Search (BFS)]
 
@@ -123,12 +144,9 @@ We analyze the time and space complexity in the below Figure (\ref{fig:bfs_q_ana
   \end{figure}
   \begin{Proof}[Claim 1 for BFS]
     Let $s$ be the root of the BFS tree, then:
-    \textbf{Proof:} Induction on the distance from $s$ to $u$.
-    
-    \textbf{Base case} ($u = s$): The code sets Level[$s$] = 0, and there is no path to find since the path has length 0.
-    
-    \textbf{Induction hypothesis:} For every node $u$ at distance $\leq i$, Claim 1 holds.
-    
+    \textbf{Proof:} Induction on the distance from $s$ to $u$.\\
+    \textbf{Base case} ($u = s$): The code sets Level[$s$] = 0, and there is no path to find since the path has length 0.\\
+    \textbf{Induction hypothesis:} For every node $u$ at distance $\leq i$, Claim 1 holds.\\
     \textbf{Induction step:}
     \begin{itemize}
         \item Let $v$ be a node at distance exactly $i + 1$ from $s$. Let $u$ be its parent in the BFS tree.
@@ -141,35 +159,10 @@ We analyze the time and space complexity in the below Figure (\ref{fig:bfs_q_ana
         \item If Level[$u$] $<$ $i$, then the path $s \sim u \to v$ has length at most $i$, which contradicts the assumption that the distance of $v$ is $i + 1$.
     \end{itemize}
     
-    We conclude that Level[$u$] = $i$, Level[$v$] = $i + 1$, and the path in the BFS tree that goes from $s$ to $u$ to $v$ has length $i + 1$. QED.
+    \noindent
+    We conclude that Level[$u$] = $i$, Level[$v$] = $i + 1$, and the path in the BFS tree that goes from $s$ to $u$ to $v$ has length $i + 1$.
     \end{Proof}
     
-    \newpage
-
-    \begin{Def}[Tyes of Edges]
-
-        In graphs we have three types of edges:
-        \begin{enumerate}
-            \item \textbf{Tree-edges:} An Edge present in a BFS tree.
-            \item \textbf{Forward-edges:} Edges from an ancestor to a descendant.
-            \item \textbf{Back-edges:} Edges from a descendant to an ancestor.
-            \item \textbf{Cross-edges:} Edges between which connect nodes that have no ancestor-descendant relationship.
-        \end{enumerate}
-    \end{Def}
-
-    \noindent
-    \textbf{Example:} In Figure (\ref{fig:bfs}), $\{(s,c),(a,c),...\}$ are forward and tree edges, $\{(g,h)\}$ are cross edges.\\
-
-    \noindent
-    The following arises from the above definitions:
-    \begin{theo}[BFS does not Contain Back-edges]
-        
-        In a BFS tree, there are no back-edges, as they would create a cycle.
-    \end{theo}
-    \begin{Note}
-        \textbf{Note:} In Figure (\ref{fig:bfs}), $b\rightarrow a$ is not a tree-edge, $a$ is on level 1 and $b$ on level 3. If
-        this connection were to occur, it would create a cycle, breaking our tree.
-    \end{Note}
     \newpage
     \begin{Def}[Depth-First Search (DFS)]
 
@@ -237,15 +230,119 @@ We analyze the time and space complexity in the below Figure (\ref{fig:bfs_q_ana
         Thus, DFS-Visit($x$) explores all nodes reachable from $x$ through a path of unvisited nodes, as required.
         \end{Proof}
 
+% \begin{figure}[h]
+%     \begin{center}
+%       \includegraphics[height=3.5in]{./Sections/graphs/dfs.png}
+%     \end{center}
+%      \caption{A graph showing our $d$ discovered and $f$ finished times, denoted in pairs $(f,d)$.}\label{fig:dfs}
+%   \end{figure}
+    
+\subsection{Edge Classifications -- Directed Graphs}
+
+\noindent
+To build our intuition around edge classifications, we'll follow a walkthrough of DFS \& BFS on directed graphs
+to build our intuition. We'll follow the below format:
+
 \begin{figure}[h]
     \begin{center}
-      \includegraphics[height=3.5in]{./Sections/graphs/dfs.png}
+    \includegraphics[width=1\textwidth]{./Sections/graphs/edges/eg_1.png}
     \end{center}
-     \caption{A graph showing our $d$ discovered and $f$ finished times, denoted in pairs $(f,d)$.}\label{fig:dfs}
+     \caption{A table for start and finish times of each visited nodes, our stack to keep track of traversals, the graph that shall be traversed, and a timer for DFS (BFS will use a queue).}
+     \label{fig:edge_class}
   \end{figure}
 
-  \newpage
-  \begin{theo}[DFS and Cycles]
+\newpage 
+
+\noindent
+Let's start by filling out a partial DFS traversal:
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=1\textwidth]{./Sections/graphs/edges/eg_2.png}
+    \end{center}
+     \caption{So far we have asked $s$ to put all their children on the stack at timestamp 0. We 
+     first investigate the first child $a$'s branch at time 1. It gives us $b$, for which we time stamp (2,3) for start and finish. We highlight the first the alternative $b$ branch in blue for distinction.
+     The edges that are in our (start, finish) table are \underline{\textbf{Tree Edges}}.}
+     \label{fig:edge_class_2}
+  \end{figure}
+\noindent
+
+\begin{Def}[Forward Edge]
+
+    A \textbf{non-tree edge} that connects an already discovered node to a descendant in the DFS tree is called a \textbf{forward edge}.
+    Concretely, $(u, v)$ is a forward edge if given $u(s_1,f_1)$ and $v(s_2,f_2)$ of node id and a start finish time tuple, we have: $s_1 < s_2 < f_2 < f_1$.\\
+    Where the \underline{\textbf{start time} of $u$ is less than $v$}, and the \underline{\textbf{finish time} of $u$ is greater than $v$}.
+\end{Def}
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=1\textwidth]{./Sections/graphs/edges/eg_3.png}
+    \end{center}
+     \caption{Continuing from Figure (\ref{fig:edge_class_2}), $b$ and $a$ are taken off the stack. The next $b$ on the stack is a \textbf{forward edge}, as $s$ has a 
+     smaller start time, and a foreseeable finish time than the table's $b$.}
+     \label{fig:edge_class_3}
+  \end{figure}
+
+\newpage 
+
+\noindent
+The next two are \textbf{cross and back edges}:
+
+\begin{Def}[Cross Edge]
+
+    A \textbf{non-tree edge} that connects branches of a tree is called a \textbf{cross edge}.
+    In particular, $(u, v)$ is a cross edge if $v$ is not a descendant or ancestor of $u$.
+    Concretely, given $u(s_1,f_1)$ and $v(s_2,f_2)$ of node id and a start finish time tuple, we have: $s_2 < s_1 < f_2 < f_1$.\\
+    Where the \underline{\textbf{start and finish time} of $u$ is greater than $v$}.
+\end{Def}
+
+\begin{Def}[Back Edge]
+
+    A \textbf{non-tree edge} that connects a node to an ancestor in the tree is called a \textbf{back edge}.
+    Concretely, given $u(s_1,f_1)$ and $v(s_2,f_2)$ of node id and a start finish time tuple, we have: $s_2 < s_1 < f_1 < f_2$.\\
+    Where the \underline{\textbf{start time} of $u$ is greater than $v$}, but the \underline{\textbf{finish time} of is less than $v$}.
+\end{Def}
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=1\textwidth]{./Sections/graphs/edges/eg_4.png}
+    \end{center}
+     \caption{Continuing from Figure (\ref{fig:edge_class_3}), $b$ and $a$ are taken off the stack. 
+     Next on the stack is $c$, which reveals children $b$ and $s$; Here, $b$ has already been processed (cross edge), and 
+     $s$ discovered, but yet to be finished (back edge). There is nothing else to explore, so we finish $c$.
+     \textbf{Note:} There is no classifications for self referential edges.}
+     \label{fig:edge_class_4}
+  \end{figure}
+
+\noindent
+Next we'll see how our classifications work on BFS.
+
+\newpage 
+
+\noindent
+Starting with the same graph as before we instead run BFS:
+
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=1\textwidth]{./Sections/graphs/edges/eg_5.png}
+    \end{center}
+     \caption{We start with $s$ modeling the queue history on the left. The first graph is our original graph finished, and on the right it is 
+     redrawn for clarity.}
+     \label{fig:edge_class_5}
+  \end{figure}
+
+\begin{theo}[DFS \& BFS Directed Graphs]
+    
+    Between DFS and BFS, the following holds:
+    \begin{itemize}
+        \item \textbf{DFS}: Tree, back, forward, and cross edges (all edges).
+        \item \textbf{BFS}: Tree, cross, and back edges (no forward edges).
+    \end{itemize}
+\end{theo}
+
+\noindent
+Additionally, one may find the following theorem helpful:
+\begin{theo}[DFS and Cycles]
 
     Let DFS run on graph $G$, then:
     \[
@@ -256,12 +353,52 @@ We analyze the time and space complexity in the below Figure (\ref{fig:bfs_q_ana
   \begin{Proof}[Proof of Cycles and Back Edges]
     \textbf{Proving} $\left( G \text{ has a cycle} \right) \Longleftarrow \left( \text{DFS run reveals \textcolor{red}{back edges}} \right)$: Every back edge creates a cycle.\\
     \textbf{Proving} $\left( G \text{ has a cycle} \right) \Longrightarrow \left( \text{DFS run reveals \textcolor{red}{back edges}} \right)$ Suppose $G$ has a cycle:
-    \begin{itemize}
-        \item Let $u_1$ be the first discovered vertex in the cycle, and let $u_k$ be its predecessor in the cycle.
-        \item $u_k$ will be discovered while exploring $u_1$.
-        \item The edge $(u_k, u_1)$ will be a back edge.
-    \end{itemize}
+    Let $u_1$ be the first discovered vertex in the cycle, and let $u_k$ be its predecessor in the cycle.
+    $u_k$ will be discovered while exploring $u_1$.
+    The edge $(u_k, u_1)$ will be a back edge.
     \end{Proof}
-    
-   
-    
+
+\newpage 
+
+\noindent
+Next we deal with undirected graphs briefly and give a summary:
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=1\textwidth]{./Sections/graphs/edges/eg_6.png}
+    \end{center}
+     \caption{Here DFS and BFS are shown, with the original graph on the far right. Here it's quite peculiar to have a double-edge
+     in an undirected graph. In our case it's redundant and may be counted as a single edge.}
+     \label{fig:edge_class_6}
+  \end{figure}
+
+  \noindent
+\textbf{Summary:}\\
+\noindent
+This allows us to summarize the edge classifications for both directed and undirected graphs in the below table:
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Graph Type} & \textbf{DFS Edge Types} & \textbf{BFS Edge Types} \\ \hline
+        Directed Graphs & Tree, Back, Forward, Cross & Tree, Back, Cross \\ \hline
+        Undirected Graphs & Tree, Back & Tree, Cross \\ \hline
+    \end{tabular}
+    \caption{Edge classifications for DFS and BFS in directed and undirected graphs.}
+    \label{tab:edge_classifications}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Edge Type} & \textbf{Start Condition} & \textbf{Finish Condition} \\ \hline
+        Forward Edge & less & greater \\ \hline
+        Cross Edge & greater & greater \\ \hline
+        Back Edge & greater & less \\ \hline
+    \end{tabular}
+    \caption{Summary of start and finish conditions for edge types by comparing the starting node 
+    with its endpoint. E.g., in a forward edge $(u, v)$, the start time of $u$ is less than $v$, but the finish time is greater.}
+    \label{tab:edge_timestamps}
+\end{table}
+
+\newpage 

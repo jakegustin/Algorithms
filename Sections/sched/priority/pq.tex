@@ -1,4 +1,8 @@
-\section{Priority Queues}
+\section{Priority Queues: Min \& Max Heaps}
+
+\label{sec:priority_queues}
+
+\noindent
 In this section we will discuss \textbf{min-heaps} which will help us sort
 maintain elements in a sorted data structure.
 
@@ -30,9 +34,9 @@ Below is an example of a balanced tree and an unbalanced tree:
     With $n$ nodes, there are $n-1$ edges.
 \end{Def}
 
-\begin{Def}[Heap]
+\begin{Def}[Heap Tree]
 
-    A \textbf{heap} is a binary tree with the following properties:
+    A \textbf{heap} (not to be confused with a memory heap) is a binary tree with the following properties:
     \begin{enumerate}
         \item[(i.)] It is a \textbf{complete binary tree} (a binary and balanced tree).
         \item[(ii.)] It is a \textbf{min-heap} if the parent node is less than its children.
@@ -49,6 +53,19 @@ Below is an example of a balanced tree and an unbalanced tree:
 \end{Def}
 
 \newpage
+
+\noindent
+We may also represent a heap as an array:
+\begin{Def}[Heap as Array]
+    A \textbf{heap} can be represented as an array $A$ where:
+    \begin{itemize}
+        \item The root is at index $0$.
+        \item The left child of node $i$ is at index $2i + 1$.
+        \item The right child of node $i$ is at index $2i + 2$.
+    \end{itemize}
+    \noindent
+    This representation allows us to efficiently access parent and child nodes, instead of using whole node objects.
+\end{Def}
 
 \begin{Tip}
     The difference between a min-heap and a binary search tree, is that $c_{left} \leq c_{right} \leq \text{p}_{i}$. That is, the left and right child in a min-heap are not ordered, just less than the parent;
@@ -86,7 +103,6 @@ We use a min-heap as a data structure to maintain a sorted list as an input.
     \textbf{Time Complexity:} $O(n)$ as now we only need to check the minimum finish time in the priority queue.\\
     \textbf{Space Complexity:} $O(n+m)$ if our min-heap is implemented as a hash table.
 \end{Func}
-
 \noindent
 We can also implement a min-heap for sorting classes as well. 
 \newpage

@@ -1,7 +1,7 @@
 \section{Computing Large Numbers}
 \noindent
-In this section we discuss algorithms for computing large numbers, but first we define 
-algorithmically, addition, subtraction, multiplication, division, and modula.
+Before moving forward, we must understand on paper how computation works at a mathematical level. Then 
+we will re-visit encodings at the bit \& byte level of abstraction \cite{shoup2008computational_introduction_ntb_v2}.
 
 \begin{Def}[Wordsize]
 
@@ -14,21 +14,22 @@ algorithmically, addition, subtraction, multiplication, division, and modula.
 The game we play in the following algorithms is to compute large integers without exceeding wordsize. Moving forward, we assume our machine is a typical 64-bit system.
 \begin{Func}[Length of digits - $\|a\|$]
 
+    \vspace{-.5em}
     We will use the notation $\|a\|$ to denote the number of digits in the integer $a$. For example, $\|123\| = 3$ and $\|0\| = 1$.
 \end{Func}
 
-\newpage
+\noindent
+Our first hurdle is long division as , which will set up long addition and subtraction for success.\\
+
+\noindent
+\textbf{Scenario - Grade School Long Division:} Goes as follows, take $\frac{a}{b}$. Find how times $b$ fits into $a$ evenly, $q$ times. Then $a-bq$ is our remainder $r$.
 \begin{Def}[Computer Integer Division]
 
     Our ALU  \underline{only returns the quotient after division.} We denote the quotient as $\floor*{a/b}:a,b\in\Z$.
 \end{Def}
 
-\noindent
-Our first hurdle is long division as , which will set up long addition and subtraction for success.
-
-\noindent
-\textbf{Scenario - Grade School Long Division:} Goes as follows, take $\frac{a}{b}$. Find how times $b$ fits into $a$ evenly, $q$ times. Then $a-bq$ is our remainder $r$.\\
-\textbf{Examples:} let $a=\{12,5,17,40,89\}$, $b=\{4,2,3,9,10\}$ respectively, and base $B=10$,
+\begin{Example}[Long Division]
+let $a=\{12,5,17,40,89\}$, $b=\{4,2,3,9,10\}$ respectively, and base $B=10$,
 \begin{center}
     (1.)\intlongdivision{12}{4} (2.)\intlongdivision{5}{2} (3.)\intlongdivision{17}{3} (4.)\intlongdivision{40}{9} (5.)\intlongdivision{89}{10} 
 \end{center}
@@ -51,6 +52,7 @@ create an algorithm to compute this process.\\
 \noindent
 Notice that as we increase the power of 2, the number of bits shift left towards a higher-order bit. Now, instead of calculating powers of 
 2, we shift bits left or right, to yield instantaneous results.
+\end{Example}
 
 \begin{theo}[Binary Bit Shifting (Powers of 2)]
 
@@ -58,15 +60,17 @@ Notice that as we increase the power of 2, the number of bits shift left towards
 
     Let $x$ be a binary unsigned integer. Where ``$\ll$'' and ``$\gg$'' are left and right bit shifts:\\
     \noindent
-    \textbf{Left Shift by $k$ bits:} $x \ll k:= x \cdot 2^k$\\
+    \textbf{Left Shift by $k$ bits:} $x \ll k := x \cdot 2^k$\\
     \noindent
-    \textbf{Right Shift by $k$ bits:} $x \gg k = \left\lfloor x/2^k \right\rfloor$\\
+    \textbf{Right Shift by $k$ bits:} $x \gg k := \left\lfloor x/2^k \right\rfloor$\\
     \textbf{Remainder:} bits pushed out after right shift(s).
 \end{theo}
 
 \newpage
 \noindent
-\textbf{Example:} Observe, $16=10000$ (4 zeros), $8=1000$ (3 zeros), we shift by 4 and 3 respectively:
+\begin{Example}[Bit Shifting in Base 2]
+
+Observe, $16=10000$ (4 zeros), $8=1000$ (3 zeros), we shift by 4 and 3 respectively:
 \begin{itemize}
     \item Instead of $3 \cdot 16$ in base 10, we can $3 \ll 4=48$, as $3 \cdot 2^4 = 48$.
     \item Conversely, Instead of $48/16$ in base 10, $48 \gg 4 = 3$, as $\floor*{48/2^4} = 3$.
@@ -77,6 +81,10 @@ Notice that as we increase the power of 2, the number of bits shift left towards
     as  $[100101]$ $\gg$ 3 = [000100]101, where $101_2$ is our remainder $5_{10}$.
 \end{itemize}
 
+
+\end{Example}
+
+\vspace{-.5em}
 \begin{Func}[Division with Remainder in Binary (Outline) - \textit{QuoRem()}]
 
     \label{func:QuoRem}
@@ -116,22 +124,63 @@ Notice that as we increase the power of 2, the number of bits shift left towards
     detail visit \url{https://shoup.net/ntb/ntb-v2.pdf} on page 60. General $n$ cases can be found in Theorem (\ref{theo:basic-arithmetic}).
 \end{Func}
 
+\begin{Note}
+    \textbf{Note:} The above function is laid out in a more general form in its original text. But the above suffices for 
+    our purposes. \textbf{Remember:} The ALU can handle basic arithmetic operations in $O(1)$ time, as long as the numbers are small enough to fit in a single word.
+\end{Note}
+
 \noindent
-\textbf{Example} Let $a = 47_{10} = 101111_2$ and $b = 5_{10} = 101_2$, we run \textit{QuoRem($a,b$)}. We summarize the above example as, ``How many times does $101_2$ fit into $101111_2$?''
+\newpage
+
+\begin{Example}[QuoRem - Quotient and Remainder]
+
+    \label{ex:quotient_remainder}
+
+\textbf{Example} Let $a = 47_{10} = 101111_2$ and $b = 5_{10} = 101_2$, we run \textit{QuoRem($a,b$)}. 
+We summarize the above example as, ``How many times does $101_2$ fit into $101111_2$?''\\
+
+\noindent
+For $q$ (quotient) and $r$ (remainder):
 \begin{enumerate}
-    \item  Does $5\ll 3$ fit into $101000_2$? It fits! $q=1000_2$, $r = 101111_2 - 101000_2$.
-    \item  Does $5\ll 2$ fit into $0111_2$? no fits! $q=1000_2$, $r = 0111_2$.
-    \item  Does $5\ll 1$ fit into $0111_2$? no fits! $q=1000_2$, $r = 0111_2$.
-    \item  Does $5\ll 0$ fit into $0111_2$? It fits! $q=1001_2$, $r = 0111_2-0101$.
-    \item  Return $q=1001_2=9_{10}$, $r = 0010 = 2_{10}$ 
+    \item  Does $5\ll 3$ fit into $101111_2$? 
+    \begin{itemize}
+        \item \textbf{It fits!} As $[0000\ 0101]_2 \ll 3 = [0010\ 1000]_2$, is less than or equal to $101111_2$.
+        \item \textbf{So:} $q_1=1000_2$ (3 zero shifts), $r_1 = (101111_2 - 101000_2) = 0111_2$.
+    \end{itemize}
+    \item  Does $5\ll 2$ fit into $0111_2$?
+    \begin{itemize}
+        \item \textbf{No fits!} As $[0000\ 0101]_2 \ll 2 = [0001\ 0100]_2$, is greater than $0111_2$.
+        \item \textbf{So:} nothing is changed, $q_2=1000_2$, $r_2 = 0111_2$.
+    \end{itemize}
+    \item  Does $5\ll 1$ fit into $0111_2$?
+    \begin{itemize}
+        \item \textbf{No fits!} As $[0000\ 0101]_2 \ll 1 = [0000\ 1010]_2$, is greater than $0111_2$,
+        \item \textbf{So:} nothing is changed, $q_2=1000_2$, $r_2 = 0111_2$.
+    \end{itemize}
+    \item  Does $5\ll 0$ fit into $0111_2$?
+    \begin{itemize}
+        \item \textbf{It fits!} As $[0000\ 0101]_2 \ll 0 = [0000\ 0101]_2$, is less than or equal to $0111_2$.
+        \item \textbf{So:} $q_2=0001_2$ (0 zero shifts), then $q_1 + q_2 = 1001_2$, $r_2 = 0111_2-0101 = 0010_2$.
+    \end{itemize}
+    \item  \textbf{Return:} $q=1001_2=9_{10}$, $r = 0010 = 2_{10}$ 
 \end{enumerate}
+
+\vspace{2em}
+\noindent
+We may verify this in decimal, $47 = 5 \cdot 9 + 2$ (dividend = divisor $\cdot$ quotient + remainder).
+\end{Example}
+
+\begin{Note}
+\textbf{Note:} The above example touches on the ``Division Algorithm,'' which is not technically an algorithm, but rather a theorem.
+To learn more, consider: \href{https://github.com/Concise-Works/Number-Theory/blob/main/main.pdf}{Concise Works: Number Theory}
+\end{Note}
+
 
 \newpage
 
-
-
 \noindent
-Long addition: We craft an algorithm for
+\textbf{Scenario - Grade School Long Addition:}
+We craft an algorithm for
 grade school long addition, which goes as follows:
 \begin{equation*}
     \begin{array}{@{}B2}
@@ -144,7 +193,8 @@ grade school long addition, which goes as follows:
 Where adding, $25,308 + 39,406 = 64,714$. We create an algorithm to compute this in the following function.\\
 
 \noindent
-Here the function $QuoRem$ (\ref{func:QuoRem}) to return (quotient, remainder) preforms in $O(1)$ as bits are small enough for word size.
+% Here the function $QuoRem$ (\ref{func:QuoRem}) to return (quotient, remainder) preforms in $O(1)$ as bits are small enough for word size.
+
 \begin{Func}[Addition of Binary Integers - \textit{Add()}]
     Let $a = (a_{k-1} \cdots a_0)_2$ and $b = (b_{\ell-1} \cdots b_0)_2$ be unsigned binary integers, where $k \geq \ell \geq 1$. We compute $c := a + b$ where the result $c = (c_{k}c_{k-1} \cdots c_0)_2$ is of length $k+1$, assuming $k \geq \ell$. If $k < \ell$, swap $a$ and $b$. This algorithm computes the binary representation of $a + b$.
 
@@ -295,6 +345,8 @@ We create an algorithm to compute this process in the following function:
 
 \newpage
 \begin{Func}[Decimal to Binary Conversion - \textit{DecToBin()}]
+
+    \vspace{-.5em}
     This function converts a decimal number $n$ into its binary equivalent by repeatedly dividing the decimal number by 2 and recording the remainders.
 
     \vspace{.5em}
@@ -323,7 +375,11 @@ We create an algorithm to compute this process in the following function:
 \end{Func}
 
 \noindent
-\textbf{Example:} Converting 89 to binary given the above function:
+
+\begin{Example}[Decimal to Binary Conversion]
+
+    \vspace{-1em}
+    Let $n = 89_{10}$. We apply the function \textit{DecToBin($n$)} to show $89_{10} = 1011001_2$:
 \begin{align*}
     89_{10} &\div 2 = 44 \quad \text{rem} \ 1, \longleftarrow \textbf{ LSB}&   \\
     44_{10} &\div 2 = 22 \quad \text{rem} \ 0,& \\
@@ -333,7 +389,9 @@ We create an algorithm to compute this process in the following function:
     2_{10} &\div 2 = 1 \quad \ \text{rem} \ 0,& \\
     1_{10} &\div 2 = 0 \quad \ \text{rem} \ 1.  \longleftarrow \textbf{ MSB} &  
 \end{align*}
-Thus, $89_{10} = 1011001_2$.
+
+\vspace{-2em}
+\end{Example}
 
 \begin{theo}[Time Complexity of Basic Arithmetic Operations]
     
