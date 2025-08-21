@@ -226,15 +226,15 @@ So far we have discussed how the mapping system of virtual memory works, but now
 \begin{Def}[Swapping on Page Faults]
 
     A \textbf{page fault} occurs when a program tries to access a page that does not have a mapping in the page table. 
-    The OS then uses a replacement strategy to evict a page in the page table, swapping it out to external storage. 
-    The most common strategy is to evict the \textbf{least recently used (LRU)} page, though other strategies such as \textbf{first in first out (FIFO)} and \textbf{least frequently used (LFU)} are used in some applications.\\
+    The OS uses a replacement strategy to evict a page in the page table, swapping it out to disk. 
+    Typically, the \textbf{least recently used (LRU)} page is evicted, though some systems use a \textbf{first in first out (FIFO)} or \textbf{least frequently used (LFU)} strategy.\\
     
     \noindent
     A page is \textbf{dirty} if it has been written to. In 
     such case, we write back its contents to external storage before swapping. If the page is not dirty, we may discard it on swap.
 \end{Def}
 
-\vspace{-1em}
+\vspace{-2em}
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{Sections/virt/pagefault.png}
@@ -247,8 +247,6 @@ So far we have discussed how the mapping system of virtual memory works, but now
 
     \label{fig:virt6}
 \end{figure}
-
-\newpage
 
 \begin{Def}[Direct Memory Access (DMA)]
 
