@@ -1,0 +1,23 @@
+name: LaTeX Build Check
+
+on:
+  push:
+    paths:
+      - '**.tex'
+  pull_request:
+    paths:
+      - '**.tex'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: LaTeX compilation
+        uses: dante-ev/latex-action@2021-A
+        with:
+          root_file: main.tex
+          compiler: pdflatex
