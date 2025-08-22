@@ -20,4 +20,4 @@ jobs:
         uses: dante-ev/latex-action@2021-A
         with:
           root_file: main.tex
-          compiler: pdflatex
+          compiler: latexmk
